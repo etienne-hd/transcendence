@@ -19,6 +19,26 @@ services:
     expose:
     - "3306"
 
+  backend:
+    container_name: backend
+    networks:
+    - unicord
+    build: ./backend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+    - "3000:3000" # TMP (NGINX)
+
+  frontend:
+    container_name: frontend
+    networks:
+    - unicord
+    build: ./frontend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+    - "3001:3001" # TMP (NGINX)
+
 networks:
   unicord:
     name: unicord
