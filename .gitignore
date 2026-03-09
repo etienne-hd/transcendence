@@ -1,4 +1,6 @@
-# Logs
+.env
+data
+
 logs
 *.log
 npm-debug.log*
@@ -25,3 +27,5 @@ dist-ssr
 
 # Tailwind config just for nvim
 tailwind.config.js
+
+package-lock.json

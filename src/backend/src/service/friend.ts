@@ -9,14 +9,6 @@ export class AppFriendService {
 		// SQL Request to get all friends request
 
 		this.userService.get_user(id)
-		return [
-			{
-				"id": 1,
-				"user"
-			},
-			{
-				"id": 2
-			}
-		];
+		return [];
 	}
 }

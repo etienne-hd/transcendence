@@ -1,10 +1,10 @@
 volumes:
-  mariadb:
+  database:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/ehode/data/mariadb
+      device: ./data/database
 
 services:
   database:
@@ -14,10 +14,30 @@ services:
     build: ./database
     env_file: .env
     volumes:
-    - mariadb:/var/lib/mysql
+    - database:/var/lib/mysql
     restart: unless-stopped
     expose:
     - "3306"
+
+  backend:
+    container_name: backend
+    networks:
+    - unicord
+    build: ./backend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+    - "3000:3000" # TMP (NGINX)
+
+  frontend:
+    container_name: frontend
+    networks:
+    - unicord
+    build: ./frontend
+    env_file: .env
+    restart: unless-stopped
+    ports:
+    - "3001:3001" # TMP (NGINX)
 
 networks:
   unicord:
