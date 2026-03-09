@@ -23,6 +23,8 @@ services:
     container_name: backend
     networks:
     - unicord
+    depends_on:
+    - database
     build: ./backend
     env_file: .env
     restart: unless-stopped
@@ -33,6 +35,8 @@ services:
     container_name: frontend
     networks:
     - unicord
+    depends_on:
+    - backend
     build: ./frontend
     env_file: .env
     restart: unless-stopped
