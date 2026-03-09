@@ -1,0 +1,25 @@
+volumes:
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/ehode/data/mariadb
+
+services:
+  database:
+    container_name: database
+    networks:
+    - unicord
+    build: ./database
+    env_file: .env
+    volumes:
+    - mariadb:/var/lib/mysql
+    restart: unless-stopped
+    expose:
+    - "3306"
+
+networks:
+  unicord:
+    name: unicord
+    driver: bridge
