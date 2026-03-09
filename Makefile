@@ -8,7 +8,7 @@ down:
 	docker compose -f ./src/docker-compose.yml down -v
 
 clean: down
-	rm -rf ./src/data/database
+	rm -rf ./src/data
 
 fclean: clean
 	docker system prune -af
