@@ -1,70 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@theme {
+  --color-bg-main: #09090b;
+  --color-bg-secondary: #18181b;
+  --color-bg-tertiary: #27272a;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --color-border-main: #161619;
+  --color-border-secondary: #232326;
+  --color-border-tertiary: #333338;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-accent-primary: #8b5cf6;
+  --color-accent-secondary: #ec4899;
+  --color-accent-tertiary: #d946ef;
+
+  --color-font-main: #fafafa;
+  --color-font-secondary: #a1a1aa;
+  --color-font-tertiary: #52525b;
+
+  --color-error: #e34242;
+  --color-border-main: #27272a;
+  --radius-main: 16px;
+  --spacing-padding-main: 20px;
+  --spacing-gap-main: 16px;
+
+  --font-title: "Space Grotesk", sans-serif;
+  --font-text: "IBM Plex Sans", sans-serif;
+  --font-tech: "JetBrains Mono", monospace;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+#root {
+  padding: 0 !important;
+  height: 100%;
+  width: 100%;
+  max-width: 100dvw !important;
 }
-a:hover {
-  color: #535bf2;
+
+html {
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+  height: 100%;
+  width: 100%;
 }
