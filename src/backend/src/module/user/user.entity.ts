@@ -1,15 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
-  public created_at: Date = new Date();
+  @CreateDateColumn()
+  public created_at: Date;
 
-  @Column()
-  public last_seen_at: Date = new Date();
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  public last_seen_at: Date;
 
   @Column()
   public username: string;

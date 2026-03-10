@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 
@@ -13,16 +14,16 @@ export class FriendEntity {
   public id: number;
 
   @ManyToOne(() => UserEntity, { eager: true })
-  @JoinColumn({ name: 'id' })
-  public from_user: UserEntity;
+  @JoinColumn({ name: 'user_id' })
+  public user: UserEntity;
 
   @ManyToOne(() => UserEntity, { eager: true })
-  @JoinColumn({ name: 'id' })
-  public to_user: UserEntity;
+  @JoinColumn({ name: 'friend_id' })
+  public friend: UserEntity;
 
   @Column()
-  public is_pending: boolean;
+  public status: string;
 
-  @Column()
-  public friend_at: Date;
+  @CreateDateColumn()
+  public created_at: Date;
 }
