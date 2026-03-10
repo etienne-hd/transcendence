@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppUserService } from './service/user';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './module/auth/auth.module';
+import { UserModule } from './module/user/user.module';
+import { FriendModule } from './module/friend/friend.module';
 
 @Module({
   imports: [
+    AuthModule,
+    UserModule,
+    FriendModule,
+
     ConfigModule.forRoot({ isGlobal: true }), // charge .env
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -22,7 +27,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppUserService],
 })
 export class AppModule {}
