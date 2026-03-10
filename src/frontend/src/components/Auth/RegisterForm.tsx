@@ -4,6 +4,9 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import FormInput from "./FormInput";
+import { useEffect, useState } from "react";
+import { authService } from "../../api/api.auth";
+import axios from "axios";
 
 interface IRegisterInput {
   name: string;
@@ -20,17 +23,42 @@ function RegisterForm() {
     handleSubmit,
   } = useForm<IRegisterInput>();
 
-  // TODO: API call for submition
-  const onSubmit: SubmitHandler<IRegisterInput> = (register) => {
-    console.log(register);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit: SubmitHandler<IRegisterInput> = async (register) => {
+    try {
+      await authService.register(
+        register.name,
+        register.username,
+        register.email,
+        register.email,
+      );
+      setIsLogged(true);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.message);
+        setError(err.message);
+      } else {
+        console.error("Authentification failed");
+      }
+    }
   };
 
   const onError: SubmitErrorHandler<IRegisterInput> = (errors) => {
     console.log(errors);
   };
 
+  useEffect(() => {
+    if (isLogged) {
+      // TODO: Change page
+      console.log("Connected");
+    }
+  }, [isLogged]);
+
   // TODO: OAuth connexion
   // TODO: link to general terms
+  // TODO: Afficher l'erreur sur le menu de l'utilisateur
   return (
     <div className="flex flex-col justify-center items-center gap-6">
       <div className="flex flex-col gap-4 md:flex-row bg-bg-secondary border-border-secondary border-2 p-padding-main rounded-main justify-center items-center shadow-xl ">
