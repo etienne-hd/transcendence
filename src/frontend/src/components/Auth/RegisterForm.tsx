@@ -65,6 +65,10 @@ function RegisterForm() {
         <FormInput
           {...register("email", {
             required: { value: true, message: "Email required" },
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Enter a valid email format",
+            },
           })}
           label="Email"
           type="email"
@@ -97,7 +101,7 @@ function RegisterForm() {
 
         <input
           type="submit"
-          className="rounded-main p-2 mt-6 bg-accent-primary hover:bg-accent-secondary hover:scale-105 transition-all duration-200 text-bg-secondary"
+          className="rounded-main p-2 mt-4 bg-accent-primary hover:bg-accent-secondary hover:scale-105 transition-all duration-200 text-bg-secondary"
         />
       </form>
     </div>

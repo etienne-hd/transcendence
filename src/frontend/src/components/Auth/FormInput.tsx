@@ -21,7 +21,9 @@ const FormInput = forwardRef<HTMLInputElement, InputProps>(
           }
         />
 
-        {error && <span className="text-error pl-1">{error.message}</span>}
+        {error && (
+          <span className="text-error font-tech pl-1">{error.message}</span>
+        )}
       </div>
     );
   },
