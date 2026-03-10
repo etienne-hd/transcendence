@@ -46,6 +46,6 @@ export class AuthService {
     });
     this.userRepository.save(user);
 
-    return { accessToken: null };
+    return { accessToken: 'test' };
   }
 }

@@ -56,7 +56,7 @@ function RegisterForm() {
     }
   }, [isLogged]);
 
-  // TODO: OAuth connexion
+  // TODO: OAuth connexio
   // TODO: link to general terms
   // TODO: Afficher l'erreur sur le menu de l'utilisateur
   return (
