@@ -2,12 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PutMeDto } from './dtos/put-me.dtos';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly authService: AuthService,
   ) {}
 
   public async getUser(id: number): Promise<UserEntity> {
@@ -22,20 +25,22 @@ export class UserService {
     return user;
   }
 
-  public async editUser(id: number, fields: JSON): Promise<UserEntity> {
+  public async editUser(id: number, fields: PutMeDto): Promise<UserEntity> {
     const editableFields = [
       'username',
       'email',
       'name',
       'biography',
       'password',
-      'avatar',
     ];
 
     const user = await this.getUser(id);
 
     for (const field in fields) {
       if (editableFields.includes(field)) {
+        if (field == 'password') {
+          fields[field] = await this.authService.hashPassword(fields[field]!);
+        }
         user[field] = fields[field];
       }
     }

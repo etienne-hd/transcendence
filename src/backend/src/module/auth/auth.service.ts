@@ -37,10 +37,6 @@ export class AuthService {
     email: string,
     name: string,
   ) {
-    if (!username || !password || !email || !name) {
-      throw new BadRequestException('Invalid body');
-    }
-
     const isUsernameExist = await this.userRepository.findOneBy({
       username: username,
     });
@@ -72,7 +68,7 @@ export class AuthService {
       username: username,
     });
     if (!user) {
-      throw new NotFoundException('Username does not exist!');
+      throw new NotFoundException('User does not exist!');
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
