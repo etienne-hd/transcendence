@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import PageWrapper from "./components/PageWrapper";
-import { userService } from "./api/api.user";
 import type { User } from "./api/types/user";
+import { authService } from "./api/api.auth";
+import axios from "axios";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,10 +14,12 @@ function App() {
     const loadUser = async () => {
       try {
         setLoading(true);
-        const data = await userService.getUserInfomation(1);
+        const data = await authService.getMyUser();
         setUser(data);
       } catch (error) {
-        console.error("Erreur API:", error);
+        if (axios.isAxiosError(error) && error.response) {
+          console.error("Erreur API:", error.response.data);
+        }
       } finally {
         setLoading(false);
       }
