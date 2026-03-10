@@ -18,16 +18,16 @@ export class UserEntity {
   public name: string;
 
   @Column()
-  public biography: string = '';
-
-  @Column()
   public email: string;
 
   @Column()
   public password: string;
 
-  @Column()
-  public avatar: string = '';
+  @Column({ nullable: true })
+  public biography: string;
+
+  @Column({ nullable: true })
+  public avatar: string;
 
   @Column()
   public is_banned: boolean = false;
