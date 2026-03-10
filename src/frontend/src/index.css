@@ -23,9 +23,8 @@
   --spacing-padding-main: 20px;
   --spacing-gap-main: 16px;
 
-  --font-title: "Space Grotesk", sans-serif;
-  --font-text: "IBM Plex Sans", sans-serif;
-  --font-tech: "JetBrains Mono", monospace;
+  --font-text: Inter, sans-serif;
+  --font-tech: JetBrains Mono, monospace;
 }
 
 #root {
@@ -38,6 +37,7 @@
 html {
   height: 100%;
   width: 100%;
+  font-family: var(--font-text);
 }
 
 body {
