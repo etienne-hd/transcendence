@@ -7,8 +7,11 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { type RegisterDto, RegisterSchema } from './dtos/register.dtos';
-import { type LoginDto, LoginSchema } from './dtos/login.dtos';
+import {
+  type PostRegisterDto,
+  PostRegisterSchema,
+} from './dtos/post-register.dtos';
+import { type PostLoginDto, PostLoginSchema } from './dtos/post-login.dtos';
 import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
 
 @Controller()
@@ -17,7 +20,9 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('/auth/register')
-  postRegister(@Body(new ZodValidationPipe(RegisterSchema)) body: RegisterDto) {
+  postRegister(
+    @Body(new ZodValidationPipe(PostRegisterSchema)) body: PostRegisterDto,
+  ) {
     return this.authService.register(
       body.username,
       body.password,
@@ -28,7 +33,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.ACCEPTED)
   @Post('/auth/login')
-  postLogin(@Body(new ZodValidationPipe(LoginSchema)) body: LoginDto) {
+  postLogin(@Body(new ZodValidationPipe(PostLoginSchema)) body: PostLoginDto) {
     return this.authService.login(body.username, body.password);
   }
 }

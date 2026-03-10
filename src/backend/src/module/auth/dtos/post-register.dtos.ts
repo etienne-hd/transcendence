@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const RegisterSchema = z.object({
+export const PostRegisterSchema = z.object({
   username: z.string().min(3).max(30),
   password: z.string().min(8).max(128),
   email: z
@@ -11,4 +11,4 @@ export const RegisterSchema = z.object({
   name: z.string().min(1).max(100),
 });
 
-export type RegisterDto = z.infer<typeof RegisterSchema>;
+export type PostRegisterDto = z.infer<typeof PostRegisterSchema>;
