@@ -28,4 +28,4 @@ dist-ssr
 # Tailwind config just for nvim
 tailwind.config.js
 
-package-lock.json
+src/backend/package-lock.json
