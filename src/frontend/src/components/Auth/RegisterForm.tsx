@@ -4,9 +4,10 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import FormInput from "./FormInput";
-import { useEffect, useState } from "react";
 import { authService } from "../../api/api.auth";
 import axios from "axios";
+import { useLogin } from "../../context/LoginContext";
+import { useNotification } from "../../context/NotificationContext";
 
 interface IRegisterInput {
   name: string;
@@ -21,11 +22,15 @@ function RegisterForm() {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<IRegisterInput>();
+  } = useForm<IRegisterInput>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
 
-  const [isLogged, setIsLogged] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const { pushNotification } = useNotification();
+  const { setLoggedStatus } = useLogin();
 
+  // Try to register the user on the server
   const onSubmit: SubmitHandler<IRegisterInput> = async (register) => {
     try {
       await authService.register(
@@ -34,31 +39,30 @@ function RegisterForm() {
         register.email,
         register.email,
       );
-      setIsLogged(true);
+      setLoggedStatus(true);
+      pushNotification("Successfuly connected", "valid");
     } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.error(err.message);
-        setError(err.message);
+      if (axios.isAxiosError(err) && err.response) {
+        pushNotification(err.response.data.message, "error");
       } else {
-        console.error("Authentification failed");
+        console.error("Authentification failed: " + err);
       }
     }
   };
 
+  // Handle the form error
   const onError: SubmitErrorHandler<IRegisterInput> = (errors) => {
-    console.log(errors);
-  };
+    const errorMessages = Object.values(errors).map((err) => err.message);
 
-  useEffect(() => {
-    if (isLogged) {
-      // TODO: Change page
-      console.log("Connected");
-    }
-  }, [isLogged]);
+    errorMessages.map((err) => {
+      if (err) {
+        pushNotification(err, "error");
+      }
+    });
+  };
 
   // TODO: OAuth connexio
   // TODO: link to general terms
-  // TODO: Afficher l'erreur sur le menu de l'utilisateur
   return (
     <div className="flex flex-col justify-center items-center gap-6">
       <div className="flex flex-col gap-4 md:flex-row bg-bg-secondary border-border-secondary border-2 p-padding-main rounded-main justify-center items-center shadow-xl ">

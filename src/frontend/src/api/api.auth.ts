@@ -1,5 +1,4 @@
 import { apiClient } from "./api.service";
-import type { User } from "./types/user";
 
 export const authService = {
   async login(email: string, password: string): Promise<string> {
@@ -31,11 +30,5 @@ export const authService = {
     localStorage.setItem("accessToken", token);
 
     return token;
-  },
-
-  async getMyUser(): Promise<User> {
-    const response = await apiClient.get<User>("/auth/me/");
-
-    return response.data;
   },
 };
