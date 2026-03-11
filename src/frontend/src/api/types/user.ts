@@ -1,8 +1,10 @@
 export interface User {
-  name: string;
+  id: number;
   username: string;
   email: string;
+  name: string;
+  biography: string;
   avatar: string;
-  isBanned: boolean;
-  warn: number;
+  created_at: string;
+  last_seen_at: string;
 }

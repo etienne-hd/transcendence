@@ -2,23 +2,30 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import PageWrapper from "./components/PageWrapper";
 import type { User } from "./api/types/user";
-import { authService } from "./api/api.auth";
 import axios from "axios";
+import { userService } from "./api/api.user";
+import { useLogin } from "./context/LoginContext";
 
 function App() {
+  // All the code under is a test page for request
   const [count, setCount] = useState(0);
   const [user, setUser] = useState<User | null>(null); // Initialisé à null
   const [loading, setLoading] = useState(true);
+
+  const { setLoggedStatus } = useLogin();
 
   useEffect(() => {
     const loadUser = async () => {
       try {
         setLoading(true);
-        const data = await authService.getMyUser();
+        const data = await userService.me();
         setUser(data);
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          console.error("Erreur API:", error.response.data);
+      } catch (err) {
+        if (axios.isAxiosError(err) && err.response) {
+          console.error("Erreur API:", err.response.data);
+          if (err.response.status == 401) {
+            setLoggedStatus(false);
+          }
         }
       } finally {
         setLoading(false);
@@ -26,10 +33,10 @@ function App() {
     };
 
     loadUser();
-  }, []);
+  }, [setLoggedStatus]);
 
   return (
-    <PageWrapper>
+    <PageWrapper needLog={true}>
       <div className="card">
         {loading ? (
           <p>Chargement de l'utilisateur...</p>
