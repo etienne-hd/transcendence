@@ -11,7 +11,7 @@ export class UserController {
   @Auth()
   @Get('/me')
   async getUser(@Request() req) {
-    const user = await this.userService.getUser(req.user.id);
+    const user = await this.userService.getUser(req.user.sub);
     return {
       id: user.id,
       username: user.username,
@@ -30,7 +30,7 @@ export class UserController {
     @Request() req,
     @Body(new ZodValidationPipe(PutMeSchema)) body: PutMeDto,
   ) {
-    const user = await this.userService.editUser(req.user.id, body);
+    const user = await this.userService.editUser(req.user.sub, body);
     return {
       id: user.id,
       username: user.username,
