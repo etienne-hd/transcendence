@@ -11,13 +11,30 @@ services:
     container_name: database
     networks:
       - unicord
-    build: mariadb:12
+    image: mariadb:12
     env_file: .env
     volumes:
       - database:/var/lib/mysql
     restart: unless-stopped
     expose:
       - "3306"
+
+  nginx:
+    container_name: nginx
+    networks:
+      - unicord
+    depends_on:
+      - frontend
+      - backend
+    build:
+      context: ./nginx
+      args:
+        FRONTEND_DOMAIN: ${FRONTEND_DOMAIN}
+        BACKEND_DOMAIN: ${BACKEND_DOMAIN}
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "443:443"
 
   backend:
     container_name: backend
@@ -28,8 +45,8 @@ services:
     build: ./backend
     env_file: .env
     restart: unless-stopped
-    ports:
-      - "3000:3000" # TMP (NGINX)
+    expose:
+      - "3000"
 
   frontend:
     container_name: frontend
@@ -40,8 +57,8 @@ services:
     build: ./frontend
     env_file: .env
     restart: unless-stopped
-    ports:
-      - "3001:3001" # TMP (NGINX)
+    expose:
+      - "3001"
 
 networks:
   unicord:
