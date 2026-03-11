@@ -17,7 +17,7 @@ export class FriendService {
     private readonly userService: UserService,
   ) {}
 
-  async getFriends(userId: number): Promise<FriendEntity[]> {
+  async getFriendsEntites(userId: number): Promise<FriendEntity[]> {
     const friends: FriendEntity[] = await this.friendRepository
       .createQueryBuilder('f')
       .leftJoinAndSelect('f.user', 'user')
@@ -30,15 +30,42 @@ export class FriendService {
     return friends;
   }
 
-  async addFriend(userId: number, username: string): Promise<FriendEntity> {
+  async getFriends(userId: number) {
+    const friends = await this.getFriendsEntites(userId);
+
+    return friends.map((friend) => {
+      const isSender = friend.user.id === userId;
+      const userFriend = isSender ? friend.friend : friend.user;
+      const status =
+        isSender && friend.status === 'pending' ? 'sent' : friend.status;
+
+      return {
+        id: friend.id,
+        user: {
+          id: userFriend.id,
+          username: userFriend.username,
+          name: userFriend.name,
+          biography: userFriend.biography,
+          avatar: userFriend.avatar,
+          created_at: userFriend.created_at,
+          last_seen_at: userFriend.last_seen_at,
+        },
+        status,
+        created_at: friend.created_at,
+        friend_at: friend.friend_at,
+      };
+    });
+  }
+
+  async addFriend(userId: number, username: string) {
     const user = await this.userService.getUser({ id: userId });
     const targetUser = await this.userService.getUser({ username });
 
     if (user.id == targetUser.id) {
-      throw new ConflictException('Cannot add yourself as a friend.');
+      throw new ConflictException('You cannot add yourself as a friend.');
     }
 
-    for (const friend of await this.getFriends(userId)) {
+    for (const friend of await this.getFriendsEntites(userId)) {
       if (
         friend.user.id == targetUser.id ||
         friend.friend.id == targetUser.id
@@ -49,40 +76,45 @@ export class FriendService {
             friend.status = 'friend';
             friend.friend_at = new Date();
             await this.friendRepository.save(friend);
-            return friend;
+            return {
+              message: 'You have successfully accepted the friend request!',
+            };
           } else {
             throw new ConflictException(
-              "You've already sent a request to this user!",
+              'You have already sent a request to this user!',
             );
           }
         } else {
-          throw new ConflictException("You're already friend!");
+          throw new ConflictException(
+            'You are already friends with this user!',
+          );
         }
       }
     }
 
+    // Create friend in database
     const friend = this.friendRepository.create({
       user,
       friend: targetUser,
       status: 'pending',
     });
     await this.friendRepository.save(friend);
-    return friend;
+    return { message: 'Friend request successfully sent!' };
   }
 
   async removeFriend(userId: number, username: string) {
     const targetUser = await this.userService.getUser({ username });
 
-    for (const friend of await this.getFriends(userId)) {
+    for (const friend of await this.getFriendsEntites(userId)) {
       if (
         friend.user.id == targetUser.id ||
         friend.friend.id == targetUser.id
       ) {
         await this.friendRepository.remove(friend);
-        return;
+        return { message: 'Friend successfully removed!' };
       }
     }
 
-    throw new NotFoundException("You're not friends with this user!");
+    throw new NotFoundException('You are not friends with this user!');
   }
 }
