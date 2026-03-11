@@ -16,7 +16,7 @@ export class FriendService {
     private readonly userService: UserService,
   ) {}
 
-  async getFriendsEntites(userId: number): Promise<FriendEntity[]> {
+  public async getFriendsEntites(userId: number): Promise<FriendEntity[]> {
     const friends: FriendEntity[] = await this.friendRepository
       .createQueryBuilder('f')
       .leftJoinAndSelect('f.user', 'user')
@@ -29,7 +29,7 @@ export class FriendService {
     return friends;
   }
 
-  async getFriends(userId: number) {
+  public async getFriends(userId: number) {
     const friends = await this.getFriendsEntites(userId);
 
     return friends.map((friend) => {
@@ -56,7 +56,7 @@ export class FriendService {
     });
   }
 
-  async addFriend(userId: number, username: string) {
+  public async addFriend(userId: number, username: string) {
     const user = await this.userService.getUserEntity({ id: userId });
     const targetUser = await this.userService.getUserEntity({ username });
 
@@ -101,7 +101,7 @@ export class FriendService {
     return { message: 'Friend request successfully sent!' };
   }
 
-  async removeFriend(userId: number, username: string) {
+  public async removeFriend(userId: number, username: string) {
     const targetUser = await this.userService.getUserEntity({ username });
 
     for (const friend of await this.getFriendsEntites(userId)) {
