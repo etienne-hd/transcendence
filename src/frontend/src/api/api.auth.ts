@@ -1,10 +1,10 @@
 import { apiClient } from "./api.service";
 
 export const authService = {
-  async login(email: string, password: string): Promise<string> {
+  async login(username: string, password: string): Promise<string> {
     const response = await apiClient.post<{ accessToken: string }>(
       "/auth/login/",
-      { email: email, password: password },
+      { username: username, password: password },
     );
 
     const token = response.data.accessToken;
