@@ -24,6 +24,9 @@ export class FriendEntity {
   @Column()
   public status: string;
 
+  @Column({ nullable: true })
+  public friend_at: Date;
+
   @CreateDateColumn()
   public created_at: Date;
 }
