@@ -11,16 +11,16 @@ export class UserController {
   @Auth()
   @Get('/me')
   async getUser(@Request() req) {
-    const user = await this.userService.getUser(req.user.sub);
+    const user = await this.userService.getUser({ id: req.user.sub });
     return {
       id: user.id,
       username: user.username,
-      email: user.email,
       name: user.name,
       biography: user.biography,
       avatar: user.avatar,
       created_at: user.created_at,
       last_seen_at: user.last_seen_at,
+      email: user.email,
     };
   }
 
@@ -46,7 +46,7 @@ export class UserController {
   @Auth()
   @Get('/user/:id')
   async getUserById(@Param('id') id: number) {
-    const user = await this.userService.getUser(id);
+    const user = await this.userService.getUser({ id });
     return {
       id: user.id,
       username: user.username,
