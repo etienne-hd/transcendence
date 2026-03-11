@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FriendEntity } from './friend.entity';
 import { Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
-import { UserEntity } from '../user/user.entity';
 
 @Injectable()
 export class FriendService {
@@ -58,8 +57,8 @@ export class FriendService {
   }
 
   async addFriend(userId: number, username: string) {
-    const user = await this.userService.getUser({ id: userId });
-    const targetUser = await this.userService.getUser({ username });
+    const user = await this.userService.getUserEntity({ id: userId });
+    const targetUser = await this.userService.getUserEntity({ username });
 
     if (user.id == targetUser.id) {
       throw new ConflictException('You cannot add yourself as a friend.');
@@ -103,7 +102,7 @@ export class FriendService {
   }
 
   async removeFriend(userId: number, username: string) {
-    const targetUser = await this.userService.getUser({ username });
+    const targetUser = await this.userService.getUserEntity({ username });
 
     for (const friend of await this.getFriendsEntites(userId)) {
       if (

@@ -11,17 +11,16 @@ export class UserController {
   @Auth()
   @Get('/me')
   async getUser(@Request() req) {
-    const user = await this.userService.getUser({ id: req.user.sub });
-    return {
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      biography: user.biography,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      last_seen_at: user.last_seen_at,
-      email: user.email,
-    };
+    return await this.userService.getUser(req.user.sub, [
+      'id',
+      'username',
+      'name',
+      'biography',
+      'avatar',
+      'created_at',
+      'last_seen_at',
+      'email',
+    ]);
   }
 
   @Auth()
@@ -30,31 +29,20 @@ export class UserController {
     @Request() req,
     @Body(new ZodValidationPipe(PutMeSchema)) body: PutMeDto,
   ) {
-    const user = await this.userService.editUser(req.user.sub, body);
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      name: user.name,
-      biography: user.biography,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      last_seen_at: user.last_seen_at,
-    };
+    return await this.userService.editUser(req.user.sub, body);
   }
 
   @Auth()
   @Get('/user/:id')
   async getUserById(@Param('id') id: number) {
-    const user = await this.userService.getUser({ id });
-    return {
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      biography: user.biography,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      last_seen_at: user.last_seen_at,
-    };
+    return await this.userService.getUser(id, [
+      'id',
+      'username',
+      'name',
+      'biography',
+      'avatar',
+      'created_at',
+      'last_seen_at',
+    ]);
   }
 }

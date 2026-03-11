@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +17,7 @@ export class UserService {
     private readonly authService: AuthService,
   ) {}
 
-  public async getUser(params: {
+  public async getUserEntity(params: {
     id?: number;
     username?: string;
   }): Promise<UserEntity> {
@@ -26,13 +30,18 @@ export class UserService {
     return user;
   }
 
-  public async editUser(
-    params: {
-      id?: number;
-      username?: string;
-    },
-    fields: PutMeDto,
-  ): Promise<UserEntity> {
+  public async getUser(id: number, fields: string[]) {
+    const user = await this.getUserEntity({ id });
+    var values = {};
+    for (const field in user) {
+      if (fields.includes(field)) {
+        values[field] = user[field];
+      }
+    }
+    return values;
+  }
+
+  public async editUser(id: number, fields: PutMeDto) {
     const editableFields = [
       'username',
       'email',
@@ -41,7 +50,27 @@ export class UserService {
       'password',
     ];
 
-    const user = await this.getUser(params);
+    const user = await this.getUserEntity({ id });
+
+    if (fields.username && user.username != fields.username) {
+      const isUsernameExist = await this.userRepository.findOneBy({
+        username: fields.username,
+      });
+      if (isUsernameExist) {
+        throw new ConflictException('Username already taken!');
+      }
+    }
+
+    if (fields.email && user.email != fields.email) {
+      const isEmailExist = await this.userRepository.findOneBy({
+        email: fields.email,
+      });
+      if (isEmailExist) {
+        throw new ConflictException(
+          'This email is already associated with a user!',
+        );
+      }
+    }
 
     for (const field in fields) {
       if (editableFields.includes(field)) {
@@ -54,6 +83,15 @@ export class UserService {
 
     await this.userRepository.save(user);
 
-    return user;
+    return {
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      biography: user.biography,
+      avatar: user.avatar,
+      created_at: user.created_at,
+      last_seen_at: user.last_seen_at,
+      email: user.email,
+    };
   }
 }
