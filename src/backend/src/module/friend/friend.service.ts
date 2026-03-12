@@ -104,6 +104,12 @@ export class FriendService {
   public async removeFriend(userId: number, username: string) {
     const targetUser = await this.userService.getUserEntity({ username });
 
+    if (userId == targetUser.id) {
+      throw new NotFoundException(
+        'You cannot remove yourself from the friends list.',
+      );
+    }
+
     for (const friend of await this.getFriendsEntites(userId)) {
       if (
         friend.user.id == targetUser.id ||
