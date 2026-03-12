@@ -163,12 +163,12 @@ function RegisterForm() {
       </div>
       <button
         type="submit"
-        className="rounded-main p-2 border-2 border-border-secondary text-md bg-bg-secondary hover:bg-bg-tertiary hover:scale-105 transition-all duration-200 "
+        className="hover:scale-102 hover:shadow-xl cursor-pointer rounded-main p-2 border-2 border-border-secondary text-md bg-bg-secondary hover:bg-bg-tertiary transition-all duration-200 "
         form="register"
       >
         Register in Unicord
       </button>
-      <button onClick={toggleSignX}>
+      <button className="cursor-pointer" onClick={toggleSignX}>
         {signX == "register"
           ? "Already have an account ?"
           : "Want to join us ?"}

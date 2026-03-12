@@ -3,6 +3,7 @@ import { useLogin } from "../context/LoginContext";
 import { useNavigate } from "react-router";
 import { useNotification } from "../context/NotificationContext";
 import NotificationStack from "./Notification/NotificationStack";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface PageWrapperProps {
   children?: ReactNode;
@@ -28,21 +29,23 @@ function PageWrapper(props: PageWrapperProps) {
 
   // TODO: Loading screen if needLog while not logged
   return (
-    <>
+    <div className="w-full h-full flex flex-row bg-bg-tertiary text-font-main">
       <NotificationStack notifications={notifications} />
       {(props.needLog && loggedStatus) || !props.needLog ? (
         <div
           className={
-            "bg-bg-main text-font-main w-full h-full flex flex-col " +
+            "w-full h-full flex flex-col " +
             (props.className ? props.className : "")
           }
         >
           {props.children}
         </div>
       ) : (
-        <p>test</p>
+        <div className="h-full w-full flex justify-center items-center">
+          <LoadingSpinner className="w-15 h-15" />
+        </div>
       )}
-    </>
+    </div>
   );
 }
 
