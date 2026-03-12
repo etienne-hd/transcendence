@@ -19,7 +19,6 @@ function PageWrapper(props: PageWrapperProps) {
   const { notifications } = useNotification();
 
   useEffect(() => {
-    console.log("test");
     if (loggedStatus && props.redirectLog) {
       naviagate(props.redirectLog);
     } else if (!loggedStatus && props.redirectNoLog) {
