@@ -5,14 +5,16 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Friend } from "../api/types/user";
 import axios from "axios";
 import { useLogin } from "./LoginContext";
 import { useNotification } from "./NotificationContext";
+import { friendService } from "../api/api.friend";
+import type { Friend } from "../api/types/friend";
 
 interface FriendListContextType {
   friends: Friend[];
   updateFriends: () => Promise<void>;
+  addFriend: (username: string) => Promise<void>;
 }
 
 interface FriendListContextProviderProps {
@@ -28,42 +30,25 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   const { setLoggedStatus } = useLogin();
   const { pushNotification } = useNotification();
 
-  // TODO : replace with api call
   const updateFriends = async () => {
     try {
-      const response = [
-        {
-          name: "test",
-          id: 2,
-          username: "test",
-          biography: "fhdskjfkjs",
-          avatar: "gdfhjs",
-          created_at: "fds",
-          last_seen_at: "fdhjks",
-          active: true,
-        },
-        {
-          name: "test",
-          id: 3,
-          username: "test",
-          biography: "fhdskjfkjs",
-          avatar: "gdfhjs",
-          created_at: "fds",
-          last_seen_at: "fdhjks",
-          active: false,
-        },
-        {
-          name: "test",
-          id: 4,
-          username: "test",
-          biography: "fhdskjfkjs",
-          avatar: "gdfhjs",
-          created_at: "fds",
-          last_seen_at: "fdhjks",
-          active: false,
-        },
-      ];
+      const response = await friendService.getFriends();
       setFriends(response);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.status == 401) {
+          setLoggedStatus(false);
+        }
+        pushNotification(e.response.data.message, "error");
+      }
+    }
+  };
+
+  const addFriend = async (username: string) => {
+    try {
+      const response = await friendService.addFriend(username);
+
+      pushNotification(response, "error");
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.status == 401) {
@@ -79,7 +64,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   }, []);
 
   return (
-    <FriendListContext.Provider value={{ friends, updateFriends }}>
+    <FriendListContext.Provider value={{ friends, updateFriends, addFriend }}>
       {props.children}
     </FriendListContext.Provider>
   );

@@ -19,7 +19,7 @@ function SettingsModal(props: SettingsModalProps) {
   const [biography, setBiography] = useState<string | undefined>(undefined);
 
   // TODO : Add avatar switching
-
+  // TODO : logout button
   // TODO : Change that by active status of user
   const isActive = true;
 
@@ -161,11 +161,11 @@ function SettingsModal(props: SettingsModalProps) {
             onClick={saveChange}
             disabled={
               !(
-                name != undefined ||
-                username != undefined ||
-                email != undefined ||
-                password != undefined ||
-                biography != undefined
+                (name != undefined && name != "") ||
+                (username != undefined && username != "") ||
+                (email != undefined && email != "") ||
+                (password != undefined && password != "") ||
+                (biography != undefined && biography != "")
               )
             }
             className="p-2 bg-accent-primary disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"

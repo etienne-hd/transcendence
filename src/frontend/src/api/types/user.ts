@@ -10,7 +10,7 @@ export interface User {
   last_seen_at: string;
 }
 
-export interface Friend {
+export interface UserFront {
   id: number;
   username: string;
   name: string;
@@ -18,5 +18,4 @@ export interface Friend {
   avatar: string;
   created_at: string;
   last_seen_at: string;
-  active: boolean;
 }

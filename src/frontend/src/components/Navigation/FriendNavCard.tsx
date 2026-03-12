@@ -1,4 +1,4 @@
-import type { Friend } from "../../api/types/user";
+import type { Friend } from "../../api/types/friend";
 
 interface FriendNavCardProps {
   friend: Friend;
@@ -6,6 +6,7 @@ interface FriendNavCardProps {
   isFocus?: boolean;
 }
 
+// TODO : Loggin status variable
 function FriendNavCard(props: FriendNavCardProps) {
   return (
     <div
@@ -18,16 +19,18 @@ function FriendNavCard(props: FriendNavCardProps) {
       }}
     >
       <div className="relative h-full">
-        <img src={props.friend.avatar} className="rounded-full h-full" />
+        <img src={props.friend.user.avatar} className="rounded-full h-full" />
         <div
           className={
             "absolute bottom-0 right-0 w-2 h-2 rounded-full " +
-            (props.friend.active ? "bg-green-500" : "bg-error")
+            (props.friend.user.id ? "bg-green-500" : "bg-error")
           }
         ></div>
       </div>
       <div className="w-full h-full flex flex-col items-start justify-center">
-        <p className="font-semibold text-ellipsis">{props.friend.username}</p>
+        <p className="font-semibold text-ellipsis">
+          {props.friend.user.username}
+        </p>
       </div>
     </div>
   );
