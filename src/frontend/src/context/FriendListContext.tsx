@@ -15,6 +15,7 @@ interface FriendListContextType {
   friends: Friend[];
   updateFriends: () => Promise<void>;
   addFriend: (username: string) => Promise<void>;
+  removeFriend: (username: string) => Promise<void>;
 }
 
 interface FriendListContextProviderProps {
@@ -49,13 +50,31 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     try {
       const response = await friendService.addFriend(username);
 
-      pushNotification(response, "error");
+      pushNotification(response.message, "valid");
+      updateFriends();
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
           setLoggedStatus(false);
         } else {
-          pushNotification(e.response.data.message, "error");
+          pushNotification(e.response.data, "error");
+        }
+      }
+    }
+  };
+
+  const removeFriend = async (username: string) => {
+    try {
+      const response = await friendService.removeFriend(username);
+
+      pushNotification(response.message, "valid");
+      updateFriends();
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.data.statusCode == 401) {
+          setLoggedStatus(false);
+        } else {
+          pushNotification(e.response.data, "error");
         }
       }
     }
@@ -66,7 +85,9 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   }, []);
 
   return (
-    <FriendListContext.Provider value={{ friends, updateFriends, addFriend }}>
+    <FriendListContext.Provider
+      value={{ friends, updateFriends, addFriend, removeFriend }}
+    >
       {props.children}
     </FriendListContext.Provider>
   );

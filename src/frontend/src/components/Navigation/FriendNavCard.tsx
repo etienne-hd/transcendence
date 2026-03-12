@@ -1,4 +1,6 @@
+import { X } from "lucide-react";
 import type { Friend } from "../../api/types/friend";
+import { useFriends } from "../../context/FriendListContext";
 
 interface FriendNavCardProps {
   friend: Friend;
@@ -8,6 +10,8 @@ interface FriendNavCardProps {
 
 // TODO : Loggin status variable
 function FriendNavCard(props: FriendNavCardProps) {
+  const { removeFriend } = useFriends();
+
   return (
     <div
       className={
@@ -19,7 +23,12 @@ function FriendNavCard(props: FriendNavCardProps) {
       }}
     >
       <div className="relative h-full">
-        <img src={props.friend.user.avatar} className="rounded-full h-full" />
+        <img
+          src={
+            props.friend.user.avatar ? props.friend.user.avatar : "placeholder"
+          }
+          className="rounded-full h-full"
+        />
         <div
           className={
             "absolute bottom-0 right-0 w-2 h-2 rounded-full " +
@@ -31,6 +40,15 @@ function FriendNavCard(props: FriendNavCardProps) {
         <p className="font-semibold text-ellipsis">
           {props.friend.user.username}
         </p>
+      </div>
+      <div
+        onClick={(e) => {
+          removeFriend(props.friend.user.username);
+          e.stopPropagation();
+        }}
+        className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
+      >
+        <X color="var(--color-font-secondary)" size={18} />
       </div>
     </div>
   );

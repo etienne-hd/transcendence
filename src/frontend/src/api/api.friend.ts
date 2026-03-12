@@ -8,9 +8,19 @@ export const friendService = {
     return response.data;
   },
 
-  async addFriend(username: string): Promise<string> {
-    const response = await apiClient.post<string>("/friend", {
+  async addFriend(username: string): Promise<{ message: string }> {
+    const response = await apiClient.post<{ message: string }>("/friend", {
       username: username,
+    });
+
+    return response.data;
+  },
+
+  async removeFriend(username: string): Promise<{ message: string }> {
+    const response = await apiClient.delete<{ message: string }>("/friend", {
+      data: {
+        username: username,
+      },
     });
 
     return response.data;
