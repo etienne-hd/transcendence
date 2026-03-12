@@ -3,7 +3,7 @@ import { useLogin } from "../context/LoginContext";
 import { useNavigate } from "react-router";
 import { useNotification } from "../context/NotificationContext";
 import NotificationStack from "./Notification/NotificationStack";
-import Navbar from "./Navigation/Navbar";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface PageWrapperProps {
   children?: ReactNode;
@@ -41,7 +41,9 @@ function PageWrapper(props: PageWrapperProps) {
           {props.children}
         </div>
       ) : (
-        <p>test</p>
+        <div className="h-full w-full flex justify-center items-center">
+          <LoadingSpinner className="w-15 h-15" />
+        </div>
       )}
     </div>
   );

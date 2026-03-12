@@ -10,7 +10,7 @@ function FriendNavCard(props: FriendNavCardProps) {
   return (
     <div
       className={
-        "w-full h-12 flex-row flex gap-4 rounded-main hover:bg-bg-tertiary p-2 cursor-pointer " +
+        "w-full h-12 flex-row flex gap-4 rounded-md hover:bg-bg-tertiary transition-all duration-75 active:scale-102 p-2 cursor-pointer " +
         (props.isFocus && "bg-bg-tertiary")
       }
       onClick={() => {
@@ -27,7 +27,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         ></div>
       </div>
       <div className="w-full h-full flex flex-col items-start justify-center">
-        <p className="font-semibold">{props.friend.username}</p>
+        <p className="font-semibold text-ellipsis">{props.friend.username}</p>
       </div>
     </div>
   );

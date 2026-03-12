@@ -10,14 +10,14 @@ interface NotificationContextProps {
   children: ReactNode;
 }
 
-export interface NotificationItem {
+export interface NotificationItemContent {
   id: number;
   type: "error" | "notif" | "valid";
   message: string;
 }
 
 interface NotificationsContextTypes {
-  notifications: NotificationItem[];
+  notifications: NotificationItemContent[];
   pushNotification: (
     message: string,
     type: "error" | "notif" | "valid",
@@ -29,7 +29,9 @@ const NotificationsContext = createContext<
 >(undefined);
 
 function NotificationContextProvider(props: NotificationContextProps) {
-  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [notifications, setNotifications] = useState<NotificationItemContent[]>(
+    [],
+  );
 
   const pushNotification = useCallback(
     (message: string, type: "error" | "notif" | "valid") => {

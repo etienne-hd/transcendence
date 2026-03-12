@@ -4,6 +4,8 @@ import FriendNavCard from "./FriendNavCard";
 import { useFriendFocused } from "../../context/FriendFocusedContext";
 import { useLocation, useNavigate } from "react-router";
 import { useLogin } from "../../context/LoginContext";
+import SettingCard from "./SettingCard";
+import SettingsModal from "../Settings/SettingsModal";
 
 function Navbar() {
   const [friends, setFriends] = useState<Friend[]>([
@@ -39,6 +41,8 @@ function Navbar() {
     },
   ]);
 
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+
   const { friendFocused, setFriendFocused } = useFriendFocused();
   const { loggedStatus } = useLogin();
 
@@ -52,13 +56,18 @@ function Navbar() {
     }
   };
 
+  const toggleSettings = () => {
+    setSettingsOpen(!settingsOpen);
+  };
+
   return (
     loggedStatus && (
       <div className="bg-bg-secondary p-4 flex flex-col w-90 gap-4">
-        <div className="w-[95%] py-2">
+        {settingsOpen && <SettingsModal toggleSettings={toggleSettings} />}
+        <div className="p-2">
           <p>menu</p>
         </div>
-        <div className="w-[95%] h-full border-t-2 border-border-secondary py-2 flex flex-col gap-2 overflow-x-scroll">
+        <div className="w-full px-2 h-full border-t-2 border-border-secondary py-2 flex flex-col gap-2 overflow-x-scroll">
           {friends.map((friend) => (
             <FriendNavCard
               friend={friend}
@@ -68,9 +77,7 @@ function Navbar() {
             />
           ))}
         </div>
-        <div className="w-[95%] py-2 border-t-2 border-border-secondary">
-          <p>setting</p>
-        </div>
+        <SettingCard toggleSetting={toggleSettings} />
       </div>
     )
   );
