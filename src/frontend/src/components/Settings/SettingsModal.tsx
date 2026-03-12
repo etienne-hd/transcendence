@@ -4,6 +4,7 @@ import UserInformation from "./UserInformation";
 import axios from "axios";
 import { userService } from "../../api/api.user";
 import { useNotification } from "../../context/NotificationContext";
+import { useLogin } from "../../context/LoginContext";
 
 interface SettingsModalProps {
   toggleSettings: () => void;
@@ -24,6 +25,7 @@ function SettingsModal(props: SettingsModalProps) {
   const isActive = true;
 
   const { user, setUser } = useUser();
+  const { setLoggedStatus } = useLogin();
   const { pushNotification } = useNotification();
 
   const saveChange = async () => {
@@ -48,6 +50,9 @@ function SettingsModal(props: SettingsModalProps) {
         props.toggleSettings();
       } catch (e) {
         if (axios.isAxiosError(e) && e.response) {
+          if (e.response.status == 401) {
+            setLoggedStatus(false);
+          }
           pushNotification(e.response.data.message, "error");
         }
       }
@@ -168,7 +173,7 @@ function SettingsModal(props: SettingsModalProps) {
                 biography != undefined
               )
             }
-            className="p-2 bg-accent-primary disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+            className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
           >
             <p>Save changes</p>
           </button>
