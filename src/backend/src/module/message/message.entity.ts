@@ -30,6 +30,6 @@ export class MessageEntity {
   @CreateDateColumn()
   public created_at: Date;
 
-  @Column({ nullable: true })
-  public read_at: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  public read_at: Date | null;
 }
