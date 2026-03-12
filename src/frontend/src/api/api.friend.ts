@@ -9,7 +9,7 @@ export const friendService = {
   },
 
   async addFriend(username: string): Promise<string> {
-    const response = await apiClient.post<string>("/friends", {
+    const response = await apiClient.post<string>("/friend", {
       username: username,
     });
 
