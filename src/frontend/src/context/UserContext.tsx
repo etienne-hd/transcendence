@@ -18,6 +18,14 @@ interface UserContextProviderProps {
 interface UserContextType {
   user: User | undefined;
   setUser: (user: User) => void;
+  saveChange: (
+    name: string | undefined,
+    username: string | undefined,
+    email: string | undefined,
+    password: string | undefined,
+    biography: string | undefined,
+    onSuccess: () => void,
+  ) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +34,41 @@ function UserContextProvider(props: UserContextProviderProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
   const { pushNotification } = useNotification();
   const { loggedStatus } = useLogin();
+
+  const saveChange = async (
+    name: string | undefined,
+    username: string | undefined,
+    email: string | undefined,
+    password: string | undefined,
+    biography: string | undefined,
+    onSuccess: () => void,
+  ) => {
+    if (
+      name != undefined ||
+      username != undefined ||
+      email != undefined ||
+      password != undefined ||
+      biography != undefined
+    ) {
+      try {
+        const response = await userService.updateMe(
+          email,
+          username,
+          name,
+          password,
+          biography,
+        );
+
+        setUser(response);
+        pushNotification("Change saved", "valid");
+        onSuccess();
+      } catch (e) {
+        if (axios.isAxiosError(e) && e.response) {
+          pushNotification(e.response.data.message, "error");
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -48,7 +91,7 @@ function UserContextProvider(props: UserContextProviderProps) {
   }, [loggedStatus, pushNotification]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, saveChange }}>
       {props.children}
     </UserContext.Provider>
   );

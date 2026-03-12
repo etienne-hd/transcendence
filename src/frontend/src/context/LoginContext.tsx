@@ -15,6 +15,7 @@ interface LoginContextProps {
 interface LoggedStatusContextType {
   loggedStatus: boolean;
   setLoggedStatus: (status: boolean) => void;
+  logout: () => void;
 }
 
 const LoggedStatusContext = createContext<LoggedStatusContextType | undefined>(
@@ -24,6 +25,11 @@ const LoggedStatusContext = createContext<LoggedStatusContextType | undefined>(
 function LoginContext(props: LoginContextProps) {
   const [loggedStatus, setLoggedStatus] = useState<boolean>(false);
 
+  const logout = () => {
+    setLoggedStatus(false);
+    localStorage.removeItem("accessToken");
+  };
+
   useEffect(() => {
     const initLoggedStatus = async () => {
       try {
@@ -31,7 +37,9 @@ function LoginContext(props: LoginContextProps) {
         setLoggedStatus(true);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          console.error("Erreur API:", error.response.data);
+          if (error.response.data.statusCode != 401) {
+            console.error("Erreur API:", error.response.data);
+          }
         }
       }
     };
@@ -40,7 +48,9 @@ function LoginContext(props: LoginContextProps) {
   }, []);
 
   return (
-    <LoggedStatusContext.Provider value={{ loggedStatus, setLoggedStatus }}>
+    <LoggedStatusContext.Provider
+      value={{ loggedStatus, setLoggedStatus, logout }}
+    >
       {props.children}
     </LoggedStatusContext.Provider>
   );
