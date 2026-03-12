@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth/auth.module';
 import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
+import { WebsocketGateway } from './module/websocket/websocket.gateway';
 
 @Module({
   imports: [
@@ -27,5 +28,6 @@ import { FriendModule } from './module/friend/friend.module';
       }),
     }),
   ],
+  providers: [WebsocketGateway],
 })
 export class AppModule {}
