@@ -36,7 +36,7 @@ function App() {
   }, [setLoggedStatus]);
 
   return (
-    <PageWrapper needLog={true}>
+    <PageWrapper needLog={true} redirectNoLog="/auth">
       <div className="card">
         {loading ? (
           <p>Chargement de l'utilisateur...</p>

@@ -1,16 +1,13 @@
 import { useUser } from "../../context/UserContext";
 import { useEffect, useState } from "react";
 import UserInformation from "./UserInformation";
-import axios from "axios";
-import { userService } from "../../api/api.user";
-import { useNotification } from "../../context/NotificationContext";
 import Modal from "../Modal";
+import { useLogin } from "../../context/LoginContext";
 
 interface SettingsModalProps {
   toggleSettings: () => void;
 }
 
-//TODO : Close callback
 function SettingsModal(props: SettingsModalProps) {
   // All user information edit state
   const [name, setName] = useState<string | undefined>(undefined);
@@ -24,36 +21,8 @@ function SettingsModal(props: SettingsModalProps) {
   // TODO : Change that by active status of user
   const isActive = true;
 
-  const { user, setUser } = useUser();
-  const { pushNotification } = useNotification();
-
-  const saveChange = async () => {
-    if (
-      name != undefined ||
-      username != undefined ||
-      email != undefined ||
-      password != undefined ||
-      biography != undefined
-    ) {
-      try {
-        const response = await userService.updateMe(
-          email,
-          username,
-          name,
-          password,
-          biography,
-        );
-
-        setUser(response);
-        pushNotification("Change saved", "valid");
-        props.toggleSettings();
-      } catch (e) {
-        if (axios.isAxiosError(e) && e.response) {
-          pushNotification(e.response.data.message, "error");
-        }
-      }
-    }
-  };
+  const { user, saveChange } = useUser();
+  const { logout } = useLogin();
 
   // Leave with escape key
   useEffect(() => {
@@ -72,7 +41,7 @@ function SettingsModal(props: SettingsModalProps) {
 
   return (
     <Modal
-      onClick={() => {
+      toggleModal={() => {
         props.toggleSettings();
       }}
     >
@@ -140,30 +109,49 @@ function SettingsModal(props: SettingsModalProps) {
           />
         </div>
       </div>
-      <div className="w-full flex flex-row justify-end items-center gap-6">
-        <button
+      <div className="w-full flex flex-row justify-between items-center px-4 ">
+        <div
           onClick={() => {
-            props.toggleSettings();
+            logout();
           }}
-          className="p-2 bg-error w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+          className="w-fit cursor-pointer"
         >
-          <p>Cancel</p>
-        </button>
-        <button
-          onClick={saveChange}
-          disabled={
-            !(
-              (name != undefined && name != "") ||
-              (username != undefined && username != "") ||
-              (email != undefined && email != "") ||
-              (password != undefined && password != "") ||
-              (biography != undefined && biography != "")
-            )
-          }
-          className="p-2 bg-accent-primary disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
-        >
-          <p>Save changes</p>
-        </button>
+          <p className="text-error underline">logout</p>
+        </div>
+        <div className="flex flex-row gap-6 items-center justify-center">
+          <button
+            onClick={() => {
+              props.toggleSettings();
+            }}
+            className="p-2 bg-error w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+          >
+            <p>Cancel</p>
+          </button>
+          <button
+            onClick={() => {
+              saveChange(
+                name,
+                username,
+                email,
+                password,
+                biography,
+                props.toggleSettings,
+              );
+            }}
+            disabled={
+              !(
+                (name != undefined && name != "") ||
+                (username != undefined && username != "") ||
+                (email != undefined && email != "") ||
+                (password != undefined && password != "") ||
+                (biography != undefined && biography != "")
+              )
+            }
+            className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+          >
+            <p>Save changes</p>
+          </button>
+        </div>
       </div>
     </Modal>
   );
