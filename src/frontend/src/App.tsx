@@ -23,7 +23,7 @@ function App() {
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
           console.error("Erreur API:", err.response.data);
-          if (err.response.status == 401) {
+          if (err.response.data.statusCode == 401) {
             setLoggedStatus(false);
           }
         }

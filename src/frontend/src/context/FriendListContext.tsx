@@ -36,10 +36,11 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
       setFriends(response);
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
-        if (e.response.status == 401) {
+        if (e.response.data.statusCode == 401) {
           setLoggedStatus(false);
+        } else {
+          pushNotification(e.response.data.message, "error");
         }
-        pushNotification(e.response.data.message, "error");
       }
     }
   };
@@ -51,10 +52,11 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
       pushNotification(response, "error");
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
-        if (e.response.status == 401) {
+        if (e.response.data.statusCode == 401) {
           setLoggedStatus(false);
+        } else {
+          pushNotification(e.response.data.message, "error");
         }
-        pushNotification(e.response.data.message, "error");
       }
     }
   };

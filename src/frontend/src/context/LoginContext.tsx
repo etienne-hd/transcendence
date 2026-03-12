@@ -31,7 +31,9 @@ function LoginContext(props: LoginContextProps) {
         setLoggedStatus(true);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
-          console.error("Erreur API:", error.response.data);
+          if (error.response.data.statusCode != 401) {
+            console.error("Erreur API:", error.response.data);
+          }
         }
       }
     };
