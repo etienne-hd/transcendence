@@ -19,7 +19,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         (props.isFocus && "bg-bg-tertiary")
       }
       onClick={() => {
-        props.onClick(props.friend.id);
+        props.onClick(props.friend.user.id);
       }}
     >
       <div className="relative h-full">

@@ -57,7 +57,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
         if (e.response.data.statusCode == 401) {
           setLoggedStatus(false);
         } else {
-          pushNotification(e.response.data, "error");
+          pushNotification(e.response.data.message, "error");
         }
       }
     }
@@ -74,7 +74,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
         if (e.response.data.statusCode == 401) {
           setLoggedStatus(false);
         } else {
-          pushNotification(e.response.data, "error");
+          pushNotification(e.response.data.message, "error");
         }
       }
     }
