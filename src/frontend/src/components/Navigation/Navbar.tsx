@@ -1,48 +1,16 @@
 import { useState } from "react";
-import type { Friend } from "../../api/types/user";
 import FriendNavCard from "./FriendNavCard";
 import { useFriendFocused } from "../../context/FriendFocusedContext";
 import { useLocation, useNavigate } from "react-router";
 import { useLogin } from "../../context/LoginContext";
 import SettingCard from "./SettingCard";
 import SettingsModal from "../Settings/SettingsModal";
+import { useFriends } from "../../context/FriendListContext";
 
 function Navbar() {
-  const [friends, setFriends] = useState<Friend[]>([
-    {
-      name: "test",
-      id: 2,
-      username: "test",
-      biography: "fhdskjfkjs",
-      avatar: "gdfhjs",
-      created_at: "fds",
-      last_seen_at: "fdhjks",
-      active: true,
-    },
-    {
-      name: "test",
-      id: 3,
-      username: "test",
-      biography: "fhdskjfkjs",
-      avatar: "gdfhjs",
-      created_at: "fds",
-      last_seen_at: "fdhjks",
-      active: false,
-    },
-    {
-      name: "test",
-      id: 4,
-      username: "test",
-      biography: "fhdskjfkjs",
-      avatar: "gdfhjs",
-      created_at: "fds",
-      last_seen_at: "fdhjks",
-      active: false,
-    },
-  ]);
-
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
 
+  const { friends } = useFriends();
   const { friendFocused, setFriendFocused } = useFriendFocused();
   const { loggedStatus } = useLogin();
 

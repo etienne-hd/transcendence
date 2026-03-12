@@ -1,5 +1,5 @@
 import { Settings } from "lucide-react";
-import { useUser } from "../../context/UserContextProvider";
+import { useUser } from "../../context/UserContext";
 
 interface SettingCardProps {
   toggleSetting: () => void;
