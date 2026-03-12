@@ -1,15 +1,11 @@
 import { useUser } from "../../context/UserContextProvider";
 import { useEffect, useState } from "react";
 import UserInformation from "./UserInformation";
-import axios from "axios";
-import { userService } from "../../api/api.user";
-import { useNotification } from "../../context/NotificationContext";
 
 interface SettingsModalProps {
   toggleSettings: () => void;
 }
 
-//TODO : Close callback
 function SettingsModal(props: SettingsModalProps) {
   // All user information edit state
   const [name, setName] = useState<string | undefined>(undefined);
@@ -23,36 +19,7 @@ function SettingsModal(props: SettingsModalProps) {
   // TODO : Change that by active status of user
   const isActive = true;
 
-  const { user, setUser } = useUser();
-  const { pushNotification } = useNotification();
-
-  const saveChange = async () => {
-    if (
-      name != undefined ||
-      username != undefined ||
-      email != undefined ||
-      password != undefined ||
-      biography != undefined
-    ) {
-      try {
-        const response = await userService.updateMe(
-          email,
-          username,
-          name,
-          password,
-          biography,
-        );
-
-        setUser(response);
-        pushNotification("Change saved", "valid");
-        props.toggleSettings();
-      } catch (e) {
-        if (axios.isAxiosError(e) && e.response) {
-          pushNotification(e.response.data.message, "error");
-        }
-      }
-    }
-  };
+  const { user, saveChange } = useUser();
 
   // Leave with escape key
   useEffect(() => {
@@ -158,7 +125,16 @@ function SettingsModal(props: SettingsModalProps) {
             <p>Cancel</p>
           </button>
           <button
-            onClick={saveChange}
+            onClick={() => {
+              saveChange(
+                name,
+                username,
+                email,
+                password,
+                biography,
+                props.toggleSettings,
+              );
+            }}
             disabled={
               !(
                 name != undefined ||
