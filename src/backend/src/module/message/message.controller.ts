@@ -30,6 +30,7 @@ export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Post('/messages')
   async getMessages(
     @Request() req,
@@ -53,6 +54,7 @@ export class MessageController {
   }
 
   @Auth()
+  @HttpCode(HttpStatus.CREATED)
   @Post('/message')
   async postMessage(
     @Request() req,
@@ -66,6 +68,7 @@ export class MessageController {
   }
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Delete('/message')
   async getUserById(
     @Request() req,

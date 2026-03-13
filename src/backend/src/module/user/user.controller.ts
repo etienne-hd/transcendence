@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Put, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Put,
+  Request,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from '../auth/auth.guard';
 import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
@@ -9,6 +18,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Get('/me')
   async getUser(@Request() req) {
     return await this.userService.getUser(req.user.sub, [
@@ -24,6 +34,7 @@ export class UserController {
   }
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Put('/me')
   async putUser(
     @Request() req,
@@ -33,6 +44,7 @@ export class UserController {
   }
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Get('/user/:id')
   async getUserById(@Param('id') id: number) {
     return await this.userService.getUser(id, [

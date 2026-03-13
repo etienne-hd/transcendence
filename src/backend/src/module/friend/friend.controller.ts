@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Request,
@@ -21,12 +23,14 @@ export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Get('/friends')
   async getFriends(@Request() req) {
     return await this.friendService.getFriends(req.user.sub);
   }
 
   @Auth()
+  @HttpCode(HttpStatus.CREATED)
   @Post('/friend')
   async postFriend(
     @Request() req,
@@ -36,6 +40,7 @@ export class FriendController {
   }
 
   @Auth()
+  @HttpCode(HttpStatus.OK)
   @Delete('/friend')
   async deleteFriend(
     @Request() req,
