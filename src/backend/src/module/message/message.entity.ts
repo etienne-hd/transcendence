@@ -21,7 +21,7 @@ export class MessageEntity {
   @JoinColumn({ name: 'to_user_id' })
   public to_user: UserEntity;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: 3000 })
   public content: string;
 
   @Column({ nullable: true })
