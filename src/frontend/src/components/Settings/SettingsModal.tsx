@@ -64,12 +64,6 @@ function SettingsModal(props: SettingsModalProps) {
                 src={user?.avatar ? user.avatar : "placehoder"}
                 className="rounded-full h-20 w-20"
               />
-              <div
-                className={
-                  "absolute bottom-0 right-0 w-4 h-4 rounded-full " +
-                  (isActive ? "bg-green-500" : "bg-error")
-                }
-              ></div>
             </div>
             <div className="flex flex-col justify-center items-start">
               <h1 className="text-xl font-semibold">{user?.username}</h1>
