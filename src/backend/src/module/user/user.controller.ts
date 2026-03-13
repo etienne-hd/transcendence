@@ -48,7 +48,6 @@ export class UserController {
       storage: memoryStorage(),
       fileFilter: (req, file, cb) => {
         const ext = extname(file.originalname);
-        console.log(ext);
         if (USER_AVATAR_FILE_EXTENSION.includes(ext)) {
           cb(null, true);
         } else {

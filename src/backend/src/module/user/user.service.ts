@@ -54,7 +54,6 @@ export class UserService {
       'avatars',
       user.avatar || 'default.png',
     );
-    console.log(avatarPath);
 
     if (!fs.existsSync(avatarPath)) {
       throw new NotFoundException('Unable to retrieve avatar.');
