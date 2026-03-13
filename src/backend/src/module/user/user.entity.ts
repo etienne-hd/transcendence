@@ -38,8 +38,8 @@ export class UserEntity {
   @Column({ nullable: true, length: USER_BIOGRAPHY_MAX_LENGTH })
   public biography: string;
 
-  @Column({ nullable: true })
-  public avatar: string;
+  @Column({ type: 'varchar', nullable: true })
+  public avatar: string | null;
 
   @Column()
   public is_banned: boolean = false;

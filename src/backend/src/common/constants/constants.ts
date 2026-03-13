@@ -12,6 +12,9 @@ export const USER_NAME_MIN_LENGTH = 1;
 export const USER_NAME_MAX_LENGTH = 100;
 export const USER_BIOGRAPHY_MIN_LENGTH = 1;
 export const USER_BIOGRAPHY_MAX_LENGTH = 200;
+export const USER_AVATAR_FILE_EXTENSION = ['.jpg', '.jpeg', '.png'];
+export const USER_AVATAR_MIN_LENGTH = 7 // 'default'
+export const USER_AVATAR_MAX_LENGTH = 7 // 'default'
 
 // Message
 export const MESSAGE_CONTENT_MAX_LENGTH = 3000;

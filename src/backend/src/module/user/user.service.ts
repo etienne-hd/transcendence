@@ -2,12 +2,17 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  StreamableFile,
 } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PutMeDto } from './dtos/put-me.dtos';
 import { AuthService } from '../auth/auth.service';
+import { randomUUID } from 'crypto';
+import { extname } from 'path';
+import * as fs from 'node:fs';
+import { join } from 'node:path';
+import { lookup } from 'mime-types';
 
 @Injectable()
 export class UserService {
@@ -41,7 +46,27 @@ export class UserService {
     return values;
   }
 
-  public async editUser(id: number, fields: PutMeDto) {
+  public async getUserAvatar(id: number) {
+    const user = await this.getUserEntity({ id });
+    const avatarPath = join(
+      process.cwd(),
+      'uploads',
+      'avatars',
+      user.avatar || 'default.png',
+    );
+    console.log(avatarPath);
+
+    if (!fs.existsSync(avatarPath)) {
+      throw new NotFoundException('Unable to retrieve avatar.');
+    }
+
+    const mimeType = lookup(avatarPath) || 'application/octet-stream';
+
+    const file = fs.createReadStream(avatarPath);
+    return new StreamableFile(file, { type: mimeType });
+  }
+
+  public async editUser(id: number, fields, avatarFile: Express.Multer.File) {
     const editableFields = [
       'username',
       'email',
@@ -70,6 +95,25 @@ export class UserService {
           'This email is already associated with a user!',
         );
       }
+    }
+
+    if (
+      (avatarFile || fields.avatar == 'default') &&
+      user.avatar &&
+      fs.existsSync(`./uploads/avatars/${user.avatar}`)
+    ) {
+      fs.unlinkSync(`./uploads/avatars/${user.avatar}`);
+    }
+
+    if (avatarFile) {
+      // Upload avatar to ./uploads/avatars
+      const uniqueSuffix = randomUUID();
+      const ext = extname(avatarFile.originalname);
+      const path = `./uploads/avatars/${uniqueSuffix}${ext}`;
+      await fs.promises.writeFile(path, avatarFile.buffer);
+      user.avatar = `${uniqueSuffix}${ext}`;
+    } else if (fields.avatar == 'default') {
+      user.avatar = null;
     }
 
     for (const field in fields) {
