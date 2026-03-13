@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
+import { MESSAGE_CONTENT_MAX_LENGTH } from 'src/common/constants/constants';
 
 @Entity()
 export class MessageEntity {
@@ -21,7 +22,7 @@ export class MessageEntity {
   @JoinColumn({ name: 'to_user_id' })
   public to_user: UserEntity;
 
-  @Column({ nullable: true, length: 3000 })
+  @Column({ nullable: true, length: MESSAGE_CONTENT_MAX_LENGTH })
   public content: string;
 
   @Column({ nullable: true })

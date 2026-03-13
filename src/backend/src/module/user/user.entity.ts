@@ -1,4 +1,11 @@
 import {
+  USER_BIOGRAPHY_MAX_LENGTH,
+  USER_EMAIL_MAX_LENGTH,
+  USER_NAME_MAX_LENGTH,
+  USER_PASSWORD_MAX_LENGTH,
+  USER_USERNAME_MAX_LENGTH,
+} from 'src/common/constants/constants';
+import {
   Column,
   CreateDateColumn,
   Entity,
@@ -16,19 +23,19 @@ export class UserEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   public last_seen_at: Date;
 
-  @Column()
+  @Column({ length: USER_USERNAME_MAX_LENGTH })
   public username: string;
 
-  @Column()
+  @Column({ length: USER_NAME_MAX_LENGTH })
   public name: string;
 
-  @Column()
+  @Column({ length: USER_EMAIL_MAX_LENGTH })
   public email: string;
 
-  @Column()
+  @Column({ length: USER_PASSWORD_MAX_LENGTH })
   public password: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, length: USER_BIOGRAPHY_MAX_LENGTH })
   public biography: string;
 
   @Column({ nullable: true })

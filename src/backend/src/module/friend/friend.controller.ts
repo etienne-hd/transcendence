@@ -14,7 +14,7 @@ import { type PostFriendDto, PostFriendSchema } from './dtos/post-friend.dtos';
 import {
   type DeleteFriendDto,
   DeleteFriendSchema,
-} from './dtos/delete-friend.dtos copy';
+} from './dtos/delete-friend.dtos';
 
 @Controller()
 export class FriendController {
