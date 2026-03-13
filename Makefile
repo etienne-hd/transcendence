@@ -1,7 +1,9 @@
 all: up
 
 up:
-	mkdir -p ./src/data/database
+	mkdir -p ./src/data/uploads/avatars
+	mkdir -p ./src/data/uploads/attachments
+	cp unicord.png ./src/data/uploads/avatars/default.png
 	docker compose -f ./src/docker-compose.yml up -d
 
 down:
