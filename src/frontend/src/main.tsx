@@ -11,6 +11,7 @@ import FriendFocusedContextProvider from "./context/FriendFocusedContext.tsx";
 import Conversation from "./pages/Message/Conversation.tsx";
 import UserContextProvider from "./context/UserContext.tsx";
 import FriendListContextProvider from "./context/FriendListContext.tsx";
+import MessageContextProvider from "./context/MessageContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,22 +20,24 @@ createRoot(document.getElementById("root")!).render(
         <UserContextProvider>
           <FriendListContextProvider>
             <FriendFocusedContextProvider>
-              <div className="bg-bg-tertiary text-font-main flex flex-row w-full h-full">
-                <BrowserRouter>
-                  <Navbar />
-                  <Routes>
-                    <Route path="/" element={<App />} />
+              <MessageContextProvider>
+                <div className="bg-bg-tertiary text-font-main flex flex-row w-full h-full">
+                  <BrowserRouter>
+                    <Navbar />
+                    <Routes>
+                      <Route path="/" element={<App />} />
 
-                    {/*Auth Routes*/}
-                    <Route path="/auth" element={<Register />}></Route>
+                      {/*Auth Routes*/}
+                      <Route path="/auth" element={<Register />}></Route>
 
-                    <Route path="/message" element={<Conversation />}></Route>
+                      <Route path="/message" element={<Conversation />}></Route>
 
-                    {/*404 route*/}
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </BrowserRouter>
-              </div>
+                      {/*404 route*/}
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                  </BrowserRouter>
+                </div>
+              </MessageContextProvider>
             </FriendFocusedContextProvider>
           </FriendListContextProvider>
         </UserContextProvider>

@@ -4,7 +4,7 @@ import { useFriends } from "../../context/FriendListContext";
 
 interface FriendNavCardProps {
   friend: Friend;
-  onClick: (id: number) => void;
+  onClick: (friend: Friend) => void;
   isFocus?: boolean;
 }
 
@@ -19,7 +19,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         (props.isFocus && "bg-bg-tertiary")
       }
       onClick={() => {
-        props.onClick(props.friend.user.id);
+        props.onClick(props.friend);
       }}
     >
       <div className="relative h-full">

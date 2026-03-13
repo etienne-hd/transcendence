@@ -30,7 +30,7 @@ export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
   @Auth()
-  @Get('/messages')
+  @Post('/messages')
   async getMessages(
     @Request() req,
     @Body(new ZodValidationPipe(GetMessagesSchema)) body: GetMessagesDto,

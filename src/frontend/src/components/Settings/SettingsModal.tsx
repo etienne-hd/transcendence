@@ -24,11 +24,22 @@ function SettingsModal(props: SettingsModalProps) {
   const { user, saveChange } = useUser();
   const { logout } = useLogin();
 
-  // Leave with escape key
+  const onSubmit = () => {
+    saveChange(
+      name,
+      username,
+      email,
+      password,
+      biography,
+      props.toggleSettings,
+    );
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        props.toggleSettings();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        onSubmit();
       }
     };
 
@@ -37,7 +48,7 @@ function SettingsModal(props: SettingsModalProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [props]);
+  });
 
   return (
     <Modal
@@ -129,14 +140,7 @@ function SettingsModal(props: SettingsModalProps) {
           </button>
           <button
             onClick={() => {
-              saveChange(
-                name,
-                username,
-                email,
-                password,
-                biography,
-                props.toggleSettings,
-              );
+              onSubmit();
             }}
             disabled={
               !(

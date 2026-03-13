@@ -29,7 +29,7 @@ const FriendListContext = createContext<FriendListContextType | undefined>(
 
 function FriendListContextProvider(props: FriendListContextProviderProps) {
   const [friends, setFriends] = useState<Friend[]>([]);
-  const { loggedStatus, setLoggedStatus } = useLogin();
+  const { loggedStatus, logout } = useLogin();
   const { pushNotification } = useNotification();
 
   const updateFriends = async () => {
@@ -39,7 +39,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }
@@ -56,7 +56,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }
@@ -73,7 +73,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }

@@ -11,10 +11,17 @@ function AddFriendModal(props: AddFriendModalProps) {
 
   const { addFriend } = useFriends();
 
+  const onSubmit = () => {
+    if (friend != undefined) {
+      addFriend(friend);
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        props.toggleFriend();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        onSubmit();
       }
     };
 
@@ -23,7 +30,7 @@ function AddFriendModal(props: AddFriendModalProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [props]);
+  });
 
   return (
     <Modal
@@ -55,7 +62,7 @@ function AddFriendModal(props: AddFriendModalProps) {
         </button>
         <button
           onClick={() => {
-            if (friend != undefined) addFriend(friend);
+            onSubmit();
           }}
           disabled={friend == undefined || friend == ""}
           className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"

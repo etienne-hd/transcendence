@@ -1,8 +1,21 @@
+import { useEffect, useRef } from "react";
+import MessageFriendInformation from "../../components/Messages/MessageFriendInformation";
+import MessageInput from "../../components/Messages/MessageInput";
 import PageWrapper from "../../components/PageWrapper";
-import { useFriendFocused } from "../../context/FriendFocusedContext";
+import { useMessage } from "../../context/MessageContext";
+import MessageDisplay from "../../components/Messages/MessageDisplay";
 
 function Conversation() {
-  const { friendFocused } = useFriendFocused();
+  const { messages } = useMessage();
+
+  const scrollMessageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollMessageRef.current) {
+      scrollMessageRef.current.scrollTop =
+        scrollMessageRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <>
@@ -11,7 +24,18 @@ function Conversation() {
         needLog={true}
         redirectNoLog="/auth"
       >
-        <p>{friendFocused}</p>
+        <div className="flex flex-col h-full w-full">
+          <MessageFriendInformation />
+          <div
+            ref={scrollMessageRef}
+            className="overflow-y-scroll flex flex-col h-full justify-center items-end"
+          >
+            {messages.map((message, index) => (
+              <MessageDisplay message={message} key={index} />
+            ))}
+          </div>
+          <MessageInput />
+        </div>
       </PageWrapper>
     </>
   );
