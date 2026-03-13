@@ -1,45 +1,18 @@
 import {
-  USER_BIOGRAPHY_MAX_LENGTH,
-  USER_BIOGRAPHY_MIN_LENGTH,
-  USER_EMAIL_MAX_LENGTH,
-  USER_EMAIL_MIN_LENGTH,
-  USER_EMAIL_REGEX,
-  USER_NAME_MAX_LENGTH,
-  USER_NAME_MIN_LENGTH,
-  USER_PASSWORD_MAX_LENGTH,
-  USER_PASSWORD_MIN_LENGTH,
-  USER_USERNAME_MIN_LENGTH,
-} from 'src/common/constants/constants';
+  ZOD_USER_BIOGRAPHY,
+  ZOD_USER_EMAIL,
+  ZOD_USER_NAME,
+  ZOD_USER_PASSWORD,
+  ZOD_USER_USERNAME,
+} from 'src/common/validators/zod-validation.rule';
 import * as z from 'zod';
 
 export const PutMeSchema = z.object({
-  username: z
-    .string()
-    .min(USER_USERNAME_MIN_LENGTH)
-    .max(USER_PASSWORD_MAX_LENGTH)
-    .optional(),
-  password: z
-    .string()
-    .min(USER_PASSWORD_MIN_LENGTH)
-    .max(USER_PASSWORD_MAX_LENGTH)
-    .optional(),
-  email: z
-    .string()
-    .min(USER_EMAIL_MIN_LENGTH)
-    .max(USER_EMAIL_MAX_LENGTH)
-    .regex(USER_EMAIL_REGEX)
-    .optional(),
-  name: z
-    .string()
-    .min(USER_NAME_MIN_LENGTH)
-    .max(USER_NAME_MAX_LENGTH)
-    .optional(),
-  biography: z
-    .string()
-    .min(USER_BIOGRAPHY_MIN_LENGTH)
-    .max(USER_BIOGRAPHY_MAX_LENGTH)
-    .optional()
-    .nullable(),
+  username: ZOD_USER_USERNAME.optional(),
+  password: ZOD_USER_PASSWORD.optional(),
+  email: ZOD_USER_EMAIL.optional(),
+  name: ZOD_USER_NAME.optional(),
+  biography: ZOD_USER_BIOGRAPHY.optional().nullable(),
 });
 
 export type PutMeDto = z.infer<typeof PutMeSchema>;

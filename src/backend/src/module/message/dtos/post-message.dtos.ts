@@ -1,8 +1,8 @@
-import { MESSAGE_CONTENT_MAX_LENGTH } from 'src/common/constants/constants';
+import { ZOD_MESSAGE_CONTENT } from 'src/common/validators/zod-validation.rule';
 import * as z from 'zod';
 
 export const PostMessageSchema = z.object({
-  content: z.string().max(MESSAGE_CONTENT_MAX_LENGTH).optional(),
+  content: ZOD_MESSAGE_CONTENT,
   user_id: z.number(),
 });
 

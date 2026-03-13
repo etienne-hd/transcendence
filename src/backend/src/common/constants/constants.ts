@@ -1,6 +1,7 @@
 // User
 export const USER_USERNAME_MIN_LENGTH = 3;
 export const USER_USERNAME_MAX_LENGTH = 30;
+export const USER_USERNAME_REGEX = /^[a-z0-9]+$/;
 export const USER_PASSWORD_MIN_LENGTH = 8;
 export const USER_PASSWORD_MAX_LENGTH = 128;
 export const USER_EMAIL_MIN_LENGTH = 3;

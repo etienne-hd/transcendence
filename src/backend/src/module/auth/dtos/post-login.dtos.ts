@@ -1,20 +1,12 @@
 import {
-  USER_PASSWORD_MAX_LENGTH,
-  USER_PASSWORD_MIN_LENGTH,
-  USER_USERNAME_MAX_LENGTH,
-  USER_USERNAME_MIN_LENGTH,
-} from 'src/common/constants/constants';
+  ZOD_USER_USERNAME,
+  ZOD_USER_PASSWORD,
+} from 'src/common/validators/zod-validation.rule';
 import * as z from 'zod';
 
 export const PostLoginSchema = z.object({
-  username: z
-    .string()
-    .min(USER_USERNAME_MIN_LENGTH)
-    .max(USER_USERNAME_MAX_LENGTH),
-  password: z
-    .string()
-    .min(USER_PASSWORD_MIN_LENGTH)
-    .max(USER_PASSWORD_MAX_LENGTH),
+  username: ZOD_USER_USERNAME,
+  password: ZOD_USER_PASSWORD,
 });
 
 export type PostLoginDto = z.infer<typeof PostLoginSchema>;
