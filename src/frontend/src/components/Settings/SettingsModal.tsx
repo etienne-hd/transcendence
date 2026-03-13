@@ -24,11 +24,22 @@ function SettingsModal(props: SettingsModalProps) {
   const { user, saveChange } = useUser();
   const { logout } = useLogin();
 
-  // Leave with escape key
+  const onSubmit = () => {
+    saveChange(
+      name,
+      username,
+      email,
+      password,
+      biography,
+      props.toggleSettings,
+    );
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        props.toggleSettings();
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        onSubmit();
       }
     };
 
@@ -37,7 +48,7 @@ function SettingsModal(props: SettingsModalProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [props]);
+  });
 
   return (
     <Modal
@@ -53,12 +64,6 @@ function SettingsModal(props: SettingsModalProps) {
                 src={user?.avatar ? user.avatar : "placehoder"}
                 className="rounded-full h-20 w-20"
               />
-              <div
-                className={
-                  "absolute bottom-0 right-0 w-4 h-4 rounded-full " +
-                  (isActive ? "bg-green-500" : "bg-error")
-                }
-              ></div>
             </div>
             <div className="flex flex-col justify-center items-start">
               <h1 className="text-xl font-semibold">{user?.username}</h1>
@@ -129,14 +134,7 @@ function SettingsModal(props: SettingsModalProps) {
           </button>
           <button
             onClick={() => {
-              saveChange(
-                name,
-                username,
-                email,
-                password,
-                biography,
-                props.toggleSettings,
-              );
+              onSubmit();
             }}
             disabled={
               !(

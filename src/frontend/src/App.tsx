@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState<User | null>(null); // Initialisé à null
   const [loading, setLoading] = useState(true);
 
-  const { setLoggedStatus } = useLogin();
+  const { logout } = useLogin();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -24,7 +24,7 @@ function App() {
         if (axios.isAxiosError(err) && err.response) {
           console.error("Erreur API:", err.response.data);
           if (err.response.data.statusCode == 401) {
-            setLoggedStatus(false);
+            logout();
           }
         }
       } finally {
@@ -33,7 +33,7 @@ function App() {
     };
 
     loadUser();
-  }, [setLoggedStatus]);
+  }, [logout]);
 
   return (
     <PageWrapper needLog={true} redirectNoLog="/auth">

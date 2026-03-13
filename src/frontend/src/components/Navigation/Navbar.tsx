@@ -5,6 +5,7 @@ import { useLogin } from "../../context/LoginContext";
 import SettingCard from "./SettingCard";
 import { useFriends } from "../../context/FriendListContext";
 import FriendMenu from "./FriendMenu";
+import type { Friend } from "../../api/types/friend";
 
 function Navbar() {
   const { friends } = useFriends();
@@ -14,8 +15,8 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onClickFriend = (id: number) => {
-    setFriendFocused(id);
+  const onClickFriend = (friend: Friend) => {
+    setFriendFocused(friend);
     if (!location.pathname.startsWith("/message")) {
       navigate("/message");
     }
@@ -30,7 +31,7 @@ function Navbar() {
             <FriendNavCard
               friend={friend}
               key={friend.id}
-              isFocus={friendFocused == friend.id}
+              isFocus={friendFocused == friend}
               onClick={onClickFriend}
             />
           ))}

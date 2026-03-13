@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
+import type { Friend } from "../api/types/friend";
 
 interface FriendFocusedContextType {
-  friendFocused: number | undefined;
-  setFriendFocused: (id: number) => void;
+  friendFocused: Friend | undefined;
+  setFriendFocused: (friend: Friend) => void;
 }
 
 interface FriendFocusedContextProviderProps {
@@ -16,7 +17,7 @@ const FriendFocusedContext = createContext<
 function FriendFocusedContextProvider(
   props: FriendFocusedContextProviderProps,
 ) {
-  const [friendFocused, setFriendFocused] = useState<number | undefined>(
+  const [friendFocused, setFriendFocused] = useState<Friend | undefined>(
     undefined,
   );
   return (
