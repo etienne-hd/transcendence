@@ -82,7 +82,9 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   };
 
   useEffect(() => {
-    updateFriends();
+    if (loggedStatus) {
+      updateFriends();
+    }
   }, [loggedStatus]);
 
   return (
