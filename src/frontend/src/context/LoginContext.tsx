@@ -44,7 +44,9 @@ function LoginContext(props: LoginContextProps) {
       }
     };
 
-    initLoggedStatus();
+    if (localStorage.getItem("accessToken")) {
+      initLoggedStatus();
+    }
   }, []);
 
   return (

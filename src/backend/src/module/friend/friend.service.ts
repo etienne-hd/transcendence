@@ -5,14 +5,18 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendEntity } from './friend.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
+import { UserEntity } from '../user/user.entity';
+import { MessageEntity } from '../message/message.entity';
 
 @Injectable()
 export class FriendService {
   constructor(
     @InjectRepository(FriendEntity)
     private readonly friendRepository: Repository<FriendEntity>,
+    @InjectRepository(MessageEntity)
+    private readonly messageRepository: Repository<MessageEntity>,
     private readonly userService: UserService,
   ) {}
 
@@ -29,31 +33,54 @@ export class FriendService {
     return friends;
   }
 
+  public async areFriends(userIdA: number, userIdB: number): Promise<boolean> {
+    const result = await this.friendRepository.findOne({
+      where: [
+        { user: { id: userIdA }, friend: { id: userIdB } },
+        { friend: { id: userIdA }, user: { id: userIdB } },
+      ],
+    });
+
+    if (result?.status == 'friend') return true;
+    else return false;
+  }
+
   public async getFriends(userId: number) {
     const friends = await this.getFriendsEntites(userId);
 
-    return friends.map((friend) => {
-      const isSender = friend.user.id === userId;
-      const userFriend = isSender ? friend.friend : friend.user;
-      const status =
-        isSender && friend.status === 'pending' ? 'sent' : friend.status;
+    return await Promise.all(
+      friends.map(async (friend) => {
+        const isSender = friend.user.id === userId;
+        const userFriend = isSender ? friend.friend : friend.user;
+        const status =
+          isSender && friend.status === 'pending' ? 'sent' : friend.status;
 
-      return {
-        id: friend.id,
-        user: {
-          id: userFriend.id,
-          username: userFriend.username,
-          name: userFriend.name,
-          biography: userFriend.biography,
-          avatar: userFriend.avatar,
-          created_at: userFriend.created_at,
-          last_seen_at: userFriend.last_seen_at,
-        },
-        status,
-        created_at: friend.created_at,
-        friend_at: friend.friend_at,
-      };
-    });
+        const unreadMessages = await this.messageRepository.find({
+          where: {
+            from_user: { id: userFriend.id },
+            to_user: { id: userId },
+            read_at: IsNull(),
+          },
+        });
+
+        return {
+          id: friend.id,
+          user: {
+            id: userFriend.id,
+            username: userFriend.username,
+            name: userFriend.name,
+            biography: userFriend.biography,
+            avatar: userFriend.avatar,
+            created_at: userFriend.created_at,
+            last_seen_at: userFriend.last_seen_at,
+          },
+          status,
+          created_at: friend.created_at,
+          friend_at: friend.friend_at,
+          unread_messages: unreadMessages.length,
+        };
+      }),
+    );
   }
 
   public async addFriend(userId: number, username: string) {

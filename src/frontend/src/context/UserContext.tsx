@@ -87,7 +87,9 @@ function UserContextProvider(props: UserContextProviderProps) {
       }
     };
 
-    getUser();
+    if (loggedStatus) {
+      getUser();
+    }
   }, [loggedStatus, pushNotification]);
 
   return (

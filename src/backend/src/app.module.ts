@@ -4,12 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth/auth.module';
 import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
+import { MessageModule } from './module/message/message.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     FriendModule,
+    MessageModule,
 
     ConfigModule.forRoot({ isGlobal: true }), // charge .env
     TypeOrmModule.forRootAsync({

@@ -1,16 +1,16 @@
-import { X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import type { Friend } from "../../api/types/friend";
 import { useFriends } from "../../context/FriendListContext";
 
 interface FriendNavCardProps {
   friend: Friend;
-  onClick: (id: number) => void;
+  onClick: (friend: Friend) => void;
   isFocus?: boolean;
 }
 
 // TODO : Loggin status variable
 function FriendNavCard(props: FriendNavCardProps) {
-  const { removeFriend } = useFriends();
+  const { removeFriend, addFriend } = useFriends();
 
   return (
     <div
@@ -19,7 +19,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         (props.isFocus && "bg-bg-tertiary")
       }
       onClick={() => {
-        props.onClick(props.friend.user.id);
+        props.onClick(props.friend);
       }}
     >
       <div className="relative h-full">
@@ -41,14 +41,27 @@ function FriendNavCard(props: FriendNavCardProps) {
           {props.friend.user.username}
         </p>
       </div>
-      <div
-        onClick={(e) => {
-          removeFriend(props.friend.user.username);
-          e.stopPropagation();
-        }}
-        className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
-      >
-        <X color="var(--color-font-secondary)" size={18} />
+      <div className="h-full flex flex-row justify-center items-center">
+        {props.friend.status == "pending" && (
+          <div
+            onClick={(e) => {
+              addFriend(props.friend.user.username);
+              e.stopPropagation();
+            }}
+            className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
+          >
+            <Check color="var(--color-font-secondary)" size={18} />
+          </div>
+        )}
+        <div
+          onClick={(e) => {
+            removeFriend(props.friend.user.username);
+            e.stopPropagation();
+          }}
+          className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
+        >
+          <X color="var(--color-font-secondary)" size={18} />
+        </div>
       </div>
     </div>
   );

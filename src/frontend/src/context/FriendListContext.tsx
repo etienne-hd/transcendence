@@ -10,6 +10,7 @@ import { useLogin } from "./LoginContext";
 import { useNotification } from "./NotificationContext";
 import { friendService } from "../api/api.friend";
 import type { Friend } from "../api/types/friend";
+import { useUser } from "./UserContext";
 
 interface FriendListContextType {
   friends: Friend[];
@@ -28,7 +29,7 @@ const FriendListContext = createContext<FriendListContextType | undefined>(
 
 function FriendListContextProvider(props: FriendListContextProviderProps) {
   const [friends, setFriends] = useState<Friend[]>([]);
-  const { setLoggedStatus } = useLogin();
+  const { loggedStatus, logout } = useLogin();
   const { pushNotification } = useNotification();
 
   const updateFriends = async () => {
@@ -38,7 +39,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }
@@ -55,7 +56,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }
@@ -72,7 +73,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
-          setLoggedStatus(false);
+          logout();
         } else {
           pushNotification(e.response.data.message, "error");
         }
@@ -81,8 +82,10 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   };
 
   useEffect(() => {
-    updateFriends();
-  }, []);
+    if (loggedStatus) {
+      updateFriends();
+    }
+  }, [loggedStatus]);
 
   return (
     <FriendListContext.Provider
