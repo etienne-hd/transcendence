@@ -20,7 +20,7 @@ export class UserController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/me')
-  async getUser(@Request() req) {
+  public async getUser(@Request() req) {
     return await this.userService.getUser(req.user.sub, [
       'id',
       'username',
@@ -36,7 +36,7 @@ export class UserController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Put('/me')
-  async putUser(
+  public async putUser(
     @Request() req,
     @Body(new ZodValidationPipe(PutMeSchema)) body: PutMeDto,
   ) {
@@ -46,7 +46,7 @@ export class UserController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/user/:id')
-  async getUserById(@Param('id') id: number) {
+  public async getUserById(@Param('id') id: number) {
     return await this.userService.getUser(id, [
       'id',
       'username',

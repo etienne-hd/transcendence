@@ -32,7 +32,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Post('/messages')
-  async getMessages(
+  public async getMessages(
     @Request() req,
     @Body(new ZodValidationPipe(GetMessagesSchema)) body: GetMessagesDto,
   ) {
@@ -42,7 +42,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('/messages/mark-read')
-  async PostMessagesMarkRead(
+  public async PostMessagesMarkRead(
     @Request() req,
     @Body(new ZodValidationPipe(PostMessagesMarkReadSchema))
     body: PostMessagesMarkReadDto,
@@ -56,7 +56,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.CREATED)
   @Post('/message')
-  async postMessage(
+  public async postMessage(
     @Request() req,
     @Body(new ZodValidationPipe(PostMessageSchema)) body: PostMessageDto,
   ) {
@@ -70,7 +70,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Delete('/message')
-  async getUserById(
+  public async getUserById(
     @Request() req,
     @Body(new ZodValidationPipe(DeleteMessageSchema)) body: DeleteMessageDto,
   ) {

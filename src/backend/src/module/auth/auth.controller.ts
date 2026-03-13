@@ -20,7 +20,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('/auth/register')
-  postRegister(
+  public async postRegister(
     @Body(new ZodValidationPipe(PostRegisterSchema)) body: PostRegisterDto,
   ) {
     return this.authService.register(
@@ -33,7 +33,9 @@ export class AuthController {
 
   @HttpCode(HttpStatus.ACCEPTED)
   @Post('/auth/login')
-  postLogin(@Body(new ZodValidationPipe(PostLoginSchema)) body: PostLoginDto) {
+  public async postLogin(
+    @Body(new ZodValidationPipe(PostLoginSchema)) body: PostLoginDto,
+  ) {
     return this.authService.login(body.username, body.password);
   }
 }

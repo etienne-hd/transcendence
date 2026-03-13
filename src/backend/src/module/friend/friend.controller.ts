@@ -25,14 +25,14 @@ export class FriendController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/friends')
-  async getFriends(@Request() req) {
+  public async getFriends(@Request() req) {
     return await this.friendService.getFriends(req.user.sub);
   }
 
   @Auth()
   @HttpCode(HttpStatus.CREATED)
   @Post('/friend')
-  async postFriend(
+  public async postFriend(
     @Request() req,
     @Body(new ZodValidationPipe(PostFriendSchema)) body: PostFriendDto,
   ) {
@@ -42,7 +42,7 @@ export class FriendController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Delete('/friend')
-  async deleteFriend(
+  public async deleteFriend(
     @Request() req,
     @Body(new ZodValidationPipe(DeleteFriendSchema)) body: DeleteFriendDto,
   ) {
