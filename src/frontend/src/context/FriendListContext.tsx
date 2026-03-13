@@ -10,12 +10,11 @@ import { useLogin } from "./LoginContext";
 import { useNotification } from "./NotificationContext";
 import { friendService } from "../api/api.friend";
 import type { Friend } from "../api/types/friend";
-import { useUser } from "./UserContext";
 
 interface FriendListContextType {
   friends: Friend[];
   updateFriends: () => Promise<void>;
-  addFriend: (username: string) => Promise<void>;
+  addFriend: (username: string) => Promise<boolean>;
   removeFriend: (username: string) => Promise<void>;
 }
 
@@ -53,6 +52,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
 
       pushNotification(response.message, "valid");
       updateFriends();
+      return true;
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.statusCode == 401) {
@@ -61,6 +61,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
           pushNotification(e.response.data.message, "error");
         }
       }
+      return false;
     }
   };
 
