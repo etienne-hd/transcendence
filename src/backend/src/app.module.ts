@@ -13,7 +13,7 @@ import { MessageModule } from './module/message/message.module';
     FriendModule,
     MessageModule,
 
-    ConfigModule.forRoot({ isGlobal: true }), // charge .env
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
