@@ -25,8 +25,8 @@ export class MessageEntity {
   @Column({ nullable: true, length: MESSAGE_CONTENT_MAX_LENGTH })
   public content: string;
 
-  @Column({ nullable: true })
-  public attachment: string;
+  @Column({ type: 'varchar', nullable: true })
+  public attachment: string | null;
 
   @CreateDateColumn()
   public created_at: Date;

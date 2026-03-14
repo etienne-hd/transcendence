@@ -3,12 +3,17 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  StreamableFile,
 } from '@nestjs/common';
 import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageEntity } from './message.entity';
 import { UserService } from '../user/user.service';
 import { FriendService } from '../friend/friend.service';
+import * as fs from 'node:fs';
+import { randomUUID } from 'node:crypto';
+import { extname, join } from 'node:path';
+import { lookup } from 'mime-types';
 
 @Injectable()
 export class MessageService {
@@ -79,6 +84,7 @@ export class MessageService {
     from_user_id: number,
     to_user_id: number,
     content: string | undefined,
+    attachmentFile: Express.Multer.File | undefined,
   ) {
     if (from_user_id == to_user_id) {
       throw new ConflictException('You cannot send a message to yourself.');
@@ -95,10 +101,22 @@ export class MessageService {
         'You cannot send a message to this user, you are not friends with them!',
       );
     }
+
+    var attachment: string | null = null;
+    if (attachmentFile) {
+      // Upload attachment to ./uploads/attachments
+      const uniqueSuffix = randomUUID();
+      const ext = extname(attachmentFile.originalname);
+      const path = `./uploads/attachments/${uniqueSuffix}${ext}`;
+      await fs.promises.writeFile(path, attachmentFile.buffer);
+      attachment = `${uniqueSuffix}${ext}`;
+    }
+
     var message = this.messageRepository.create({
       from_user,
       to_user,
       content,
+      attachment,
     });
     await this.messageRepository.save(message);
     return {
@@ -134,6 +152,14 @@ export class MessageService {
 
     if (result) {
       if (result.from_user.id == userId) {
+        // Delete attachment
+        if (
+          result.attachment &&
+          fs.existsSync(`./uploads/attachments/${result.attachment}`)
+        ) {
+          fs.unlinkSync(`./uploads/attachments/${result.attachment}`);
+        }
+
         await this.messageRepository.remove(result);
         return { message: 'Message successfully deleted!' };
       } else {
@@ -144,5 +170,34 @@ export class MessageService {
     } else {
       throw new NotFoundException('Message not found');
     }
+  }
+
+  public async getMessageAttachment(message_id: number) {
+    const result = await this.messageRepository.findOne({
+      where: { id: message_id },
+    });
+
+    if (!result) {
+      throw new NotFoundException('Message not found');
+    }
+    if (result.attachment == null) {
+      throw new NotFoundException('Attachment not found');
+    }
+
+    const attachmentPath = join(
+      process.cwd(),
+      'uploads',
+      'attachments',
+      result.attachment,
+    );
+
+    if (!fs.existsSync(attachmentPath)) {
+      throw new NotFoundException('Attachment not found');
+    }
+
+    const mimeType = lookup(attachmentPath) || 'application/octet-stream';
+
+    const file = fs.createReadStream(attachmentPath);
+    return new StreamableFile(file, { type: mimeType });
   }
 }

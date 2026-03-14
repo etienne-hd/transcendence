@@ -1,6 +1,8 @@
 import z from 'zod';
 import {
   MESSAGE_CONTENT_MAX_LENGTH,
+  USER_AVATAR_MAX_LENGTH,
+  USER_AVATAR_MIN_LENGTH,
   USER_BIOGRAPHY_MAX_LENGTH,
   USER_BIOGRAPHY_MIN_LENGTH,
   USER_EMAIL_MAX_LENGTH,
@@ -71,6 +73,15 @@ export const ZOD_USER_BIOGRAPHY = z
   })
   .max(USER_BIOGRAPHY_MAX_LENGTH, {
     message: `Biography too long! (${USER_BIOGRAPHY_MAX_LENGTH} max)`,
+  });
+
+export const ZOD_USER_AVATAR = z
+  .string()
+  .min(USER_AVATAR_MIN_LENGTH, {
+    message: `Avatar too short! (${USER_AVATAR_MIN_LENGTH} min)`,
+  })
+  .max(USER_AVATAR_MAX_LENGTH, {
+    message: `Avatar too long! (${USER_AVATAR_MAX_LENGTH} max)`,
   });
 
 // Message

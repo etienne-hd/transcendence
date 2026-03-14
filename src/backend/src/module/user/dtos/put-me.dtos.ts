@@ -1,4 +1,5 @@
 import {
+  ZOD_USER_AVATAR,
   ZOD_USER_BIOGRAPHY,
   ZOD_USER_EMAIL,
   ZOD_USER_NAME,
@@ -13,6 +14,7 @@ export const PutMeSchema = z.object({
   email: ZOD_USER_EMAIL.optional(),
   name: ZOD_USER_NAME.optional(),
   biography: ZOD_USER_BIOGRAPHY.optional().nullable(),
+  avatar: ZOD_USER_AVATAR.optional(),
 });
 
 export type PutMeDto = z.infer<typeof PutMeSchema>;

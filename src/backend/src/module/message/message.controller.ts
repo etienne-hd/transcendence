@@ -5,8 +5,11 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Request,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Auth } from '../auth/auth.guard';
 import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
@@ -24,6 +27,8 @@ import {
   type PostMessagesMarkReadDto,
   PostMessagesMarkReadSchema,
 } from './dtos/post-messages-mark-read.dtos';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 
 @Controller()
 export class MessageController {
@@ -55,15 +60,22 @@ export class MessageController {
 
   @Auth()
   @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: memoryStorage(),
+    }),
+  )
   @Post('/message')
   public async postMessage(
     @Request() req,
     @Body(new ZodValidationPipe(PostMessageSchema)) body: PostMessageDto,
+    @UploadedFile() attachment: Express.Multer.File,
   ) {
     return await this.messageService.sendMessage(
       req.user.sub,
       body.user_id,
       body.content,
+      attachment,
     );
   }
 
@@ -78,5 +90,12 @@ export class MessageController {
       req.user.sub,
       body.message_id,
     );
+  }
+
+  @Auth()
+  @HttpCode(HttpStatus.OK)
+  @Get('/message/:id/attachment')
+  public async getMessageAttachment(@Param('id') id: number, @Request() req) {
+    return await this.messageService.getMessageAttachment(id);
   }
 }
