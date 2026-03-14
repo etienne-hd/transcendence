@@ -8,16 +8,31 @@ export class WebsocketGateway implements OnGatewayConnection, OnGatewayDisconnec
   @WebSocketServer() srv: Server;
 
   handleConnection(client: Socket): void {
-    ;
+    console.log("New client: ", client.id);
   }
 
   handleDisconnect(client: Socket): void {
-    ;
+    console.log("Client disconnection: ", client.id);
+  }
+
+  @Auth()
+  @SubscribeMessage('ping')
+  pong(client: Socket, msg: string): string {
+    return "[pong] " + msg;
   }
 
   @Auth()
   @SubscribeMessage('msg')
-  handleMessage(client: Socket, msg: any): void {
-    this.srv.emit('stream', 'A client has sent message');
+  async msg(client: Socket, msg: string): Promise<string> {
+    const sockets = await this.srv.fetchSockets();
+    for (const socket of sockets) {
+      const userID = socket.data?.user?.sub;
+
+      if (userID === 1) { // replace by targetID
+        socket.emit("msg", msg);
+        return "msg sent";
+      }
+    }
+    return "can't send to user";
   }
 }
