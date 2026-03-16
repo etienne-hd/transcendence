@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import Modal from "../Modal";
 import FriendModalInformation from "./FriendModalInformation";
 import type { Friend } from "../../api/types/friend";
+import Avatar from "../Avatar";
 
 interface FriendModalProps {
   friend: Friend | undefined;
@@ -14,16 +15,7 @@ function FriendModal(props: FriendModalProps) {
       <div className="bg-bg-secondary flex flex-col gap-6 justify-center items-center rounded-lg p-4 w-full">
         <div className="flex flex-row gap-6 justify-between p-4 items-center w-full">
           <div className="flex flex-row gap-6 justify-center items-center">
-            <div className="relative h-full">
-              <img
-                src={
-                  props.friend?.user?.avatar
-                    ? props.friend?.user.avatar
-                    : "placehoder"
-                }
-                className="rounded-full h-20 w-20"
-              />
-            </div>
+            <Avatar userId={props.friend?.user.id} className="h-20 w-20" />
             <div className="flex flex-col justify-center items-start">
               <h1 className="text-xl font-semibold">
                 {props.friend?.user?.username}

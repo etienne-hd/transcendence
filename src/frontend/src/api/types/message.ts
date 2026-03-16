@@ -6,5 +6,5 @@ export interface Message {
   to_user: UserFront;
   created_at: string;
   content: string;
-  attachement: string;
+  attachment: string | undefined;
 }

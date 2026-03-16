@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   type ReactNode,
+  type RefObject,
 } from "react";
 import type { Message } from "../api/types/message";
 import { useLogin } from "./LoginContext";
@@ -20,8 +21,19 @@ interface MessageContextProviderProps {
 interface MessageContextType {
   messages: Message[];
   getMessage: () => Promise<void>;
-  pushMessage: (content: string) => Promise<boolean>;
+  pushMessage: (
+    content: string,
+    attachment: File | undefined,
+  ) => Promise<boolean>;
   removeMessage: (messageId: number) => Promise<void>;
+  downloadAttachment: (
+    messageId: number,
+    onProgress: (percent: number | undefined) => void,
+  ) => Promise<void>;
+  loadAttachment: (
+    messageId: number,
+    imgRef: HTMLImageElement,
+  ) => Promise<void>;
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
@@ -32,6 +44,8 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const { friendFocused } = useFriendFocused();
   const { user } = useUser();
   const { pushNotification } = useNotification();
+
+  // TODO: Mark all message as readed when retreived
 
   const getMessage = async () => {
     try {
@@ -58,7 +72,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     }
   };
 
-  const pushMessage = async (content: string) => {
+  const pushMessage = async (content: string, attachment: File | undefined) => {
     try {
       if (!friendFocused?.user) {
         pushNotification(
@@ -66,7 +80,11 @@ function MessageContextProvider(props: MessageContextProviderProps) {
           "error",
         );
       } else {
-        await messageService.sendMessage(friendFocused?.user.id, content);
+        await messageService.sendMessage(
+          friendFocused?.user.id,
+          content,
+          attachment,
+        );
 
         getMessage();
       }
@@ -106,6 +124,42 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     }
   };
 
+  const downloadAttachment = async (
+    messageId: number,
+    onProgress: (percent: number | undefined) => void,
+  ) => {
+    try {
+      await messageService.downloadAttachement(messageId, onProgress);
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.data.StatusCode == 401) {
+          logout();
+        } else {
+          pushNotification(e.response.data.message, "error");
+        }
+      }
+    }
+  };
+
+  const loadAttachment = async (
+    messageId: number,
+    imageRef: HTMLImageElement,
+  ) => {
+    try {
+      if (imageRef != null) {
+        await messageService.loadAttachement(messageId, imageRef);
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.data.StatusCode == 401) {
+          logout();
+        } else {
+          pushNotification(e.response.data.message, "error");
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     if (friendFocused?.user) {
       getMessage();
@@ -114,7 +168,14 @@ function MessageContextProvider(props: MessageContextProviderProps) {
 
   return (
     <MessageContext.Provider
-      value={{ messages, getMessage, pushMessage, removeMessage }}
+      value={{
+        messages,
+        getMessage,
+        pushMessage,
+        removeMessage,
+        downloadAttachment,
+        loadAttachment,
+      }}
     >
       {props.children}
     </MessageContext.Provider>
