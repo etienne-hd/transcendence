@@ -1,31 +1,28 @@
 import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
   OnGatewayInit,
   WebSocketGateway,
   WebSocketServer,
+  OnGatewayConnection,
 } from '@nestjs/websockets';
 
 import { Server, Socket } from 'socket.io';
-import { WsAuthMiddleware } from './socket.auth';
+import { WsAuthMiddleware } from './ws.auth';
 
 @WebSocketGateway({ transports: ['websocket'], cors: '*' })
-export class SocketGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class WsGateway implements OnGatewayInit {
   constructor(private wsAuth: WsAuthMiddleware) {}
 
   @WebSocketServer() io: Server;
 
-  afterInit() {
+  public afterInit() {
     this.io.use((socket, next) => this.wsAuth.use(socket, next));
   }
 
   handleConnection(client: Socket) {
-    console.log(`${client.id} connected`);
+    client.join(`user:${client.data.user.sub}`);
   }
 
-  handleDisconnect(client: any) {
-    console.log(`${client.id} disconnected`);
+  public sendMessage(userId: number, event: string, message: any) {
+    this.io.to(`user:${userId}`).emit(event, message);
   }
 }
