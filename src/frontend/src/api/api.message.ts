@@ -48,6 +48,25 @@ export const messageService = {
     return response.data;
   },
 
+  async loadAttachement(
+    id: number,
+    imgRef: HTMLImageElement,
+  ): Promise<{ message: string }> {
+    const response = await apiClient.get("/message/" + id + "/attachment", {
+      responseType: "blob",
+    });
+
+    const blob = response.data;
+
+    const url = window.URL.createObjectURL(blob);
+
+    imgRef.src = url;
+
+    imgRef.onload = () => window.URL.revokeObjectURL(url);
+
+    return response.data;
+  },
+
   async sendMessage(
     friendId: number,
     content: string,

@@ -4,7 +4,7 @@ import type { Message } from "../../api/types/message";
 import { useUser } from "../../context/UserContext";
 import { DownloadIcon, Trash2 } from "lucide-react";
 import { useMessage } from "../../context/MessageContext";
-import { memo, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import Avatar from "../Avatar";
 
 interface MessageDisplayProps {
@@ -33,8 +33,21 @@ const MessageDisplay = memo(function MessageDisplay(
     undefined,
   );
 
+  const attachmentRef = useRef<HTMLImageElement>(null);
+
   const { user } = useUser();
-  const { removeMessage, downloadAttachment } = useMessage();
+  const { removeMessage, downloadAttachment, loadAttachment } = useMessage();
+
+  useEffect(() => {
+    if (props.message.attachment && attachmentRef.current) {
+      loadAttachment(props.message.id, attachmentRef?.current);
+    }
+  }, [
+    attachmentRef,
+    loadAttachment,
+    props.message.attachment,
+    props.message.id,
+  ]);
 
   return (
     <div className="flex flex-row gap-4 p-2 pr-6 w-full justify-start items-start">
@@ -56,12 +69,8 @@ const MessageDisplay = memo(function MessageDisplay(
                 props.message.attachment.endsWith(".jpg") ||
                 props.message.attachment.endsWith(".jpeg")) && (
                 <img
-                  src={
-                    "http://localhost:3000/message/" +
-                    props.message.id +
-                    "/attachment"
-                  }
-                  className="object-cover max-w-full"
+                  ref={attachmentRef}
+                  className="object-cover max-w-full rounded-md"
                 />
               )}
               <button

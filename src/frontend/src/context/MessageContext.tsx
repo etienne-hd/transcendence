@@ -4,6 +4,7 @@ import {
   useEffect,
   useState,
   type ReactNode,
+  type RefObject,
 } from "react";
 import type { Message } from "../api/types/message";
 import { useLogin } from "./LoginContext";
@@ -28,6 +29,10 @@ interface MessageContextType {
   downloadAttachment: (
     messageId: number,
     onProgress: (percent: number | undefined) => void,
+  ) => Promise<void>;
+  loadAttachment: (
+    messageId: number,
+    imgRef: HTMLImageElement,
   ) => Promise<void>;
 }
 
@@ -136,6 +141,25 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     }
   };
 
+  const loadAttachment = async (
+    messageId: number,
+    imageRef: HTMLImageElement,
+  ) => {
+    try {
+      if (imageRef != null) {
+        await messageService.loadAttachement(messageId, imageRef);
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.data.StatusCode == 401) {
+          logout();
+        } else {
+          pushNotification(e.response.data.message, "error");
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     if (friendFocused?.user) {
       getMessage();
@@ -150,6 +174,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
         pushMessage,
         removeMessage,
         downloadAttachment,
+        loadAttachment,
       }}
     >
       {props.children}
