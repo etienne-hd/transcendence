@@ -2,11 +2,10 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import type { Message } from "../../api/types/message";
 import { useUser } from "../../context/UserContext";
-import { Download, DownloadIcon, Trash2 } from "lucide-react";
+import { DownloadIcon, Trash2 } from "lucide-react";
 import { useMessage } from "../../context/MessageContext";
 import { memo, useState } from "react";
 import Avatar from "../Avatar";
-import { button } from "framer-motion/client";
 
 interface MessageDisplayProps {
   message: Message;
@@ -52,27 +51,41 @@ const MessageDisplay = memo(function MessageDisplay(
             {props.message.content}
           </p>
           {props.message.attachment && (
-            <button
-              onClick={() => {
-                if (downloadPercent == undefined) {
-                  downloadAttachment(props.message.id, setDownloadPercent);
-                }
-              }}
-              className="cursor-pointer p-1 px-2 border-border-secondary bg-bg-secondary border-2 rounded-full flex flex-row gap-2 text-xs justify-center items-center"
-            >
-              <DownloadIcon size={15} />
-              <p>{props.message.attachment}</p>
-              {downloadPercent != undefined && (
-                <span className="w-20 h-2 bg-b bg-bg-tertiary rounded-full relative">
-                  <span
-                    className={
-                      "bg-accent-primary h-full rounded-full absolute top-0 left-0"
-                    }
-                    style={{ width: downloadPercent + "%" }}
-                  ></span>
-                </span>
+            <div className="flex flex-col pl-2 w-full gap-2">
+              {(props.message.attachment.endsWith(".png") ||
+                props.message.attachment.endsWith(".jpg") ||
+                props.message.attachment.endsWith(".jpeg")) && (
+                <img
+                  src={
+                    "http://localhost:3000/message/" +
+                    props.message.id +
+                    "/attachment"
+                  }
+                  className="object-cover max-w-full"
+                />
               )}
-            </button>
+              <button
+                onClick={() => {
+                  if (downloadPercent == undefined) {
+                    downloadAttachment(props.message.id, setDownloadPercent);
+                  }
+                }}
+                className="cursor-pointer p-1 px-2 border-border-secondary bg-bg-secondary border-2 rounded-full flex flex-row gap-2 text-xs justify-center items-center"
+              >
+                <DownloadIcon size={15} />
+                <p>{props.message.attachment}</p>
+                {downloadPercent != undefined && (
+                  <span className="w-20 h-2 bg-b bg-bg-tertiary rounded-full relative">
+                    <span
+                      className={
+                        "bg-accent-primary h-full rounded-full absolute top-0 left-0"
+                      }
+                      style={{ width: downloadPercent + "%" }}
+                    ></span>
+                  </span>
+                )}
+              </button>
+            </div>
           )}
         </div>
       </div>

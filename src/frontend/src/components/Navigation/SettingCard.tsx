@@ -22,9 +22,7 @@ function SettingCard() {
       >
         <Avatar userId={user?.id} showStatus className="h-10 w-10 " />
         <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
-          <p className="font-semibold truncate w-full">
-            {user?.username}fdhkjshfkdshfsdhkf
-          </p>
+          <p className="font-semibold truncate max-w-full">{user?.username}</p>
         </div>
         <button
           onClick={() => {

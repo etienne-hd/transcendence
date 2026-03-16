@@ -47,7 +47,6 @@ function MessageInput() {
     const file = event.target.files?.[0];
     if (file) {
       setFile(file);
-      console.log(file);
     }
   };
 
