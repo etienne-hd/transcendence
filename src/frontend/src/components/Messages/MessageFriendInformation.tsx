@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useState } from "react";
 import FriendModal from "../Friends/FriendModal";
+import Avatar from "../Avatar";
 
 function MessageFriendInformation() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -26,14 +27,7 @@ function MessageFriendInformation() {
           onClick={toggleModal}
           className="cursor-pointer flex flex-row gap-6 justify-center items-center"
         >
-          <img
-            src={
-              friendFocused?.user.avatar
-                ? friendFocused.user.avatar
-                : "placeholder"
-            }
-            className="rounded-full h-12"
-          />
+          <Avatar userId={friendFocused?.user.id} className="h-12 w-12" />
           <div className="flex flex-row gap-2 justify-center items-center">
             <h2 className="font-semibold text-xl">
               {friendFocused?.user.username}

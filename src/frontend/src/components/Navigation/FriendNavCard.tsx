@@ -1,6 +1,7 @@
 import { Check, X } from "lucide-react";
 import type { Friend } from "../../api/types/friend";
 import { useFriends } from "../../context/FriendListContext";
+import Avatar from "../Avatar";
 
 interface FriendNavCardProps {
   friend: Friend;
@@ -22,24 +23,9 @@ function FriendNavCard(props: FriendNavCardProps) {
         props.onClick(props.friend);
       }}
     >
-      <div className="relative h-full">
-        <img
-          src={
-            props.friend.user.avatar ? props.friend.user.avatar : "placeholder"
-          }
-          className="rounded-full h-full"
-        />
-        <div
-          className={
-            "absolute bottom-0 right-0 w-2 h-2 rounded-full " +
-            (props.friend.user.id ? "bg-green-500" : "bg-error")
-          }
-        ></div>
-      </div>
-      <div className="w-full h-full flex flex-col items-start justify-center">
-        <p className="font-semibold text-ellipsis">
-          {props.friend.user.username}
-        </p>
+      <Avatar userId={props.friend.user.id} className="h-8 w-8" showStatus />
+      <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
+        <p className="font-semibold truncate">{props.friend.user.username}</p>
       </div>
       <div className="h-full flex flex-row justify-center items-center">
         {props.friend.status == "pending" && (
@@ -58,7 +44,7 @@ function FriendNavCard(props: FriendNavCardProps) {
             removeFriend(props.friend.user.username);
             e.stopPropagation();
           }}
-          className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
+          className="h-full flex justify-center items-center hover:bg-black/20 rounded-full aspect-square p-1 "
         >
           <X color="var(--color-font-secondary)" size={18} />
         </div>

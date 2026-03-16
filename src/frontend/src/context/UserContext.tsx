@@ -24,14 +24,16 @@ interface UserContextType {
     email: string | undefined,
     password: string | undefined,
     biography: string | undefined,
+    avatar: File | undefined,
     onSuccess: () => void,
-  ) => boolean;
+  ) => Promise<boolean>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 function UserContextProvider(props: UserContextProviderProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
+
   const { pushNotification } = useNotification();
   const { loggedStatus } = useLogin();
 
@@ -41,6 +43,7 @@ function UserContextProvider(props: UserContextProviderProps) {
     email: string | undefined,
     password: string | undefined,
     biography: string | undefined,
+    avatar: File | undefined,
     onSuccess: () => void,
   ) => {
     if (
@@ -48,7 +51,8 @@ function UserContextProvider(props: UserContextProviderProps) {
       username != undefined ||
       email != undefined ||
       password != undefined ||
-      biography != undefined
+      biography != undefined ||
+      avatar != undefined
     ) {
       try {
         const response = await userService.updateMe(
@@ -57,6 +61,7 @@ function UserContextProvider(props: UserContextProviderProps) {
           name,
           password,
           biography,
+          avatar,
         );
 
         setUser(response);
@@ -70,6 +75,7 @@ function UserContextProvider(props: UserContextProviderProps) {
         return false;
       }
     }
+    return false;
   };
 
   useEffect(() => {

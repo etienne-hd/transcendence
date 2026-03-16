@@ -14,14 +14,21 @@ export const userService = {
     name?: string,
     password?: string,
     biography?: string,
+    avatar?: File,
   ): Promise<User> {
-    const response = await apiClient.put<User>("/me", {
-      name: name,
-      username: username,
-      email: email,
-      password: password,
-      biography: biography,
-    });
+    const formData = new FormData();
+
+    if (name) formData.append("name", name);
+    if (username) formData.append("username", username);
+    if (email) formData.append("email", email);
+    if (password) formData.append("password", password);
+    if (biography) formData.append("biography", biography);
+
+    if (avatar) {
+      formData.append("file", avatar);
+    }
+
+    const response = await apiClient.put<User>("/me", formData);
 
     return response.data;
   },
