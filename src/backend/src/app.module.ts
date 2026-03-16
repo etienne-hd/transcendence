@@ -5,6 +5,7 @@ import { AuthModule } from './module/auth/auth.module';
 import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
 import { MessageModule } from './module/message/message.module';
+import { SocketModule } from './module/socket/socket.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MessageModule } from './module/message/message.module';
     UserModule,
     FriendModule,
     MessageModule,
+    SocketModule,
 
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
