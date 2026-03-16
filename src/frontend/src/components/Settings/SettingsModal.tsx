@@ -17,22 +17,23 @@ function SettingsModal(props: SettingsModalProps) {
   const [biography, setBiography] = useState<string | undefined>(undefined);
 
   // TODO : Add avatar switching
-  // TODO : logout button
-  // TODO : Change that by active status of user
-  const isActive = true;
 
   const { user, saveChange } = useUser();
   const { logout } = useLogin();
 
   const onSubmit = () => {
-    saveChange(
-      name,
-      username,
-      email,
-      password,
-      biography,
-      props.toggleSettings,
-    );
+    if (
+      saveChange(
+        name,
+        username,
+        email,
+        password,
+        biography,
+        props.toggleSettings,
+      )
+    ) {
+      props.toggleSettings();
+    }
   };
 
   useEffect(() => {

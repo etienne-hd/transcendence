@@ -28,7 +28,7 @@ function Conversation() {
           <MessageFriendInformation />
           <div
             ref={scrollMessageRef}
-            className="overflow-y-scroll flex flex-col h-full justify-center items-end"
+            className="overflow-y-scroll flex flex-col h-full items-end"
           >
             {messages.map((message, index) => (
               <MessageDisplay message={message} key={index} />
