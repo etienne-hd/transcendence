@@ -1,11 +1,12 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
   StreamableFile,
 } from '@nestjs/common';
-import { IsNull, Repository } from 'typeorm';
+import { ILike, Not, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageEntity } from './message.entity';
 import { UserService } from '../user/user.service';
@@ -26,13 +27,30 @@ export class MessageService {
   public async getMessagesEntites(
     userIdA: number,
     userIdB: number,
+    sortType: string,
+    searchValue: string | null,
+    attachmentOnly: boolean,
   ): Promise<MessageEntity[]> {
+    const baseWhere = [
+      { from_user: { id: userIdA }, to_user: { id: userIdB } },
+      { from_user: { id: userIdB }, to_user: { id: userIdA } },
+    ];
+
+    if (searchValue) {
+      for (const condition of baseWhere) {
+        condition['content'] = ILike(`%${searchValue}%`);
+      }
+    }
+
+    if (attachmentOnly) {
+      for (const condition of baseWhere) {
+        condition['attachment'] = Not(IsNull());
+      }
+    }
+
     return this.messageRepository.find({
-      where: [
-        { from_user: { id: userIdA }, to_user: { id: userIdB } },
-        { from_user: { id: userIdB }, to_user: { id: userIdA } },
-      ],
-      order: { created_at: 'ASC' },
+      where: baseWhere,
+      order: { created_at: sortType == 'ASC' ? 'ASC' : 'DESC' },
     });
   }
 
@@ -49,8 +67,24 @@ export class MessageService {
     );
   }
 
-  public async getMessages(userIdA: number, userIdB: number) {
-    const messages = await this.getMessagesEntites(userIdA, userIdB);
+  public async getMessages(
+    userIdA: number,
+    userIdB: number,
+    sortType: string,
+    searchValue: string | null,
+    attachmentOnly: boolean,
+  ) {
+    if (!(sortType == 'asc' || sortType == 'desc')) {
+      throw new BadRequestException('Invalid sort type!');
+    }
+
+    const messages = await this.getMessagesEntites(
+      userIdA,
+      userIdB,
+      sortType == 'asc' ? 'ASC' : 'DESC',
+      searchValue,
+      attachmentOnly,
+    );
 
     return messages.map((message) => {
       return {
