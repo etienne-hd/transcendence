@@ -5,6 +5,7 @@ import {
   Injectable,
   NotFoundException,
   StreamableFile,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ILike, Not, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -207,14 +208,21 @@ export class MessageService {
     }
   }
 
-  public async getMessageAttachment(message_id: number) {
+  public async getMessageAttachment(userId: number, messageId: number) {
     const result = await this.messageRepository.findOne({
-      where: { id: message_id },
+      where: { id: messageId },
     });
 
     if (!result) {
       throw new NotFoundException('Message not found');
     }
+
+    if (!(result.from_user.id == userId || result.to_user.id == userId)) {
+      throw new UnauthorizedException(
+        "You're not allowed to see this attachment!",
+      );
+    }
+
     if (result.attachment == null) {
       throw new NotFoundException('Attachment not found');
     }

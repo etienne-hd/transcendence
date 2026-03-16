@@ -107,7 +107,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/message/:id/attachment')
-  public async getMessageAttachment(@Param('id') id: number) {
-    return await this.messageService.getMessageAttachment(id);
+  public async getMessageAttachment(@Request() req, @Param('id') id: number) {
+    return await this.messageService.getMessageAttachment(req.user.sub, id);
   }
 }
