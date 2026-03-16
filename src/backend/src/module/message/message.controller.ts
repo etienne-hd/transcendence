@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Request,
   UploadedFile,
   UseInterceptors,
@@ -40,8 +41,17 @@ export class MessageController {
   public async getMessages(
     @Request() req,
     @Body(new ZodValidationPipe(GetMessagesSchema)) body: GetMessagesDto,
+    @Query('sort') sortType: string = 'asc',
+    @Query('search') searchValue: string | null = null,
+    @Query('attachment') attachmentOnly: boolean = false,
   ) {
-    return await this.messageService.getMessages(req.user.sub, body.user_id);
+    return await this.messageService.getMessages(
+      req.user.sub,
+      body.user_id,
+      sortType,
+      searchValue,
+      attachmentOnly != false,
+    );
   }
 
   @Auth()
