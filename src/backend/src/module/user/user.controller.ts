@@ -92,7 +92,6 @@ export class UserController {
     ]);
   }
 
-  @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/user/:id/avatar')
   public async getUserAvatarById(@Param('id') id: number) {

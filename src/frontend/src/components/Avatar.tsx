@@ -7,12 +7,13 @@ interface AvatarProps {
 function Avatar(props: AvatarProps) {
   const logged = true;
 
+  //TODO: baseurl
   return (
     <>
-      <div className={"relative " + props.className}>
+      <div className={"relative aspect-square " + props.className}>
         <img
-          src={"http://localhost:3000/user" + props.userId + "/avatar"}
-          className={"rounded-full relative h-full w-full"}
+          src={"http://localhost:3000/user/" + props.userId + "/avatar"}
+          className={"rounded-full relative h-full w-full object-cover"}
         />
         {props.showStatus && (
           <div

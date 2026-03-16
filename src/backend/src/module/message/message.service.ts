@@ -14,6 +14,7 @@ import * as fs from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { extname, join } from 'node:path';
 import { lookup } from 'mime-types';
+import { Response } from 'express';
 
 @Injectable()
 export class MessageService {
@@ -198,6 +199,13 @@ export class MessageService {
     const mimeType = lookup(attachmentPath) || 'application/octet-stream';
 
     const file = fs.createReadStream(attachmentPath);
-    return new StreamableFile(file, { type: mimeType });
+
+    const fileStats = fs.statSync(attachmentPath);
+
+    return new StreamableFile(file, {
+      type: mimeType,
+      disposition: `attachment; filename="${result.attachment}"`,
+      length: fileStats.size,
+    });
   }
 }

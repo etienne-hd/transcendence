@@ -8,8 +8,6 @@ function SettingCard() {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const { user } = useUser();
 
-  const isActive = true;
-
   const toggleSettings = () => {
     setSettingsOpen(!settingsOpen);
   };
@@ -22,9 +20,11 @@ function SettingCard() {
           "w-full h-15 flex-row flex gap-4 rounded-md bg-bg-tertiary shadow-xl p-2 px-4"
         }
       >
-        <Avatar userId={user?.id} showStatus className="h-full " />
-        <div className="w-full h-full flex flex-col items-start justify-center">
-          <p className="font-semibold text-ellipsis">{user?.username}</p>
+        <Avatar userId={user?.id} showStatus className="h-10 w-10 " />
+        <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
+          <p className="font-semibold truncate w-full">
+            {user?.username}fdhkjshfkdshfsdhkf
+          </p>
         </div>
         <button
           onClick={() => {

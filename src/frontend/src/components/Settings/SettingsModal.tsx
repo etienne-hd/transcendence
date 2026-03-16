@@ -11,15 +11,12 @@ interface SettingsModalProps {
 }
 
 function SettingsModal(props: SettingsModalProps) {
-  // All user information edit state
   const [name, setName] = useState<string | undefined>(undefined);
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [biography, setBiography] = useState<string | undefined>(undefined);
   const [avatar, setAvatar] = useState<File | undefined>(undefined);
-
-  // TODO : Add avatar switching
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -79,9 +76,9 @@ function SettingsModal(props: SettingsModalProps) {
                 onClick={() => {
                   fileInputRef.current?.click();
                 }}
-                className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 hover:opacity-100 duration-200 backdrop-brightness-80 rounded-full flex justify-center items-center"
+                className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 hover:opacity-100 duration-200 backdrop-brightness-60 rounded-full flex justify-center items-center"
               >
-                <Edit2 color="var(--color-font-secondary)" size={25} />
+                <Edit2 size={25} />
               </button>
               <input
                 type="file"

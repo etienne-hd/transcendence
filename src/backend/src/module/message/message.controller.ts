@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Request,
+  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -29,6 +30,7 @@ import {
 } from './dtos/post-messages-mark-read.dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { PassThrough } from 'node:stream';
 
 @Controller()
 export class MessageController {
@@ -95,7 +97,7 @@ export class MessageController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/message/:id/attachment')
-  public async getMessageAttachment(@Param('id') id: number, @Request() req) {
+  public async getMessageAttachment(@Param('id') id: number) {
     return await this.messageService.getMessageAttachment(id);
   }
 }
