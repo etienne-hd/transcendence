@@ -38,6 +38,7 @@ export class UserController {
       'created_at',
       'last_seen_at',
       'email',
+      'status',
     ]);
   }
 
@@ -89,6 +90,7 @@ export class UserController {
       'avatar',
       'created_at',
       'last_seen_at',
+      'status',
     ]);
   }
 

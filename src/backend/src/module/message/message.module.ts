@@ -7,7 +7,7 @@ import { MessageController } from './message.controller';
 import { FriendEntity } from '../friend/friend.entity';
 import { FriendModule } from '../friend/friend.module';
 import { UserModule } from '../user/user.module';
-import { SocketModule } from '../ws/ws.module';
+import { WsModule } from '../ws/ws.module';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
@@ -18,7 +18,7 @@ import { AuthModule } from '../auth/auth.module';
     FriendModule,
     UserModule,
     AuthModule,
-    SocketModule,
+    WsModule,
   ],
   controllers: [MessageController],
   providers: [MessageService],

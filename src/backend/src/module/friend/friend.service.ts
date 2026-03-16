@@ -21,6 +21,7 @@ export class FriendService {
     private readonly messageRepository: Repository<MessageEntity>,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    @Inject(forwardRef(() => WsGateway))
     private readonly wsService: WsGateway,
   ) {}
 

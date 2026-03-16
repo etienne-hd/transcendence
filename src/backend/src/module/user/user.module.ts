@@ -4,14 +4,14 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { AuthModule } from '../auth/auth.module';
-import { SocketModule } from '../ws/ws.module';
+import { WsModule } from '../ws/ws.module';
 import { FriendModule } from '../friend/friend.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     AuthModule,
-    SocketModule,
+    WsModule,
     forwardRef(() => FriendModule),
   ],
   controllers: [UserController],

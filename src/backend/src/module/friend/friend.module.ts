@@ -6,7 +6,7 @@ import { FriendEntity } from './friend.entity';
 import { UserEntity } from '../user/user.entity';
 import { MessageEntity } from '../message/message.entity';
 import { UserModule } from '../user/user.module';
-import { SocketModule } from '../ws/ws.module';
+import { WsModule } from '../ws/ws.module';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
@@ -14,7 +14,7 @@ import { AuthModule } from '../auth/auth.module';
     TypeOrmModule.forFeature([FriendEntity, UserEntity, MessageEntity]),
     forwardRef(() => UserModule),
     AuthModule,
-    SocketModule,
+    forwardRef(() => WsModule),
   ],
   controllers: [FriendController],
   providers: [FriendService],

@@ -49,6 +49,7 @@ export class UserService {
       'avatar',
       'created_at',
       'last_seen_at',
+      'status',
     ],
   ) {
     var values = {};
@@ -165,5 +166,16 @@ export class UserService {
       last_seen_at: user.last_seen_at,
       email: user.email,
     };
+  }
+
+  public async updateUserStatus(userId: number, status: 'online' | 'offline') {
+    const user = await this.getUserEntity({ id: userId });
+
+    user.status = status;
+    if (status == 'offline') {
+      user.last_seen_at = new Date();
+    }
+    this.userRepository.save(user);
+    return user;
   }
 }

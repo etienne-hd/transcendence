@@ -46,4 +46,7 @@ export class UserEntity {
 
   @Column()
   public warn: number = 0;
+
+  @Column({ default: 'offline' })
+  public status: string;
 }
