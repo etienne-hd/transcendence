@@ -1,20 +1,23 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { FriendController } from './friend.controller';
 import { FriendService } from './friend.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FriendEntity } from './friend.entity';
-import { UserService } from '../user/user.service';
 import { UserEntity } from '../user/user.entity';
-import { AuthService } from '../auth/auth.service';
 import { MessageEntity } from '../message/message.entity';
+import { UserModule } from '../user/user.module';
+import { SocketModule } from '../ws/ws.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([FriendEntity]),
-    TypeOrmModule.forFeature([UserEntity]),
-    TypeOrmModule.forFeature([MessageEntity]),
+    TypeOrmModule.forFeature([FriendEntity, UserEntity, MessageEntity]),
+    forwardRef(() => UserModule),
+    AuthModule,
+    SocketModule,
   ],
   controllers: [FriendController],
-  providers: [FriendService, UserService, AuthService],
+  providers: [FriendService],
+  exports: [FriendService],
 })
 export class FriendModule {}

@@ -31,7 +31,6 @@ import {
 } from './dtos/post-messages-mark-read.dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { PassThrough } from 'node:stream';
 
 @Controller()
 export class MessageController {
