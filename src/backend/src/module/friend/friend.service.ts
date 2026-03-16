@@ -1,5 +1,7 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -7,8 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FriendEntity } from './friend.entity';
 import { IsNull, Repository } from 'typeorm';
 import { UserService } from '../user/user.service';
-import { UserEntity } from '../user/user.entity';
 import { MessageEntity } from '../message/message.entity';
+import { WsGateway } from '../ws/ws.gateway';
 
 @Injectable()
 export class FriendService {
@@ -17,7 +19,9 @@ export class FriendService {
     private readonly friendRepository: Repository<FriendEntity>,
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly wsService: WsGateway,
   ) {}
 
   public async getFriendsEntites(userId: number): Promise<FriendEntity[]> {
@@ -102,6 +106,11 @@ export class FriendService {
             friend.status = 'friend';
             friend.friend_at = new Date();
             await this.friendRepository.save(friend);
+            this.wsService.sendMessage(
+              targetUser.id,
+              'friend:accept',
+              this.userService.formatUserData(user),
+            );
             return {
               message: 'You have successfully accepted the friend request!',
             };
@@ -125,6 +134,11 @@ export class FriendService {
       status: 'pending',
     });
     await this.friendRepository.save(friend);
+    this.wsService.sendMessage(
+      targetUser.id,
+      'friend:new',
+      this.userService.formatUserData(user),
+    );
     return { message: 'Friend request successfully sent!' };
   }
 
@@ -143,6 +157,13 @@ export class FriendService {
         friend.friend.id == targetUser.id
       ) {
         await this.friendRepository.remove(friend);
+        this.wsService.sendMessage(
+          targetUser.id,
+          'friend:delete',
+          this.userService.formatUserData(
+            targetUser.id == friend.user.id ? friend.friend : friend.user,
+          ),
+        );
         return { message: 'Friend successfully removed!' };
       }
     }

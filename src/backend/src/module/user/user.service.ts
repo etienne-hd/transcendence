@@ -13,6 +13,8 @@ import { extname } from 'path';
 import * as fs from 'node:fs';
 import { join } from 'node:path';
 import { lookup } from 'mime-types';
+import { WsGateway } from '../ws/ws.gateway';
+import { FriendService } from '../friend/friend.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +22,8 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly authService: AuthService,
+    private readonly friendService: FriendService,
+    private readonly wsService: WsGateway,
   ) {}
 
   public async getUserEntity(params: {
@@ -35,8 +39,18 @@ export class UserService {
     return user;
   }
 
-  public async getUser(id: number, fields: string[]) {
-    const user = await this.getUserEntity({ id });
+  public formatUserData(
+    user: UserEntity,
+    fields: string[] = [
+      'id',
+      'username',
+      'name',
+      'biography',
+      'avatar',
+      'created_at',
+      'last_seen_at',
+    ],
+  ) {
     var values = {};
     for (const field in user) {
       if (fields.includes(field)) {
@@ -44,6 +58,11 @@ export class UserService {
       }
     }
     return values;
+  }
+
+  public async getUser(id: number, fields: string[]) {
+    const user = await this.getUserEntity({ id });
+    return this.formatUserData(user, fields);
   }
 
   public async getUserAvatar(id: number) {
@@ -125,6 +144,16 @@ export class UserService {
     }
 
     await this.userRepository.save(user);
+
+    // Notify all of his friends
+    const friends = await this.friendService.getFriends(user.id);
+    for (const friend of friends) {
+      this.wsService.sendMessage(
+        friend.user.id,
+        'friend:update',
+        this.formatUserData(user),
+      );
+    }
 
     return {
       id: user.id,

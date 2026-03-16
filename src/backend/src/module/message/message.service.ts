@@ -16,7 +16,7 @@ import * as fs from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { extname, join } from 'node:path';
 import { lookup } from 'mime-types';
-import { Response } from 'express';
+import { WsGateway } from '../ws/ws.gateway';
 
 @Injectable()
 export class MessageService {
@@ -25,6 +25,7 @@ export class MessageService {
     private readonly messageRepository: Repository<MessageEntity>,
     private readonly userService: UserService,
     private readonly friendService: FriendService,
+    private readonly wsService: WsGateway,
   ) {}
   public async getMessagesEntites(
     userIdA: number,
@@ -155,6 +156,11 @@ export class MessageService {
       attachment,
     });
     await this.messageRepository.save(message);
+    this.wsService.sendMessage(
+      to_user.id,
+      'message:new',
+      this.userService.formatUserData(from_user),
+    );
     return {
       id: message.id,
       from_user: {
@@ -197,6 +203,11 @@ export class MessageService {
         }
 
         await this.messageRepository.remove(result);
+        this.wsService.sendMessage(
+          result.to_user.id,
+          'message:delete',
+          this.userService.formatUserData(result.from_user),
+        );
         return { message: 'Message successfully deleted!' };
       } else {
         throw new ForbiddenException(
