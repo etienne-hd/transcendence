@@ -1,6 +1,7 @@
 import { Check, X } from "lucide-react";
 import type { Friend } from "../../api/types/friend";
 import { useFriends } from "../../context/FriendListContext";
+import Avatar from "../Avatar";
 
 interface FriendNavCardProps {
   friend: Friend;
@@ -22,20 +23,11 @@ function FriendNavCard(props: FriendNavCardProps) {
         props.onClick(props.friend);
       }}
     >
-      <div className="relative h-full">
-        <img
-          src={
-            props.friend.user.avatar ? props.friend.user.avatar : "placeholder"
-          }
-          className="rounded-full h-full"
-        />
-        <div
-          className={
-            "absolute bottom-0 right-0 w-2 h-2 rounded-full " +
-            (props.friend.user.id ? "bg-green-500" : "bg-error")
-          }
-        ></div>
-      </div>
+      <Avatar
+        userId={props.friend.user.id}
+        className="h-full w-auto"
+        showStatus
+      />
       <div className="w-full h-full flex flex-col items-start justify-center">
         <p className="font-semibold text-ellipsis">
           {props.friend.user.username}

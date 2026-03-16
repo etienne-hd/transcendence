@@ -5,6 +5,7 @@ import { useUser } from "../../context/UserContext";
 import { Trash2 } from "lucide-react";
 import { useMessage } from "../../context/MessageContext";
 import { memo } from "react";
+import Avatar from "../Avatar";
 
 interface MessageDisplayProps {
   message: Message;
@@ -32,10 +33,7 @@ const MessageDisplay = memo(function MessageDisplay(
 
   return (
     <div className="flex flex-row gap-4 p-2 pr-6 w-full justify-start items-center">
-      <img
-        src={props.message.from_user.avatar}
-        className="rounded-full w-12 h-12"
-      />
+      <Avatar userId={props.message.from_user.id} className="h-12 w-12" />
       <div className="flex flex-col justify-center items-start w-full">
         <div className="flex flex-row gap-2 justify-center items-center ">
           <p className="font-semibold ">{props.message.from_user.username}</p>

@@ -2,6 +2,7 @@ import { Settings } from "lucide-react";
 import { useUser } from "../../context/UserContext";
 import SettingsModal from "../Settings/SettingsModal";
 import { useState } from "react";
+import Avatar from "../Avatar";
 
 function SettingCard() {
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -21,18 +22,7 @@ function SettingCard() {
           "w-full h-15 flex-row flex gap-4 rounded-md bg-bg-tertiary shadow-xl p-2 px-4"
         }
       >
-        <div className="relative h-full">
-          <img
-            src={user?.avatar ? user.avatar : "placeholder"}
-            className="rounded-full h-full"
-          />
-          <div
-            className={
-              "absolute bottom-0 right-0 w-2 h-2 rounded-full " +
-              (isActive ? "bg-green-500" : "bg-error")
-            }
-          ></div>
-        </div>
+        <Avatar userId={user?.id} showStatus className="h-full " />
         <div className="w-full h-full flex flex-col items-start justify-center">
           <p className="font-semibold text-ellipsis">{user?.username}</p>
         </div>

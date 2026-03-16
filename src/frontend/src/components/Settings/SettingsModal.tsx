@@ -1,8 +1,10 @@
 import { useUser } from "../../context/UserContext";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserInformation from "./UserInformation";
 import Modal from "../Modal";
 import { useLogin } from "../../context/LoginContext";
+import { Edit2 } from "lucide-react";
+import Avatar from "../Avatar";
 
 interface SettingsModalProps {
   toggleSettings: () => void;
@@ -15,24 +17,35 @@ function SettingsModal(props: SettingsModalProps) {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [biography, setBiography] = useState<string | undefined>(undefined);
+  const [avatar, setAvatar] = useState<File | undefined>(undefined);
 
   // TODO : Add avatar switching
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { user, saveChange } = useUser();
   const { logout } = useLogin();
 
   const onSubmit = () => {
-    if (
-      saveChange(
-        name,
-        username,
-        email,
-        password,
-        biography,
-        props.toggleSettings,
-      )
-    ) {
-      props.toggleSettings();
+    saveChange(
+      name,
+      username,
+      email,
+      password,
+      biography,
+      avatar,
+      props.toggleSettings,
+    ).then((res) => {
+      if (res) {
+        props.toggleSettings();
+      }
+    });
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setAvatar(file);
     }
   };
 
@@ -61,9 +74,21 @@ function SettingsModal(props: SettingsModalProps) {
         <div className="flex flex-row gap-6 justify-between p-4 items-center w-full">
           <div className="flex flex-row gap-6 justify-center items-center">
             <div className="relative h-full">
-              <img
-                src={user?.avatar ? user.avatar : "placehoder"}
-                className="rounded-full h-20 w-20"
+              <Avatar userId={user?.id} className="-20 w-20" />
+              <button
+                onClick={() => {
+                  fileInputRef.current?.click();
+                }}
+                className="absolute top-0 left-0 h-full w-full cursor-pointer opacity-0 hover:opacity-100 duration-200 backdrop-brightness-80 rounded-full flex justify-center items-center"
+              >
+                <Edit2 color="var(--color-font-secondary)" size={25} />
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                className="hidden"
               />
             </div>
             <div className="flex flex-col justify-center items-start">
@@ -143,7 +168,8 @@ function SettingsModal(props: SettingsModalProps) {
                 (username != undefined && username != "") ||
                 (email != undefined && email != "") ||
                 (password != undefined && password != "") ||
-                (biography != undefined && biography != "")
+                (biography != undefined && biography != "") ||
+                avatar != undefined
               )
             }
             className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
