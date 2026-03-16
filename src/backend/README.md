@@ -8,6 +8,8 @@
 | `friend:accept`  | A friend request was accepted      | Caller Data |
 | `friend:delete`  | A friend was removed               | Caller Data |
 | `friend:update`  | A friend has updated their profile | Caller Data |
+| `friend:online`  | A friend just went online          | Caller Data |
+| `friend:offline` | A friend just went offline         | Caller Data |
 | `message:new`    | A new message was received         | Caller Data |
 | `message:delete` | A message was deleted              | Caller Data |
 
