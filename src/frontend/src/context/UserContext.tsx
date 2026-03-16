@@ -25,7 +25,7 @@ interface UserContextType {
     password: string | undefined,
     biography: string | undefined,
     onSuccess: () => void,
-  ) => void;
+  ) => boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -62,10 +62,12 @@ function UserContextProvider(props: UserContextProviderProps) {
         setUser(response);
         pushNotification("Change saved", "valid");
         onSuccess();
+        return true;
       } catch (e) {
         if (axios.isAxiosError(e) && e.response) {
           pushNotification(e.response.data.message, "error");
         }
+        return false;
       }
     }
   };
