@@ -4,10 +4,25 @@ import { type Message } from "./types/message";
 const attachmentCache: Map<number, Blob> = new Map();
 
 export const messageService = {
-  async getMessage(id: number): Promise<Message[]> {
-    const response = await apiClient.post<Message[]>("/messages", {
-      user_id: id,
-    });
+  async getMessage(
+    id: number,
+    sort?: string,
+    search?: string,
+    attachment?: boolean,
+  ): Promise<Message[]> {
+    const response = await apiClient.post<Message[]>(
+      "/messages",
+      {
+        user_id: id,
+      },
+      {
+        params: {
+          sort: sort,
+          search: search,
+          attachment: attachment,
+        },
+      },
+    );
 
     return response.data;
   },

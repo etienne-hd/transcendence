@@ -22,7 +22,11 @@ interface MessageContextProviderProps {
 
 interface MessageContextType {
   messages: Message[];
-  getMessage: () => Promise<void>;
+  getMessage: (
+    sort?: string,
+    search?: string,
+    attachment?: boolean,
+  ) => Promise<void>;
   pushMessage: (
     content: string,
     attachment: File | undefined,
@@ -46,7 +50,11 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const { socket } = useSocket();
   const { updateFriends } = useFriends();
 
-  const getMessage = async () => {
+  const getMessage = async (
+    sort?: string,
+    search?: string,
+    attachment?: boolean,
+  ) => {
     try {
       if (!friendFocused) {
         pushNotification(
@@ -56,12 +64,14 @@ function MessageContextProvider(props: MessageContextProviderProps) {
       } else {
         const response = await messageService.getMessage(
           friendFocused?.user.id,
+          sort,
+          search,
+          attachment,
         );
 
         setMessages(response);
 
         await messageService.markReadAll(friendFocused.user.id);
-        updateFriends();
       }
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {

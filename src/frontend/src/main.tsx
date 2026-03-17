@@ -36,8 +36,6 @@ createRoot(document.getElementById("root")!).render(
                           path="/message/:username"
                           element={<Conversation />}
                         ></Route>
-
-                        {/*404 route*/}
                       </Routes>
                     </BrowserRouter>
                   </div>

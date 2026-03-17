@@ -25,8 +25,8 @@ function MessageInput() {
   };
 
   const onSubmit = () => {
-    setLoading(true);
     if (content.trim() != "" || file != undefined) {
+      setLoading(true);
       pushMessage(content, file)
         .then((sent) => {
           if (sent) {

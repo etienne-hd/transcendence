@@ -43,15 +43,20 @@ function Conversation() {
   }, [friends, navigate]);
 
   useEffect(() => {
-    const friend = friends.filter((friend) => friend.user.username == username);
+    if (friends && friends.length != 0) {
+      const friend = friends.filter(
+        (friend) => friend.user.username == username,
+      );
 
-    if (friend.length != 0) {
-      setFriendFocused(friend[0]);
-    } else {
-      navigate("/");
+      if (friend.length != 0) {
+        setFriendFocused(friend[0]);
+      } else {
+        navigate("/");
+      }
     }
   }, [friends]);
 
+  // TODO: Scroll to bottom on message send
   return (
     <>
       <PageWrapper
