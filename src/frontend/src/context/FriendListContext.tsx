@@ -120,7 +120,7 @@ export const useFriends = () => {
   const context = useContext(FriendListContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useFriends doit être utilisé à l'intérieur d'un FriendListContextProvider",
     );
   }
   return context;

@@ -134,7 +134,7 @@ export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useUser doit être utilisé à l'intérieur d'un UserContextProvider",
     );
   }
   return context;

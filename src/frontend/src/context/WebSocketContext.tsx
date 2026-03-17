@@ -53,12 +53,11 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
   );
 }
 
-// TODO: Changer les message des hook des context pour matcher avec le context associer
 export const useSocket = () => {
   const context = useContext(WebSocketContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useSocket doit être utilisé à l'intérieur d'un WebSockerContextProvider",
     );
   }
   return context;
