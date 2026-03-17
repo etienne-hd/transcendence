@@ -27,7 +27,7 @@ interface UserContextType {
     avatar: File | string | undefined,
     onSuccess: () => void,
   ) => Promise<boolean>;
-  loadAvatar: (userId: number, imgRef: HTMLImageElement) => Promise<void>;
+  loadAvatar: (userId: number) => Promise<Blob | undefined>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -86,11 +86,10 @@ function UserContextProvider(props: UserContextProviderProps) {
     return false;
   };
 
-  const loadAvatar = async (userId: number, imageRef: HTMLImageElement) => {
+  const loadAvatar = async (userId: number) => {
     try {
-      if (imageRef != null) {
-        await userService.loadAvatar(userId, imageRef);
-      }
+      const response = await userService.loadAvatar(userId);
+      return response;
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.StatusCode == 401) {

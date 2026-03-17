@@ -25,29 +25,46 @@ const formatMessageDate = (isoDate: string) => {
   return date.fromNow();
 };
 
-// TODO: si attachement == image -> preview avec un <img/>
+// TODO: charger uniquyement si dans le viewport
 const MessageDisplay = memo(function MessageDisplay(
   props: MessageDisplayProps,
 ) {
   const [downloadPercent, setDownloadPercent] = useState<number | undefined>(
     undefined,
   );
-
-  const attachmentRef = useRef<HTMLImageElement>(null);
+  const [attachmentUrl, setAttachmentUrl] = useState<string | undefined>(
+    undefined,
+  );
 
   const { user } = useUser();
   const { removeMessage, downloadAttachment, loadAttachment } = useMessage();
 
   useEffect(() => {
-    if (props.message.attachment && attachmentRef.current) {
-      loadAttachment(props.message.id, attachmentRef?.current);
+    let objectUrl: string | null = null;
+
+    const runLoad = async () => {
+      try {
+        if (props.message.id) {
+          const blob = await loadAttachment(props.message.id);
+
+          if (blob) {
+            objectUrl = URL.createObjectURL(blob);
+            setAttachmentUrl(objectUrl);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur avatar", err);
+      }
+    };
+
+    if (props.message.attachment != undefined) {
+      runLoad();
     }
-  }, [
-    attachmentRef,
-    loadAttachment,
-    props.message.attachment,
-    props.message.id,
-  ]);
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [props.message.id]);
 
   return (
     <div className="flex flex-row gap-4 p-2 pr-6 w-full justify-start items-start">
@@ -69,7 +86,7 @@ const MessageDisplay = memo(function MessageDisplay(
                 props.message.attachment.endsWith(".jpg") ||
                 props.message.attachment.endsWith(".jpeg")) && (
                 <img
-                  ref={attachmentRef}
+                  src={attachmentUrl}
                   className="object-cover max-w-full rounded-md"
                 />
               )}

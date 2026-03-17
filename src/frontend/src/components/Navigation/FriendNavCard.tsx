@@ -35,8 +35,13 @@ function FriendNavCard(props: FriendNavCardProps) {
           dayjs(props.friend.user.last_seen_at).diff(dayjs(), "m") >= -5
         }
       />
-      <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
+      <div className="w-full min-w-0 h-full flex flex-row items-center gap-2 justify-start">
         <p className="font-semibold truncate">{props.friend.user.username}</p>
+        {props.friend.unread_messages != 0 && (
+          <div className="bg-error rounded-full text-xs w-4 h-4 flex justify-center items-center">
+            <p className="">{props.friend.unread_messages}</p>
+          </div>
+        )}
       </div>
       <div className="h-full flex flex-row justify-center items-center">
         {props.friend.status == "pending" && (
@@ -45,7 +50,7 @@ function FriendNavCard(props: FriendNavCardProps) {
               addFriend(props.friend.user.username);
               e.stopPropagation();
             }}
-            className="h-full flex justify-center items-center hover:bg-black/20 rounded-full p-1 "
+            className="h-full flex justify-center items-center hover:bg-black/20 rounded-full aspect-square p-1 "
           >
             <Check color="var(--color-font-secondary)" size={18} />
           </div>

@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useSocket } from "../context/WebSocketContext";
 import type { SocketCaller } from "../api/types/socketCaller";
@@ -14,15 +14,35 @@ const Avatar = memo((props: AvatarProps) => {
   const [logged, setLogged] = useState<boolean>(
     props.defaultStatus ? props.defaultStatus : false,
   );
-  const avatarRef = useRef<HTMLImageElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+
   const { loadAvatar } = useUser();
   const { socket } = useSocket();
 
   useEffect(() => {
-    if (avatarRef.current && props.userId) {
-      loadAvatar(props.userId, avatarRef.current);
-    }
-  }, [props.userId, avatarRef, loadAvatar]);
+    let objectUrl: string | null = null;
+
+    const runLoad = async () => {
+      try {
+        if (props.userId) {
+          const blob = await loadAvatar(props.userId);
+
+          if (blob) {
+            objectUrl = URL.createObjectURL(blob);
+            setAvatarUrl(objectUrl);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur avatar", err);
+      }
+    };
+
+    runLoad();
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [props.userId]);
 
   useEffect(() => {
     if (props.showStatus) {
@@ -44,7 +64,7 @@ const Avatar = memo((props: AvatarProps) => {
     <>
       <div className={"relative aspect-square " + props.className}>
         <img
-          ref={avatarRef}
+          src={avatarUrl}
           className={"rounded-full relative h-full w-full object-cover"}
         />
         {props.showStatus && (

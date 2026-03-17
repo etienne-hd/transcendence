@@ -6,4 +6,5 @@ export interface Friend {
   status: string;
   created_at: string;
   friend_at: string;
+  unread_messages: number;
 }

@@ -1,7 +1,7 @@
 import { apiClient } from "./api.service";
 import type { User } from "./types/user";
 
-const avatarCache: Map<string, Blob> = new Map();
+const avatarCache: Map<number, Blob> = new Map();
 
 export const userService = {
   async me(): Promise<User> {
@@ -36,50 +36,22 @@ export const userService = {
   },
 
   async removeAvatarCache(id: number): Promise<void> {
-    avatarCache.delete(`/user/${id}/avatar`);
-
-    const cache = await caches.open("avatar-cache-v1");
-
-    cache.delete(`/user/${id}/avatar`);
+    avatarCache.delete(id);
   },
 
-  async loadAvatar(
-    id: number,
-    imgRef: HTMLImageElement,
-  ): Promise<{ message: string }> {
-    const cacheName = "avatar-cache-v1";
+  async loadAvatar(id: number): Promise<Blob> {
     const requestUrl = `/user/${id}/avatar`;
 
-    let blob;
-
-    if (avatarCache.get(requestUrl)) {
-      blob = avatarCache.get(requestUrl);
-    } else {
-      const cache = await caches.open(cacheName);
-
-      let response = await cache.match(requestUrl);
-
-      if (!response) {
-        const axiosResponse = await apiClient.get(requestUrl, {
-          responseType: "blob",
-        });
-
-        response = new Response(axiosResponse.data, {
-          headers: { "Content-Type": axiosResponse.headers["content-type"] },
-        });
-
-        await cache.put(requestUrl, response.clone());
-      }
-
-      blob = await response.blob();
-
-      avatarCache.set(requestUrl, blob);
+    if (avatarCache.get(id) != undefined) {
+      return avatarCache.get(id);
     }
 
-    if (blob) {
-      imgRef.src = URL.createObjectURL(blob);
-    }
+    const response = await apiClient.get(requestUrl, {
+      responseType: "blob",
+    });
 
-    return { message: "Avatar retreived" };
+    avatarCache.set(id, response.data);
+
+    return response.data;
   },
 };
