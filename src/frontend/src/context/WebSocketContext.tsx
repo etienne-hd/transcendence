@@ -20,11 +20,12 @@ const WebSocketContext = createContext<WebSocketContextType | undefined>(
   undefined,
 );
 
+// TODO: Reconnecter le socket si se close tt seul
 function WebSocketContextProvider(props: WebSocketContextProviderProps) {
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
   const { loggedStatus } = useLogin();
 
-  useEffect(() => {
+  const initSocket = () => {
     if (loggedStatus) {
       const socketio = io("http://localhost:3000", {
         transports: ["websocket"],
@@ -37,13 +38,19 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
       socketio.on("connect_error", (err) =>
         console.log("Error with socket connexion:", err),
       );
+      socketio.on("disconnect", () => {
+        initSocket();
+      });
 
       setSocket(socketio);
-
-      return () => {
-        socketio.disconnect();
-      };
     }
+  };
+
+  useEffect(() => {
+    initSocket();
+    return () => {
+      socket?.disconnect();
+    };
   }, [loggedStatus]);
 
   return (

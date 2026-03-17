@@ -6,6 +6,7 @@ import { useMessage } from "../../context/MessageContext";
 import MessageDisplay from "../../components/Messages/MessageDisplay";
 import { Virtuoso } from "react-virtuoso";
 
+// TODO: sort les messages
 function Conversation() {
   const { messages } = useMessage();
 

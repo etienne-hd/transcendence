@@ -22,6 +22,7 @@ const LoggedStatusContext = createContext<LoggedStatusContextType | undefined>(
   undefined,
 );
 
+//TODO: close le socket a la deconnection
 function LoginContext(props: LoginContextProps) {
   const [loggedStatus, setLoggedStatus] = useState<boolean>(false);
 
