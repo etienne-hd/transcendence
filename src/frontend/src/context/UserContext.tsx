@@ -24,9 +24,10 @@ interface UserContextType {
     email: string | undefined,
     password: string | undefined,
     biography: string | undefined,
-    avatar: File | undefined,
+    avatar: File | string | undefined,
     onSuccess: () => void,
   ) => Promise<boolean>;
+  loadAvatar: (userId: number, imgRef: HTMLImageElement) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -35,7 +36,7 @@ function UserContextProvider(props: UserContextProviderProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
 
   const { pushNotification } = useNotification();
-  const { loggedStatus } = useLogin();
+  const { loggedStatus, logout } = useLogin();
 
   const saveChange = async (
     name: string | undefined,
@@ -43,7 +44,7 @@ function UserContextProvider(props: UserContextProviderProps) {
     email: string | undefined,
     password: string | undefined,
     biography: string | undefined,
-    avatar: File | undefined,
+    avatar: File | string | undefined,
     onSuccess: () => void,
   ) => {
     if (
@@ -70,12 +71,32 @@ function UserContextProvider(props: UserContextProviderProps) {
         return true;
       } catch (e) {
         if (axios.isAxiosError(e) && e.response) {
-          pushNotification(e.response.data.message, "error");
+          if (e.response.data.statusCode == 401) {
+            logout();
+          } else {
+            pushNotification(e.response.data.message, "error");
+          }
         }
         return false;
       }
     }
     return false;
+  };
+
+  const loadAvatar = async (userId: number, imageRef: HTMLImageElement) => {
+    try {
+      if (imageRef != null) {
+        await userService.loadAvatar(userId, imageRef);
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e) && e.response) {
+        if (e.response.data.StatusCode == 401) {
+          logout();
+        } else {
+          pushNotification(e.response.data.message, "error");
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -101,7 +122,7 @@ function UserContextProvider(props: UserContextProviderProps) {
   }, [loggedStatus, pushNotification]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, saveChange }}>
+    <UserContext.Provider value={{ user, setUser, saveChange, loadAvatar }}>
       {props.children}
     </UserContext.Provider>
   );

@@ -1,18 +1,28 @@
+import { memo, useEffect, useRef } from "react";
+import { useUser } from "../context/UserContext";
+
 interface AvatarProps {
   userId: number | undefined;
   className?: string;
   showStatus?: boolean;
 }
 
-function Avatar(props: AvatarProps) {
+const Avatar = memo((props: AvatarProps) => {
   const logged = true;
+  const avatarRef = useRef<HTMLImageElement>(null);
+  const { loadAvatar } = useUser();
 
-  //TODO: baseurl
+  useEffect(() => {
+    if (avatarRef.current && props.userId) {
+      loadAvatar(props.userId, avatarRef.current);
+    }
+  }, [props.userId, avatarRef, loadAvatar]);
+
   return (
     <>
       <div className={"relative aspect-square " + props.className}>
         <img
-          src={"http://localhost:3000/user/" + props.userId + "/avatar"}
+          ref={avatarRef}
           className={"rounded-full relative h-full w-full object-cover"}
         />
         {props.showStatus && (
@@ -26,6 +36,6 @@ function Avatar(props: AvatarProps) {
       </div>
     </>
   );
-}
+});
 
 export default Avatar;

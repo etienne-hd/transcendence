@@ -1,6 +1,8 @@
 import { apiClient } from "./api.service";
 import { type Message } from "./types/message";
 
+const attachmentCache: Map<string, Blob> = new Map();
+
 export const messageService = {
   async getMessage(id: number): Promise<Message[]> {
     const response = await apiClient.post<Message[]>("/messages", {
@@ -52,19 +54,37 @@ export const messageService = {
     id: number,
     imgRef: HTMLImageElement,
   ): Promise<{ message: string }> {
-    const response = await apiClient.get("/message/" + id + "/attachment", {
-      responseType: "blob",
-    });
+    const cacheName = "attachment-cache-v1";
+    const requestUrl = `/message/${id}/attachment`;
 
-    const blob = response.data;
+    let blob;
 
-    const url = window.URL.createObjectURL(blob);
+    if (attachmentCache.get(requestUrl)) {
+      blob = attachmentCache.get(requestUrl);
+    } else {
+      const cache = await caches.open(cacheName);
+      let response = await cache.match(requestUrl);
 
-    imgRef.src = url;
+      if (!response) {
+        const axiosResponse = await apiClient.get(requestUrl, {
+          responseType: "blob",
+        });
 
-    imgRef.onload = () => window.URL.revokeObjectURL(url);
+        response = new Response(axiosResponse.data, {
+          headers: { "Content-Type": axiosResponse.headers["content-type"] },
+        });
 
-    return response.data;
+        await cache.put(requestUrl, response.clone());
+      }
+
+      blob = await response.blob();
+    }
+
+    if (blob) {
+      imgRef.src = URL.createObjectURL(blob);
+    }
+
+    return { message: "Attachment successfully retreived" };
   },
 
   async sendMessage(

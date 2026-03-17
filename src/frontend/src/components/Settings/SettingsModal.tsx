@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import UserInformation from "./UserInformation";
 import Modal from "../Modal";
 import { useLogin } from "../../context/LoginContext";
-import { Edit2 } from "lucide-react";
+import { Edit2, Trash2 } from "lucide-react";
 import Avatar from "../Avatar";
 
 interface SettingsModalProps {
@@ -16,7 +16,7 @@ function SettingsModal(props: SettingsModalProps) {
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [biography, setBiography] = useState<string | undefined>(undefined);
-  const [avatar, setAvatar] = useState<File | undefined>(undefined);
+  const [avatar, setAvatar] = useState<File | string | undefined>(undefined);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,6 +87,14 @@ function SettingsModal(props: SettingsModalProps) {
                 accept="image/*"
                 className="hidden"
               />
+              <button
+                onClick={() => {
+                  setAvatar("default");
+                }}
+                className="absolute -bottom-1 -right-3 cursor-pointer flex justify-center items-center"
+              >
+                <Trash2 size={20} color="var(--color-font-secondary)" />
+              </button>
             </div>
             <div className="flex flex-col justify-center items-start">
               <h1 className="text-xl font-semibold">{user?.username}</h1>
