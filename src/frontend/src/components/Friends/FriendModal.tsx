@@ -33,7 +33,11 @@ function FriendModal(props: FriendModalProps) {
               className={
                 "border-2 p-1 rounded-main w-full bg-bg-tertiary border-border-tertiary  focus:border-accent-primary outline-hidden invalid:border-error "
               }
-            ></p>
+            >
+              {props.friend?.user.biography != ""
+                ? props.friend?.user.biography
+                : "No biography for this user"}
+            </p>
           </div>
         </div>
         <div className="w-[90%] h-1 bg-bg-tertiary rounded-full" />
