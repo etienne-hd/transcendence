@@ -27,7 +27,11 @@ export const userService = {
     if (biography) formData.append("biography", biography);
 
     if (avatar) {
-      formData.append("file", avatar);
+      if (typeof avatar == "string") {
+        formData.append("avatar", avatar);
+      } else {
+        formData.append("file", avatar);
+      }
     }
 
     const response = await apiClient.put<User>("/me", formData);
