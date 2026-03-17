@@ -15,6 +15,7 @@ import { join } from 'node:path';
 import { lookup } from 'mime-types';
 import { WsGateway } from '../ws/ws.gateway';
 import { FriendService } from '../friend/friend.service';
+import sharp from 'sharp';
 
 @Injectable()
 export class UserService {
@@ -81,7 +82,8 @@ export class UserService {
 
     const mimeType = lookup(avatarPath) || 'application/octet-stream';
 
-    const file = fs.createReadStream(avatarPath);
+    const file = await sharp(avatarPath).resize(256);
+
     return new StreamableFile(file, { type: mimeType });
   }
 

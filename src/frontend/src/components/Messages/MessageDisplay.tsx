@@ -2,10 +2,13 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import type { Message } from "../../api/types/message";
 import { useUser } from "../../context/UserContext";
-import { DownloadIcon, Trash2 } from "lucide-react";
+import { AudioLines, DownloadIcon, Pause, Play, Trash2 } from "lucide-react";
 import { useMessage } from "../../context/MessageContext";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Avatar from "../Avatar";
+import { useSpeech } from "react-text-to-speech";
+import LoadingSpinner from "../LoadingSpinner";
+import { useNotification } from "../../context/NotificationContext";
 
 interface MessageDisplayProps {
   message: Message;
@@ -25,6 +28,7 @@ const formatMessageDate = (isoDate: string) => {
   return date.fromNow();
 };
 
+// TODO: text to speech
 const MessageDisplay = memo(function MessageDisplay(
   props: MessageDisplayProps,
 ) {
@@ -37,6 +41,26 @@ const MessageDisplay = memo(function MessageDisplay(
 
   const { user } = useUser();
   const { removeMessage, downloadAttachment, loadAttachment } = useMessage();
+  const { pushNotification } = useNotification();
+
+  const { speechStatus, start, pause } = useSpeech({
+    text: props.message.content,
+    stableText: true,
+  });
+
+  const toggleSpeech = () => {
+    if (speechSynthesis.getVoices().length == 0) {
+      pushNotification("No voice found in your browser", "error");
+      return;
+    }
+    if (speechStatus == "stopped") {
+      start();
+    } else if (speechStatus == "paused") {
+      start();
+    } else if (speechStatus == "started") {
+      pause();
+    }
+  };
 
   useEffect(() => {
     let objectUrl: string | null = null;
@@ -114,18 +138,32 @@ const MessageDisplay = memo(function MessageDisplay(
           )}
         </div>
       </div>
-      {user?.id == props.message.from_user.id ? (
-        <button
-          onClick={() => {
-            removeMessage(props.message.id);
-          }}
-          className="hover:brightness-150 hover:scale-102 duration-200 cursor-pointer"
-        >
-          <Trash2 size={18} color="var(--color-font-secondary)" />
+      <div className="flex flex-row gap-4">
+        <button onClick={toggleSpeech}>
+          {speechStatus == "stopped" ? (
+            <AudioLines />
+          ) : speechStatus == "started" ? (
+            <Pause />
+          ) : speechStatus == "paused" ? (
+            <Play />
+          ) : (
+            speechStatus == "queued" && <LoadingSpinner />
+          )}
         </button>
-      ) : (
-        <div></div>
-      )}
+
+        {user?.id == props.message.from_user.id ? (
+          <button
+            onClick={() => {
+              removeMessage(props.message.id);
+            }}
+            className="hover:brightness-150 hover:scale-102 duration-200 cursor-pointer"
+          >
+            <Trash2 size={18} color="var(--color-font-secondary)" />
+          </button>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 });
