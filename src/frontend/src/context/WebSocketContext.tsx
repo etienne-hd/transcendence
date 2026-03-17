@@ -20,7 +20,7 @@ const WebSocketContext = createContext<WebSocketContextType | undefined>(
   undefined,
 );
 
-// TODO: Reconnecter le socket si se close tt seul
+// TODO: Changer le status des gens si il y a n'importe quel request qui viens d'eux
 function WebSocketContextProvider(props: WebSocketContextProviderProps) {
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
   const { loggedStatus } = useLogin();

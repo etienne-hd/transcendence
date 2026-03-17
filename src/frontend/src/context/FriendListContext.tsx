@@ -105,6 +105,12 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
       updateFriends();
       await userService.removeAvatarCache(data.id);
     });
+
+    return () => {
+      socket?.off("friend:update");
+      socket?.off("friend:new");
+      socket?.off("friend:delete");
+    };
   });
 
   return (

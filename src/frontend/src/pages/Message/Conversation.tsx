@@ -1,23 +1,56 @@
-import { useEffect, useRef } from "react";
 import MessageFriendInformation from "../../components/Messages/MessageFriendInformation";
 import MessageInput from "../../components/Messages/MessageInput";
 import PageWrapper from "../../components/PageWrapper";
 import { useMessage } from "../../context/MessageContext";
 import MessageDisplay from "../../components/Messages/MessageDisplay";
 import { Virtuoso } from "react-virtuoso";
+import { useEffect } from "react";
+import { useFriends } from "../../context/FriendListContext";
+import { useNavigate, useParams } from "react-router";
+import { useFriendFocused } from "../../context/FriendFocusedContext";
+import { useSocket } from "../../context/WebSocketContext";
+import type { SocketCaller } from "../../api/types/socketCaller";
 
-// TODO: sort les messages
 function Conversation() {
   const { messages } = useMessage();
+  const { friends } = useFriends();
+  const { username } = useParams();
+  const { setFriendFocused, friendFocused } = useFriendFocused();
 
-  const scrollMessageRef = useRef<HTMLDivElement>(null);
+  const { socket } = useSocket();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (scrollMessageRef.current) {
-      scrollMessageRef.current.scrollTop =
-        scrollMessageRef.current.scrollHeight;
+    if (!socket) {
+      return;
     }
-  }, [messages]);
+
+    socket.on("friend:update", (data: SocketCaller) => {
+      if (data.id == friendFocused?.user.id) {
+        const friend = friends.filter((friend) => friend.user.id == data.id);
+        console.log(friend);
+        if (friend.length != 0) {
+          navigate(`/message/${friend[0].user.username}`);
+        } else {
+          navigate("/");
+        }
+      }
+    });
+
+    return () => {
+      socket.off("friend:update");
+    };
+  }, [friends, navigate]);
+
+  useEffect(() => {
+    const friend = friends.filter((friend) => friend.user.username == username);
+
+    if (friend.length != 0) {
+      setFriendFocused(friend[0]);
+    } else {
+      navigate("/");
+    }
+  }, [friends]);
 
   return (
     <>

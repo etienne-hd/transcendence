@@ -9,16 +9,15 @@ import type { Friend } from "../../api/types/friend";
 
 function Navbar() {
   const { friends } = useFriends();
-  const { friendFocused, setFriendFocused } = useFriendFocused();
+  const { friendFocused } = useFriendFocused();
   const { loggedStatus } = useLogin();
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const onClickFriend = (friend: Friend) => {
-    setFriendFocused(friend);
-    if (!location.pathname.startsWith("/message")) {
-      navigate("/message");
+    if (!location.pathname.startsWith("/message/" + friend.user.username)) {
+      navigate("/message/" + friend.user.username);
     }
   };
 

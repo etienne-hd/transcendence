@@ -33,12 +33,11 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/auth" element={<Register />}></Route>
 
                         <Route
-                          path="/message"
+                          path="/message/:username"
                           element={<Conversation />}
                         ></Route>
 
                         {/*404 route*/}
-                        <Route path="*" element={<Navigate to="/" replace />} />
                       </Routes>
                     </BrowserRouter>
                   </div>

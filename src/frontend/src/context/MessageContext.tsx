@@ -185,8 +185,8 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     socket.on("message:delete", handleDeleteMessage);
 
     return () => {
-      socket.off("message:new", handleNewMessage);
-      socket.off("message:delete", handleDeleteMessage);
+      socket.off("message:new");
+      socket.off("message:delete");
     };
   }, [socket, friendFocused]);
 
