@@ -35,6 +35,14 @@ export const userService = {
     return response.data;
   },
 
+  async removeAvatarCache(id: number): Promise<void> {
+    avatarCache.delete(`/user/${id}/avatar`);
+
+    const cache = await caches.open("avatar-cache-v1");
+
+    cache.delete(`/user/${id}/avatar`);
+  },
+
   async loadAvatar(
     id: number,
     imgRef: HTMLImageElement,

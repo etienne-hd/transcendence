@@ -12,6 +12,17 @@ export const messageService = {
     return response.data;
   },
 
+  async markReadAll(id: number): Promise<{ message: string }> {
+    const response = await apiClient.post<{ message: string }>(
+      "/messages/mark-read",
+      {
+        user_id: id,
+      },
+    );
+
+    return response.data;
+  },
+
   async downloadAttachement(
     id: number,
     onProgress: (percent: number | undefined) => void,

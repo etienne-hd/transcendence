@@ -2,6 +2,8 @@ import { Check, X } from "lucide-react";
 import type { Friend } from "../../api/types/friend";
 import { useFriends } from "../../context/FriendListContext";
 import Avatar from "../Avatar";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 interface FriendNavCardProps {
   friend: Friend;
@@ -9,9 +11,11 @@ interface FriendNavCardProps {
   isFocus?: boolean;
 }
 
-// TODO : Loggin status variable
 function FriendNavCard(props: FriendNavCardProps) {
   const { removeFriend, addFriend } = useFriends();
+
+  dayjs.extend(relativeTime);
+  dayjs.locale("fr");
 
   return (
     <div
@@ -23,7 +27,14 @@ function FriendNavCard(props: FriendNavCardProps) {
         props.onClick(props.friend);
       }}
     >
-      <Avatar userId={props.friend.user.id} className="h-8 w-8" showStatus />
+      <Avatar
+        userId={props.friend.user.id}
+        className="h-8 w-8"
+        showStatus
+        defaultStatus={
+          dayjs(props.friend.user.last_seen_at).diff(dayjs(), "m") >= -5
+        }
+      />
       <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
         <p className="font-semibold truncate">{props.friend.user.username}</p>
       </div>

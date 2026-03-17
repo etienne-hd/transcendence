@@ -66,6 +66,9 @@ function UserContextProvider(props: UserContextProviderProps) {
         );
 
         setUser(response);
+        if (user?.id) {
+          await userService.removeAvatarCache(user?.id);
+        }
         pushNotification("Change saved", "valid");
         onSuccess();
         return true;

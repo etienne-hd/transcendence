@@ -63,6 +63,8 @@ function MessageContextProvider(props: MessageContextProviderProps) {
         );
 
         setMessages(response);
+
+        await messageService.markReadAll(friendFocused.user.id);
       }
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
