@@ -1,10 +1,8 @@
-import { Link2, Paperclip, Send } from "lucide-react";
+import { Paperclip, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useMessage } from "../../context/MessageContext";
-import { FilePlus } from "lucide";
 import LoadingSpinner from "../LoadingSpinner";
 
-//TODO: textarea qui s'ajuste toute seul
 function MessageInput() {
   const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<File | undefined>(undefined);

@@ -25,7 +25,6 @@ const formatMessageDate = (isoDate: string) => {
   return date.fromNow();
 };
 
-// TODO: charger uniquyement si dans le viewport
 const MessageDisplay = memo(function MessageDisplay(
   props: MessageDisplayProps,
 ) {
