@@ -13,6 +13,8 @@ import axios from "axios";
 import { useNotification } from "./NotificationContext";
 import { messageService } from "../api/api.message";
 import { useUser } from "./UserContext";
+import { useSocket } from "./WebSocketContext";
+import type { SocketCaller } from "../api/types/socketCaller";
 
 interface MessageContextProviderProps {
   children: ReactNode;
@@ -44,6 +46,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const { friendFocused } = useFriendFocused();
   const { user } = useUser();
   const { pushNotification } = useNotification();
+  const { socket } = useSocket();
 
   // TODO: Mark all message as readed when retreived
 
@@ -165,6 +168,14 @@ function MessageContextProvider(props: MessageContextProviderProps) {
       getMessage();
     }
   }, [friendFocused, user]);
+
+  useEffect(() => {
+    socket?.on("message:new", (data: SocketCaller) => {
+      if (data.id == friendFocused?.user.id) {
+        getMessage();
+      }
+    });
+  });
 
   return (
     <MessageContext.Provider

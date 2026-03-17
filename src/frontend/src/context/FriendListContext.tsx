@@ -10,6 +10,7 @@ import { useLogin } from "./LoginContext";
 import { useNotification } from "./NotificationContext";
 import { friendService } from "../api/api.friend";
 import type { Friend } from "../api/types/friend";
+import { useSocket } from "./WebSocketContext";
 
 interface FriendListContextType {
   friends: Friend[];
@@ -30,6 +31,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   const [friends, setFriends] = useState<Friend[]>([]);
   const { loggedStatus, logout } = useLogin();
   const { pushNotification } = useNotification();
+  const { socket } = useSocket();
 
   const updateFriends = async () => {
     try {
@@ -87,6 +89,16 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
       updateFriends();
     }
   }, [loggedStatus]);
+
+  useEffect(() => {
+    socket?.on("friend:new", () => {
+      updateFriends();
+    });
+
+    socket?.on("friend:delete", () => {
+      updateFriends();
+    });
+  });
 
   return (
     <FriendListContext.Provider
