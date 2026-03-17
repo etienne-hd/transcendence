@@ -4,6 +4,7 @@ import MessageInput from "../../components/Messages/MessageInput";
 import PageWrapper from "../../components/PageWrapper";
 import { useMessage } from "../../context/MessageContext";
 import MessageDisplay from "../../components/Messages/MessageDisplay";
+import { Virtuoso } from "react-virtuoso";
 
 function Conversation() {
   const { messages } = useMessage();
@@ -26,13 +27,16 @@ function Conversation() {
       >
         <div className="flex flex-col h-full w-full">
           <MessageFriendInformation />
-          <div
-            ref={scrollMessageRef}
-            className="overflow-y-scroll flex flex-col h-full items-end"
-          >
-            {messages.map((message, index) => (
-              <MessageDisplay message={message} key={index} />
-            ))}
+          <div className="flex-1 overflow-hidden">
+            <Virtuoso
+              data={messages}
+              className="h-full w-full"
+              itemContent={(index, message) => (
+                <MessageDisplay message={message} />
+              )}
+              initialTopMostItemIndex={messages.length - 1}
+              followOutput="smooth"
+            />
           </div>
           <MessageInput />
         </div>

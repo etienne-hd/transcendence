@@ -46,18 +46,22 @@ const Avatar = memo((props: AvatarProps) => {
 
   useEffect(() => {
     if (props.showStatus) {
-      socket?.on("friend:online", (data: SocketCaller) => {
-        if (data.id == props.userId) {
-          setLogged(true);
-        }
-      });
+      const handleOnline = (data: { id: number }) => {
+        if (data.id === props.userId) setLogged(true);
+      };
+      const handleOffline = (data: { id: number }) => {
+        if (data.id === props.userId) setLogged(false);
+      };
 
-      socket?.on("friend:offline", (data: SocketCaller) => {
-        if (data.id == props.userId) {
-          setLogged(false);
-        }
-      });
+      socket?.on("friend:online", handleOnline);
+
+      socket?.on("friend:offline", handleOffline);
     }
+
+    return () => {
+      socket?.off("friend:online");
+      socket?.off("friend:offline");
+    };
   });
 
   return (
@@ -65,7 +69,11 @@ const Avatar = memo((props: AvatarProps) => {
       <div className={"relative aspect-square " + props.className}>
         <img
           src={avatarUrl}
-          className={"rounded-full relative h-full w-full object-cover"}
+          decoding="async"
+          className={
+            "rounded-full h-full w-full object-cover " +
+            (props.showStatus && "relative")
+          }
         />
         {props.showStatus && (
           <div

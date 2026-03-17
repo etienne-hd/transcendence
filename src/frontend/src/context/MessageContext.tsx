@@ -46,8 +46,6 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const { socket } = useSocket();
   const { updateFriends } = useFriends();
 
-  // TODO: Mark all message as readed when retreived
-
   const getMessage = async () => {
     try {
       if (!friendFocused) {
@@ -167,20 +165,30 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   }, [friendFocused, user]);
 
   useEffect(() => {
-    socket?.on("message:new", (data: SocketCaller) => {
-      if (data.id == friendFocused?.user.id) {
-        console.log(data.id + " : " + friendFocused.user.id);
+    if (!socket) return;
+
+    const handleNewMessage = (data: SocketCaller) => {
+      if (data.id === friendFocused?.user.id) {
         getMessage();
       } else {
         updateFriends();
       }
-    });
-    socket?.on("message:delete", (data: SocketCaller) => {
-      if (data.id == friendFocused?.user.id) {
+    };
+
+    const handleDeleteMessage = (data: SocketCaller) => {
+      if (data.id === friendFocused?.user.id) {
         getMessage();
       }
-    });
-  });
+    };
+
+    socket.on("message:new", handleNewMessage);
+    socket.on("message:delete", handleDeleteMessage);
+
+    return () => {
+      socket.off("message:new", handleNewMessage);
+      socket.off("message:delete", handleDeleteMessage);
+    };
+  }, [socket, friendFocused]);
 
   return (
     <MessageContext.Provider
@@ -202,7 +210,7 @@ export const useMessage = () => {
   const context = useContext(MessageContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un MessageContextProvider",
+      "useMessage doit être utilisé à l'intérieur d'un MessageContextProvider",
     );
   }
   return context;
