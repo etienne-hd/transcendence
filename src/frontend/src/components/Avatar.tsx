@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
 import { useSocket } from "../context/WebSocketContext";
-import type { SocketCaller } from "../api/types/socketCaller";
 
 interface AvatarProps {
   userId: number | undefined;
