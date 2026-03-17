@@ -26,7 +26,6 @@ function PageWrapper(props: PageWrapperProps) {
     }
   }, [loggedStatus, props, naviagate]);
 
-  // TODO: Loading screen if needLog while not logged
   return (
     <div className="w-full h-full flex flex-row bg-bg-tertiary text-font-main">
       <NotificationStack notifications={notifications} />
