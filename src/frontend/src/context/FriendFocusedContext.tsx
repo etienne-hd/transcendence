@@ -31,7 +31,7 @@ export const useFriendFocused = () => {
   const context = useContext(FriendFocusedContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useFriendFocused doit être utilisé à l'intérieur d'un FriendFocusedContextProvider",
     );
   }
   return context;

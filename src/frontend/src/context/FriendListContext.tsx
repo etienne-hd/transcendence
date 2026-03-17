@@ -10,6 +10,9 @@ import { useLogin } from "./LoginContext";
 import { useNotification } from "./NotificationContext";
 import { friendService } from "../api/api.friend";
 import type { Friend } from "../api/types/friend";
+import { useSocket } from "./WebSocketContext";
+import type { SocketCaller } from "../api/types/socketCaller";
+import { userService } from "../api/api.user";
 
 interface FriendListContextType {
   friends: Friend[];
@@ -30,6 +33,7 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   const [friends, setFriends] = useState<Friend[]>([]);
   const { loggedStatus, logout } = useLogin();
   const { pushNotification } = useNotification();
+  const { socket } = useSocket();
 
   const updateFriends = async () => {
     try {
@@ -88,6 +92,21 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
     }
   }, [loggedStatus]);
 
+  useEffect(() => {
+    socket?.on("friend:new", () => {
+      updateFriends();
+    });
+
+    socket?.on("friend:delete", () => {
+      updateFriends();
+    });
+
+    socket?.on("friend:update", async (data: SocketCaller) => {
+      updateFriends();
+      await userService.removeAvatarCache(data.id);
+    });
+  });
+
   return (
     <FriendListContext.Provider
       value={{ friends, updateFriends, addFriend, removeFriend }}
@@ -101,7 +120,7 @@ export const useFriends = () => {
   const context = useContext(FriendListContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useFriends doit être utilisé à l'intérieur d'un FriendListContextProvider",
     );
   }
   return context;

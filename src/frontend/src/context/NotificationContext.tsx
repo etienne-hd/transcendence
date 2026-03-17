@@ -57,7 +57,7 @@ export const useNotification = () => {
   const context = useContext(NotificationsContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
+      "useNotification doit être utilisé à l'intérieur d'un NotificationContextProvider",
     );
   }
   return context;

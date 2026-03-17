@@ -4,7 +4,6 @@ import {
   useEffect,
   useState,
   type ReactNode,
-  type RefObject,
 } from "react";
 import type { Message } from "../api/types/message";
 import { useLogin } from "./LoginContext";
@@ -13,6 +12,9 @@ import axios from "axios";
 import { useNotification } from "./NotificationContext";
 import { messageService } from "../api/api.message";
 import { useUser } from "./UserContext";
+import { useSocket } from "./WebSocketContext";
+import type { SocketCaller } from "../api/types/socketCaller";
+import { useFriends } from "./FriendListContext";
 
 interface MessageContextProviderProps {
   children: ReactNode;
@@ -30,10 +32,7 @@ interface MessageContextType {
     messageId: number,
     onProgress: (percent: number | undefined) => void,
   ) => Promise<void>;
-  loadAttachment: (
-    messageId: number,
-    imgRef: HTMLImageElement,
-  ) => Promise<void>;
+  loadAttachment: (messageId: number) => Promise<Blob | undefined>;
 }
 
 const MessageContext = createContext<MessageContextType | undefined>(undefined);
@@ -44,8 +43,8 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const { friendFocused } = useFriendFocused();
   const { user } = useUser();
   const { pushNotification } = useNotification();
-
-  // TODO: Mark all message as readed when retreived
+  const { socket } = useSocket();
+  const { updateFriends } = useFriends();
 
   const getMessage = async () => {
     try {
@@ -60,6 +59,9 @@ function MessageContextProvider(props: MessageContextProviderProps) {
         );
 
         setMessages(response);
+
+        await messageService.markReadAll(friendFocused.user.id);
+        updateFriends();
       }
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
@@ -141,20 +143,16 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     }
   };
 
-  const loadAttachment = async (
-    messageId: number,
-    imageRef: HTMLImageElement,
-  ) => {
+  const loadAttachment = async (messageId: number) => {
     try {
-      if (imageRef != null) {
-        await messageService.loadAttachement(messageId, imageRef);
-      }
+      const response = await messageService.loadAttachement(messageId);
+      return response;
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {
         if (e.response.data.StatusCode == 401) {
           logout();
         } else {
-          pushNotification(e.response.data.message, "error");
+          pushNotification(e.message, "error");
         }
       }
     }
@@ -165,6 +163,32 @@ function MessageContextProvider(props: MessageContextProviderProps) {
       getMessage();
     }
   }, [friendFocused, user]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (data: SocketCaller) => {
+      if (data.id === friendFocused?.user.id) {
+        getMessage();
+      } else {
+        updateFriends();
+      }
+    };
+
+    const handleDeleteMessage = (data: SocketCaller) => {
+      if (data.id === friendFocused?.user.id) {
+        getMessage();
+      }
+    };
+
+    socket.on("message:new", handleNewMessage);
+    socket.on("message:delete", handleDeleteMessage);
+
+    return () => {
+      socket.off("message:new", handleNewMessage);
+      socket.off("message:delete", handleDeleteMessage);
+    };
+  }, [socket, friendFocused]);
 
   return (
     <MessageContext.Provider
@@ -186,7 +210,7 @@ export const useMessage = () => {
   const context = useContext(MessageContext);
   if (context === undefined) {
     throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un MessageContextProvider",
+      "useMessage doit être utilisé à l'intérieur d'un MessageContextProvider",
     );
   }
   return context;

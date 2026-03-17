@@ -1,19 +1,79 @@
+import { memo, useEffect, useState } from "react";
+import { useUser } from "../context/UserContext";
+import { useSocket } from "../context/WebSocketContext";
+import type { SocketCaller } from "../api/types/socketCaller";
+
 interface AvatarProps {
   userId: number | undefined;
   className?: string;
   showStatus?: boolean;
+  defaultStatus?: boolean;
 }
 
-function Avatar(props: AvatarProps) {
-  const logged = true;
+const Avatar = memo((props: AvatarProps) => {
+  const [logged, setLogged] = useState<boolean>(
+    props.defaultStatus ? props.defaultStatus : false,
+  );
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
-  //TODO: baseurl
+  const { loadAvatar } = useUser();
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    let objectUrl: string | null = null;
+
+    const runLoad = async () => {
+      try {
+        if (props.userId) {
+          const blob = await loadAvatar(props.userId);
+
+          if (blob) {
+            objectUrl = URL.createObjectURL(blob);
+            setAvatarUrl(objectUrl);
+          }
+        }
+      } catch (err) {
+        console.error("Erreur avatar", err);
+      }
+    };
+
+    runLoad();
+
+    return () => {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [props.userId]);
+
+  useEffect(() => {
+    if (props.showStatus) {
+      const handleOnline = (data: { id: number }) => {
+        if (data.id === props.userId) setLogged(true);
+      };
+      const handleOffline = (data: { id: number }) => {
+        if (data.id === props.userId) setLogged(false);
+      };
+
+      socket?.on("friend:online", handleOnline);
+
+      socket?.on("friend:offline", handleOffline);
+    }
+
+    return () => {
+      socket?.off("friend:online");
+      socket?.off("friend:offline");
+    };
+  });
+
   return (
     <>
       <div className={"relative aspect-square " + props.className}>
         <img
-          src={"http://localhost:3000/user/" + props.userId + "/avatar"}
-          className={"rounded-full relative h-full w-full object-cover"}
+          src={avatarUrl}
+          decoding="async"
+          className={
+            "rounded-full h-full w-full object-cover " +
+            (props.showStatus && "relative")
+          }
         />
         {props.showStatus && (
           <div
@@ -26,6 +86,6 @@ function Avatar(props: AvatarProps) {
       </div>
     </>
   );
-}
+});
 
 export default Avatar;

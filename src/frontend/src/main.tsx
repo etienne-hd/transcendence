@@ -12,35 +12,41 @@ import Conversation from "./pages/Message/Conversation.tsx";
 import UserContextProvider from "./context/UserContext.tsx";
 import FriendListContextProvider from "./context/FriendListContext.tsx";
 import MessageContextProvider from "./context/MessageContext.tsx";
+import WebSocketContextProvider from "./context/WebSocketContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <LoginContext>
       <NotificationContextProvider>
-        <UserContextProvider>
-          <FriendListContextProvider>
-            <FriendFocusedContextProvider>
-              <MessageContextProvider>
-                <div className="bg-bg-tertiary text-font-main flex flex-row w-full h-full">
-                  <BrowserRouter>
-                    <Navbar />
-                    <Routes>
-                      <Route path="/" element={<App />} />
+        <WebSocketContextProvider>
+          <UserContextProvider>
+            <FriendListContextProvider>
+              <FriendFocusedContextProvider>
+                <MessageContextProvider>
+                  <div className="bg-bg-tertiary text-font-main flex flex-row w-full h-full">
+                    <BrowserRouter>
+                      <Navbar />
+                      <Routes>
+                        <Route path="/" element={<App />} />
 
-                      {/*Auth Routes*/}
-                      <Route path="/auth" element={<Register />}></Route>
+                        {/*Auth Routes*/}
+                        <Route path="/auth" element={<Register />}></Route>
 
-                      <Route path="/message" element={<Conversation />}></Route>
+                        <Route
+                          path="/message"
+                          element={<Conversation />}
+                        ></Route>
 
-                      {/*404 route*/}
-                      <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
-                  </BrowserRouter>
-                </div>
-              </MessageContextProvider>
-            </FriendFocusedContextProvider>
-          </FriendListContextProvider>
-        </UserContextProvider>
+                        {/*404 route*/}
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                      </Routes>
+                    </BrowserRouter>
+                  </div>
+                </MessageContextProvider>
+              </FriendFocusedContextProvider>
+            </FriendListContextProvider>
+          </UserContextProvider>
+        </WebSocketContextProvider>
       </NotificationContextProvider>
     </LoginContext>
   </StrictMode>,
