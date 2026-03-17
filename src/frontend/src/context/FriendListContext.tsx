@@ -11,6 +11,8 @@ import { useNotification } from "./NotificationContext";
 import { friendService } from "../api/api.friend";
 import type { Friend } from "../api/types/friend";
 import { useSocket } from "./WebSocketContext";
+import type { SocketCaller } from "../api/types/socketCaller";
+import { userService } from "../api/api.user";
 
 interface FriendListContextType {
   friends: Friend[];
@@ -97,6 +99,11 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
 
     socket?.on("friend:delete", () => {
       updateFriends();
+    });
+
+    socket?.on("friend:update", async (data: SocketCaller) => {
+      updateFriends();
+      await userService.removeAvatarCache(data.id);
     });
   });
 

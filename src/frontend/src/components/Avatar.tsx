@@ -7,10 +7,13 @@ interface AvatarProps {
   userId: number | undefined;
   className?: string;
   showStatus?: boolean;
+  defaultStatus?: boolean;
 }
 
 const Avatar = memo((props: AvatarProps) => {
-  const [logged, setLogged] = useState<boolean>(false);
+  const [logged, setLogged] = useState<boolean>(
+    props.defaultStatus ? props.defaultStatus : false,
+  );
   const avatarRef = useRef<HTMLImageElement>(null);
   const { loadAvatar } = useUser();
   const { socket } = useSocket();
@@ -21,7 +24,6 @@ const Avatar = memo((props: AvatarProps) => {
     }
   }, [props.userId, avatarRef, loadAvatar]);
 
-  //TODO: trouver un moyen pour savoir si il est log au montage
   useEffect(() => {
     if (props.showStatus) {
       socket?.on("friend:online", (data: SocketCaller) => {

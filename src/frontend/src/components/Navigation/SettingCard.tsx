@@ -20,7 +20,12 @@ function SettingCard() {
           "w-full h-15 flex-row flex gap-4 rounded-md bg-bg-tertiary shadow-xl p-2 px-4"
         }
       >
-        <Avatar userId={user?.id} showStatus className="h-10 w-10 " />
+        <Avatar
+          userId={user?.id}
+          showStatus
+          className="h-10 w-10 "
+          defaultStatus={true}
+        />
         <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
           <p className="font-semibold truncate max-w-full">{user?.username}</p>
         </div>
