@@ -18,4 +18,5 @@ export interface UserFront {
   avatar: string;
   created_at: string;
   last_seen_at: string;
+  status: string;
 }

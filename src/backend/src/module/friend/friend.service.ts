@@ -78,6 +78,7 @@ export class FriendService {
             avatar: userFriend.avatar,
             created_at: userFriend.created_at,
             last_seen_at: userFriend.last_seen_at,
+            status: userFriend.status,
           },
           status,
           created_at: friend.created_at,

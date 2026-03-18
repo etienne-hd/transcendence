@@ -31,9 +31,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         userId={props.friend.user.id}
         className="h-8 w-8"
         showStatus
-        defaultStatus={
-          dayjs(props.friend.user.last_seen_at).diff(dayjs(), "m") >= -5
-        }
+        defaultStatus={props.friend.user.status == "online"}
       />
       <div className="w-full min-w-0 h-full flex flex-row items-center gap-2 justify-start">
         <p className="font-semibold truncate">{props.friend.user.username}</p>

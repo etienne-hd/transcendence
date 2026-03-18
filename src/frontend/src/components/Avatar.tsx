@@ -53,16 +53,15 @@ const Avatar = memo((props: AvatarProps) => {
       };
 
       socket?.on("friend:online", handleOnline);
-
       socket?.on("friend:offline", handleOffline);
+
+      return () => {
+        socket?.off("friend:online", handleOnline);
+        socket?.off("friend:offline", handleOffline);
+      };
     }
-
-    return () => {
-      socket?.off("friend:online");
-      socket?.off("friend:offline");
-    };
   });
-
+  console.log(logged, props.userId);
   return (
     <>
       <div className={"relative aspect-square " + props.className}>
