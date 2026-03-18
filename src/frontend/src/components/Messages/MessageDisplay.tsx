@@ -139,17 +139,19 @@ const MessageDisplay = memo(function MessageDisplay(
         </div>
       </div>
       <div className="flex flex-row gap-4">
-        <button onClick={toggleSpeech}>
-          {speechStatus == "stopped" ? (
-            <AudioLines />
-          ) : speechStatus == "started" ? (
-            <Pause />
-          ) : speechStatus == "paused" ? (
-            <Play />
-          ) : (
-            speechStatus == "queued" && <LoadingSpinner />
-          )}
-        </button>
+        {props.message.content != null && props.message.content != "" ? (
+          <button onClick={toggleSpeech}>
+            {speechStatus == "stopped" ? (
+              <AudioLines />
+            ) : speechStatus == "started" ? (
+              <Pause />
+            ) : speechStatus == "paused" ? (
+              <Play />
+            ) : (
+              speechStatus == "queued" && <LoadingSpinner />
+            )}
+          </button>
+        ) : null}
 
         {user?.id == props.message.from_user.id ? (
           <button
@@ -160,9 +162,7 @@ const MessageDisplay = memo(function MessageDisplay(
           >
             <Trash2 size={18} color="var(--color-font-secondary)" />
           </button>
-        ) : (
-          <div></div>
-        )}
+        ) : null}
       </div>
     </div>
   );
