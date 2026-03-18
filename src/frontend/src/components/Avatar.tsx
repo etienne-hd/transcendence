@@ -32,7 +32,7 @@ const Avatar = memo((props: AvatarProps) => {
           }
         }
       } catch (err) {
-        console.error("Erreur avatar", err);
+        console.error("Avatar error", err);
       }
     };
 

@@ -36,7 +36,7 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
 
       socketio.on("connect", () => console.log("Socket Connected"));
       socketio.on("connect_error", (err) =>
-        console.log("Error with socket connexion:", err),
+        console.log("Error with socket connection:", err),
       );
       socketio.on("disconnect", () => {
         initSocket();
@@ -63,9 +63,7 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
 export const useSocket = () => {
   const context = useContext(WebSocketContext);
   if (context === undefined) {
-    throw new Error(
-      "useSocket doit être utilisé à l'intérieur d'un WebSockerContextProvider",
-    );
+    throw new Error("useSocket must be used within a WebSocketContextProvider");
   }
   return context;
 };

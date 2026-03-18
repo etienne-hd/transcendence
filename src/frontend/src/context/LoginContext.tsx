@@ -64,9 +64,7 @@ function LoginContext(props: LoginContextProps) {
 export const useLogin = () => {
   const context = useContext(LoggedStatusContext);
   if (context === undefined) {
-    throw new Error(
-      "useLogin doit être utilisé à l'intérieur d'un LoginContext",
-    );
+    throw new Error("useLogin must be used within a LoginContext");
   }
   return context;
 };

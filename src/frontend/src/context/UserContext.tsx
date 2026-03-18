@@ -69,7 +69,7 @@ function UserContextProvider(props: UserContextProviderProps) {
         if (user?.id) {
           await userService.removeAvatarCache(user?.id);
         }
-        pushNotification("Change saved", "valid");
+        pushNotification("Changed saved", "valid");
         onSuccess();
         return true;
       } catch (e) {
@@ -133,9 +133,7 @@ function UserContextProvider(props: UserContextProviderProps) {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error(
-      "useUser doit être utilisé à l'intérieur d'un UserContextProvider",
-    );
+    throw new Error("useUser must be used within a UserContextProvider");
   }
   return context;
 };

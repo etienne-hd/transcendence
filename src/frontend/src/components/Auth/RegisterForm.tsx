@@ -47,12 +47,12 @@ function RegisterForm() {
         await authService.login(register.username, register.password);
       }
       setLoggedStatus(true);
-      pushNotification("Successfuly connected", "valid");
+      pushNotification("Successfully connected", "valid");
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         pushNotification(err.response.data.message, "error");
       } else {
-        console.error("Authentification failed: " + err);
+        console.error("Authentication failed: " + err);
       }
     }
   };

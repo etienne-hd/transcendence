@@ -87,10 +87,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
   const pushMessage = async (content: string, attachment: File | undefined) => {
     try {
       if (!friendFocused?.user) {
-        pushNotification(
-          "Impossible to send message to invalid friend",
-          "error",
-        );
+        pushNotification("Unable to send message to invalid friend", "error");
       } else {
         await messageService.sendMessage(
           friendFocused?.user.id,
@@ -117,7 +114,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
     try {
       if (!friendFocused?.user) {
         pushNotification(
-          "Impossible to remove message with invalid friend",
+          "Unable to remove message with invalid friend",
           "error",
         );
       } else {
@@ -219,9 +216,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
 export const useMessage = () => {
   const context = useContext(MessageContext);
   if (context === undefined) {
-    throw new Error(
-      "useMessage doit être utilisé à l'intérieur d'un MessageContextProvider",
-    );
+    throw new Error("useMessage must be used within a MessageContextProvider");
   }
   return context;
 };

@@ -39,7 +39,7 @@ function App() {
     <PageWrapper needLog={true} redirectNoLog="/auth">
       <div className="card">
         {loading ? (
-          <p>Chargement de l'utilisateur...</p>
+          <p>Loading user...</p>
         ) : user ? (
           <div className="bg-gray-100 p-4 rounded-lg text-black mb-4">
             <p>
@@ -53,7 +53,7 @@ function App() {
             </p>
           </div>
         ) : (
-          <p>Aucun utilisateur trouvé.</p>
+          <p>No users found.</p>
         )}
 
         <button onClick={() => setCount((count) => count + 1)}>

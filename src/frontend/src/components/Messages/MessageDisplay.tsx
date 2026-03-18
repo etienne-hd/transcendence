@@ -50,7 +50,7 @@ const MessageDisplay = memo(function MessageDisplay(
 
   const toggleSpeech = () => {
     if (speechSynthesis.getVoices().length == 0) {
-      pushNotification("No voice found in your browser", "error");
+      pushNotification("No voice available", "error");
       return;
     }
     if (speechStatus == "stopped") {
@@ -76,7 +76,7 @@ const MessageDisplay = memo(function MessageDisplay(
           }
         }
       } catch (err) {
-        console.error("Erreur avatar", err);
+        console.error("Avatar error", err);
       }
     };
 

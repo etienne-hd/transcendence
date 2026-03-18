@@ -42,7 +42,7 @@ export const useFriendFocused = () => {
   const context = useContext(FriendFocusedContext);
   if (context === undefined) {
     throw new Error(
-      "useFriendFocused doit être utilisé à l'intérieur d'un FriendFocusedContextProvider",
+      "useFriendFocused must be used within a FriendFocusedContextProvider",
     );
   }
   return context;
