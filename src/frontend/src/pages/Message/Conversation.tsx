@@ -14,7 +14,7 @@ import type { SocketCaller } from "../../api/types/socketCaller";
 function Conversation() {
   const { messages } = useMessage();
   const { friends } = useFriends();
-  const { username } = useParams();
+  const { id } = useParams();
   const { setFriendFocused, friendFocused } = useFriendFocused();
 
   const { socket } = useSocket();
@@ -30,7 +30,7 @@ function Conversation() {
         const friend = friends.filter((friend) => friend.user.id == data.id);
         console.log(friend);
         if (friend.length != 0) {
-          navigate(`/message/${friend[0].user.username}`);
+          navigate(`/message/${friend[0].user.id}`);
         } else {
           navigate("/");
         }
@@ -44,9 +44,7 @@ function Conversation() {
 
   useEffect(() => {
     if (friends && friends.length != 0) {
-      const friend = friends.filter(
-        (friend) => friend.user.username == username,
-      );
+      const friend = friends.filter((friend) => String(friend.user.id) == id);
 
       if (friend.length != 0) {
         setFriendFocused(friend[0]);

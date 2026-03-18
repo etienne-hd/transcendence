@@ -33,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
                         <Route path="/auth" element={<Register />}></Route>
 
                         <Route
-                          path="/message/:username"
+                          path="/message/:id"
                           element={<Conversation />}
                         ></Route>
                       </Routes>
