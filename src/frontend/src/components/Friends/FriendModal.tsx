@@ -18,10 +18,10 @@ function FriendModal(props: FriendModalProps) {
             <Avatar userId={props.friend?.user.id} className="h-20 w-20" />
             <div className="flex flex-col justify-center items-start">
               <h1 className="text-xl font-semibold">
-                {props.friend?.user?.username}
+                {props.friend?.user?.name}
               </h1>
               <h2 className="text-md text-font-secondary">
-                {props.friend?.user?.name}
+                @{props.friend?.user?.username}
               </h2>
             </div>
           </div>
@@ -34,7 +34,8 @@ function FriendModal(props: FriendModalProps) {
                 "border-2 p-1 rounded-main w-full text-start bg-bg-tertiary border-border-tertiary  focus:border-accent-primary outline-hidden invalid:border-error "
               }
             >
-              {props.friend?.user.biography != ""
+              {props.friend?.user.biography != "" &&
+              props.friend?.user.biography != null
                 ? props.friend?.user.biography
                 : "No biography for this user"}
             </p>
@@ -43,22 +44,22 @@ function FriendModal(props: FriendModalProps) {
         <div className="w-[90%] h-1 bg-bg-tertiary rounded-full" />
         <div className="flex flex-row gap-6 w-full justify-center items-center">
           <FriendModalInformation
-            label="name"
+            label="Name"
             value={props.friend?.user?.name}
           />
           <FriendModalInformation
-            label="username"
+            label="Username"
             value={props.friend?.user?.username}
           />
         </div>
         <div className="w-[90%] h-1 bg-bg-tertiary rounded-full" />
         <div className="flex flex-row gap-6 w-full justify-center items-center">
           <FriendModalInformation
-            label="Asked to be friend from"
-            value={dayjs(props.friend?.created_at).format("DD MMMM YYYY")}
+            label="Member since"
+            value={dayjs(props.friend?.user.created_at).format("DD MMMM YYYY")}
           />
           <FriendModalInformation
-            label="friend from"
+            label="Friend since"
             value={dayjs(props.friend?.friend_at).format("DD MMMM YYYY")}
           />
         </div>
