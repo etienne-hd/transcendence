@@ -61,7 +61,6 @@ const Avatar = memo((props: AvatarProps) => {
       };
     }
   });
-  console.log(logged, props.userId);
   return (
     <>
       <div className={"relative aspect-square " + props.className}>
