@@ -34,7 +34,7 @@ function FriendNavCard(props: FriendNavCardProps) {
         defaultStatus={props.friend.user.status == "online"}
       />
       <div className="w-full min-w-0 h-full flex flex-row items-center gap-2 justify-start">
-        <p className="font-semibold truncate">{props.friend.user.username}</p>
+        <p className="font-semibold truncate">{props.friend.user.name}</p>
         {props.friend.unread_messages != 0 && (
           <div className="bg-error rounded-full text-xs w-4 h-4 flex justify-center items-center">
             <p className="">{props.friend.unread_messages}</p>

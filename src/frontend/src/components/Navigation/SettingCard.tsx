@@ -27,7 +27,7 @@ function SettingCard() {
           defaultStatus={true}
         />
         <div className="w-full min-w-0 h-full flex flex-col items-start justify-center">
-          <p className="font-semibold truncate max-w-full">{user?.username}</p>
+          <p className="font-semibold truncate max-w-full">{user?.name}</p>
         </div>
         <button
           onClick={() => {

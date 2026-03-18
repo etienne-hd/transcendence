@@ -61,10 +61,10 @@ function MessageFriendInformation() {
           <Avatar userId={friendFocused?.user.id} className="h-12 w-12" />
           <div className="flex flex-row gap-2 justify-center items-center">
             <h2 className="font-semibold text-xl">
-              {friendFocused?.user.username}
+              {friendFocused?.user.name}
             </h2>
             <h3 className="text-font-secondary">
-              ({friendFocused?.user.name})
+              @{friendFocused?.user.username}
             </h3>
           </div>
         </div>

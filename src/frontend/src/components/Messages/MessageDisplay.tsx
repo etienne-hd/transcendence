@@ -94,7 +94,7 @@ const MessageDisplay = memo(function MessageDisplay(
       <Avatar userId={props.message.from_user.id} className="h-12 w-12" />
       <div className="flex flex-col justify-center items-start w-full">
         <div className="flex flex-row gap-2 justify-center items-center ">
-          <p className="font-semibold ">{props.message.from_user.username}</p>
+          <p className="font-semibold ">{props.message.from_user.name}</p>
           <p className="text-xs text-font-secondary">
             {formatMessageDate(props.message.created_at)}
           </p>
