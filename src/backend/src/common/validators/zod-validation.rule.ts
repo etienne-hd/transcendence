@@ -57,7 +57,7 @@ export const ZOD_USER_EMAIL = z
   .max(USER_EMAIL_MAX_LENGTH, {
     message: `Email too long! (${USER_EMAIL_MAX_LENGTH} max)`,
   })
-  .regex(USER_EMAIL_REGEX, { message: 'please provide a valid email!' });
+  .regex(USER_EMAIL_REGEX, { message: 'Please provide a valid email!' });
 export const ZOD_USER_NAME = z
   .string()
   .min(USER_NAME_MIN_LENGTH, {

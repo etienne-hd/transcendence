@@ -38,7 +38,7 @@ function RegisterForm() {
     try {
       if (signX == "register") {
         await authService.register(
-          register.name,
+          register.name != "" ? register.name : register.username,
           register.username,
           register.email,
           register.password,
@@ -94,13 +94,38 @@ function RegisterForm() {
         >
           {signX == "register" && (
             <FormInput
-              {...register("name", {
-                required: { value: true, message: "Name required" },
-                maxLength: { value: 20, message: "Name too long (20 max)" },
+              {...register("email", {
+                required: { value: true, message: "Email required" },
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please provide a valid email!",
+                },
+                minLength: { value: 3, message: "Email too short! (3 min)" },
+                maxLength: {
+                  value: 320,
+                  message: "Email too long! (320 max)",
+                },
               })}
-              label="Name"
+              label="Email *"
+              type="email"
+              error={errors.email}
+            />
+          )}
+
+          {signX == "register" && (
+            <FormInput
+              {...register("name", {
+                minLength: {
+                  value: 1,
+                  message: "Display Name too short! (1 min)",
+                },
+                maxLength: {
+                  value: 100,
+                  message: "Display Name too long! (100 max)",
+                },
+              })}
+              label="Display Name"
               type="text"
-              placeholder="Toto"
               error={errors.name}
             />
           )}
@@ -108,38 +133,30 @@ function RegisterForm() {
           <FormInput
             {...register("username", {
               required: { value: true, message: "Username required" },
-              maxLength: { value: 20, message: "Username too long (20 max)" },
+              minLength: { value: 1, message: "Username too short! (3 min)" },
+              maxLength: { value: 100, message: "Username too long! (30 max)" },
+              pattern: {
+                value: /^[a-z0-9]+$/,
+                message:
+                  "The username may only contain lowercase letters and digits.",
+              },
             })}
-            label="Username"
+            label="Username *"
             type="text"
-            placeholder="xXTotoXx"
             error={errors.username}
           />
 
-          {signX == "register" && (
-            <FormInput
-              {...register("email", {
-                required: { value: true, message: "Email required" },
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Enter a valid email format",
-                },
-              })}
-              label="Email"
-              type="email"
-              placeholder="xXTotoXx@gmail.com"
-              error={errors.email}
-            />
-          )}
-
           <FormInput
             {...register("password", {
-              required: { value: true, message: "Password Required" },
-              minLength: { value: 8, message: "Minimum lenght: 8" },
+              required: { value: true, message: "Password required" },
+              minLength: { value: 8, message: "Password too short! (8 min)" },
+              maxLength: {
+                value: 128,
+                message: "Password too long! (128 max)",
+              },
             })}
-            label="Password"
+            label="Password *"
             type="password"
-            placeholder="Your best secret"
             error={errors.password}
           />
 
@@ -149,13 +166,13 @@ function RegisterForm() {
                 {...register("conditions", {
                   required: {
                     value: true,
-                    message: "Accept our generals terms",
+                    message: "Accept our Terms and Conditions",
                   },
                 })}
                 type="checkbox"
               />
               <label className={errors.conditions && "text-error"}>
-                General terms of utilisation
+                Terms and Conditions
               </label>
             </div>
           )}
@@ -166,12 +183,10 @@ function RegisterForm() {
         className="hover:scale-102 hover:shadow-xl cursor-pointer rounded-main p-2 border-2 border-border-secondary text-md bg-bg-secondary hover:bg-bg-tertiary transition-all duration-200 "
         form="register"
       >
-        Register in Unicord
+        {signX == "login" ? "Login" : "Register"}
       </button>
       <button className="cursor-pointer" onClick={toggleSignX}>
-        {signX == "register"
-          ? "Already have an account ?"
-          : "Want to join us ?"}
+        {signX == "register" ? "Already have an account ?" : "Need an account?"}
       </button>
     </div>
   );
