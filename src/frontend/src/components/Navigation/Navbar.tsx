@@ -17,6 +17,7 @@ function Navbar() {
 
   const onClickFriend = (friend: Friend) => {
     if (!location.pathname.startsWith("/message/" + friend.user.id)) {
+      friend.unread_messages = 0;
       navigate("/message/" + friend.user.id);
       setFriendFocused(friend);
     }
