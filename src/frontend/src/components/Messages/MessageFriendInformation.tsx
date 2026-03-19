@@ -5,7 +5,7 @@ import { useState } from "react";
 import FriendModal from "../Friends/FriendModal";
 import Avatar from "../Avatar";
 import { useMessage } from "../../context/MessageContext";
-import { Link2, Link2Off, SortAsc, SortDesc, Unlink2 } from "lucide-react";
+import { Link2, SortAsc, SortDesc, Unlink2 } from "lucide-react";
 
 function MessageFriendInformation() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

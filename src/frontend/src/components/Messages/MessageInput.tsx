@@ -14,13 +14,14 @@ function MessageInput() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const resizeTextArea = () => {
-    textAreaRef.current.style.height = "50px";
-    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+    textAreaRef.current!.style.height = "50px";
+    textAreaRef.current!.style.height =
+      textAreaRef.current!.scrollHeight + "px";
   };
 
   useEffect(resizeTextArea, [content]);
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     setContent(e.target.value);
   };
 

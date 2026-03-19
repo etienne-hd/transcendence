@@ -80,7 +80,7 @@ export const messageService = {
     const requestUrl = `/message/${id}/attachment`;
 
     if (attachmentCache.get(id) != undefined) {
-      return attachmentCache.get(id);
+      return attachmentCache.get(id)!;
     }
 
     const response = await apiClient.get(requestUrl, {

@@ -1,15 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import type { Friend } from "../api/types/friend";
-import { useSocket } from "./WebSocketContext";
-import type { SocketCaller } from "../api/types/socketCaller";
-import { useFriends } from "./FriendListContext";
-import { useNavigate } from "react-router";
 
 interface FriendFocusedContextType {
   friendFocused: Friend | undefined;

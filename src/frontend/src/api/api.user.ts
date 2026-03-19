@@ -47,7 +47,7 @@ export const userService = {
     const requestUrl = `/user/${id}/avatar`;
 
     if (avatarCache.get(id) != undefined) {
-      return avatarCache.get(id);
+      return avatarCache.get(id)!;
     }
 
     const response = await apiClient.get(requestUrl, {

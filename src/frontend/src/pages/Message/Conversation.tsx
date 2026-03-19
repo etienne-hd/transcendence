@@ -68,9 +68,7 @@ function Conversation() {
             <Virtuoso
               data={messages}
               className="h-full w-full"
-              itemContent={(index, message) => (
-                <MessageDisplay message={message} />
-              )}
+              itemContent={(_, message) => <MessageDisplay message={message} />}
               initialTopMostItemIndex={messages.length - 1}
               followOutput="smooth"
             />
