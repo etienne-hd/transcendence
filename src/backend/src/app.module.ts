@@ -22,7 +22,7 @@ import { WsModule } from './module/ws/ws.module';
       useFactory: (config: ConfigService) => ({
         type: 'mariadb',
         host: config.get('MYSQL_HOST', '127.0.0.1'),
-        port: 3307,
+        port: 3306,
         username: 'root',
         password: config.get('MYSQL_ROOT_PASSWORD', 'admin'),
         database: config.get('DB_NAME', 'unicord'),
