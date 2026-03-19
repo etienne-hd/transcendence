@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: `http://${import.meta.env.VITE_BACKEND_URL}`,
+  baseURL: "http://api.unicord.fr/",
   headers: {},
 });
 
