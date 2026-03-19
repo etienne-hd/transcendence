@@ -7,7 +7,7 @@ import {
   StreamableFile,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ILike, Not, IsNull, Repository } from 'typeorm';
+import { ILike, Not, IsNull, Repository, FindOptionsOrderValue } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageEntity } from './message.entity';
 import { UserService } from '../user/user.service';
@@ -53,7 +53,7 @@ export class MessageService {
 
     return this.messageRepository.find({
       where: baseWhere,
-      order: { created_at: sortType == 'ASC' ? 'ASC' : 'DESC' },
+      order: { created_at: sortType as FindOptionsOrderValue },
     });
   }
 
@@ -84,7 +84,7 @@ export class MessageService {
     const messages = await this.getMessagesEntites(
       userIdA,
       userIdB,
-      sortType == 'asc' ? 'ASC' : 'DESC',
+      sortType,
       searchValue,
       attachmentOnly,
     );
