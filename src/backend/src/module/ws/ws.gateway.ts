@@ -10,7 +10,10 @@ import { FriendService } from '../friend/friend.service';
 import { forwardRef, Inject } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 
-@WebSocketGateway({ transports: ['websocket'], cors: '*' })
+@WebSocketGateway({
+  transports: ['websocket'],
+  cors: { origin: ['http://127.0.0.1:3001', 'https://unicord.fr'] },
+})
 export class WsGateway implements OnGatewayInit {
   constructor(
     private wsAuth: WsAuthMiddleware,

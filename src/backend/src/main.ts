@@ -6,8 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
 
   app.enableCors({
-    origin: '*',
+    origin: ['http://127.0.0.1:3001', 'https://unicord.fr'],
     exposedHeaders: ['Content-Length'],
+    
   });
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
