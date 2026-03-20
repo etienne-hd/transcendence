@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { AuthModule } from './module/auth/auth.module';
 import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
@@ -9,6 +10,7 @@ import { WsModule } from './module/ws/ws.module';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     AuthModule,
     UserModule,
     FriendModule,
