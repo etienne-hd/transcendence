@@ -7,4 +7,4 @@ RUN npm run build
 
 EXPOSE 3001
 
-CMD ["npm", "run", "preview", "--", "--port", "3001"]
+CMD ["npm", "run", "preview", "--", "--port", "3001", "--host"]

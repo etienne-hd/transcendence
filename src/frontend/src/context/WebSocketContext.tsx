@@ -27,8 +27,8 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
 
   const initSocket = () => {
     if (loggedStatus) {
-      const socketio = io("/api", {
-        path: "/socket.io",
+      const socketio = io("/", {
+        path: "/api/socket.io",
         transports: ["websocket"],
         auth: {
           token: localStorage.getItem("accessToken"),
