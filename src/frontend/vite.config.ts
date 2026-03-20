@@ -8,6 +8,14 @@ export default defineConfig({
   server: {
     port: 3001,
     host: "0.0.0.0",
+    proxy: {
+      "/api": {
+        target: "http://backend:3000/",
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     allowedHosts: ["unicord.fr"],
