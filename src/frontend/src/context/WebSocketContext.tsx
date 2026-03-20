@@ -27,20 +27,19 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
 
   const initSocket = () => {
     if (loggedStatus) {
-      const socketio = io("http://localhost:3000", {
+      const socketio = io("/api", {
+        path: "/socket.io",
         transports: ["websocket"],
         auth: {
           token: localStorage.getItem("accessToken"),
         },
+        reconnection: true,
       });
 
       socketio.on("connect", () => console.log("Socket Connected"));
       socketio.on("connect_error", (err) =>
         console.log("Error with socket connection:", err),
       );
-      socketio.on("disconnect", () => {
-        initSocket();
-      });
 
       setSocket(socketio);
     }
