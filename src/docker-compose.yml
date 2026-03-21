@@ -48,7 +48,7 @@ services:
     env_file: .env
     restart: unless-stopped
     expose:
-      - "3000"
+      - "443"
 
   frontend:
     container_name: frontend
