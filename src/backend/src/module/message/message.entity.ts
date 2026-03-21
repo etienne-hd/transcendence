@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
-import { MESSAGE_CONTENT_MAX_LENGTH } from 'src/common/constants/constants';
+import { MESSAGE_CONTENT_MAX_LENGTH } from '../../common/constants/constants';
 
 @Entity()
 export class MessageEntity {

@@ -1,7 +1,7 @@
 import {
   ZOD_USER_USERNAME,
   ZOD_USER_PASSWORD,
-} from 'src/common/validators/zod-validation.rule';
+} from '../../../common/validators/zod-validation.rule';
 import * as z from 'zod';
 
 export const PostLoginSchema = z.object({

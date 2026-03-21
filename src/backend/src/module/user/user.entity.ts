@@ -4,7 +4,7 @@ import {
   USER_NAME_MAX_LENGTH,
   USER_PASSWORD_MAX_LENGTH,
   USER_USERNAME_MAX_LENGTH,
-} from 'src/common/constants/constants';
+} from '../../common/constants/constants';
 import {
   Column,
   CreateDateColumn,

@@ -14,7 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Auth } from '../auth/auth.guard';
-import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
+import { ZodValidationPipe } from '../../common/validators/zod-validation.pipe';
 import {
   type PostMessageDto,
   PostMessageSchema,

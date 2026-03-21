@@ -1,4 +1,4 @@
-import { ZOD_MESSAGE_CONTENT } from 'src/common/validators/zod-validation.rule';
+import { ZOD_MESSAGE_CONTENT } from '../../../common/validators/zod-validation.rule';
 import * as z from 'zod';
 
 export const PostMessageSchema = z.object({

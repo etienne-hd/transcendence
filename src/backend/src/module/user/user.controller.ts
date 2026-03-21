@@ -14,12 +14,12 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from '../auth/auth.guard';
-import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
+import { ZodValidationPipe } from '../../common/validators/zod-validation.pipe';
 import { type PutMeDto, PutMeSchema } from './dtos/put-me.dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { extname } from 'path';
-import { USER_AVATAR_FILE_EXTENSION } from 'src/common/constants/constants';
+import { USER_AVATAR_FILE_EXTENSION } from '../../common/constants/constants';
 
 @Controller()
 export class UserController {

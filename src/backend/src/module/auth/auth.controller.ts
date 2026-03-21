@@ -12,7 +12,7 @@ import {
   PostRegisterSchema,
 } from './dtos/post-register.dtos';
 import { type PostLoginDto, PostLoginSchema } from './dtos/post-login.dtos';
-import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
+import { ZodValidationPipe } from '../../common/validators/zod-validation.pipe';
 
 @Controller()
 export class AuthController {

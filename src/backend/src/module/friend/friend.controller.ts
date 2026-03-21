@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FriendService } from './friend.service';
 import { Auth } from '../auth/auth.guard';
-import { ZodValidationPipe } from 'src/common/validators/zod-validation.pipe';
+import { ZodValidationPipe } from '../../common/validators/zod-validation.pipe';
 import { type PostFriendDto, PostFriendSchema } from './dtos/post-friend.dtos';
 import {
   type DeleteFriendDto,
