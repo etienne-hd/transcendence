@@ -26,14 +26,10 @@ export class FriendService {
   ) {}
 
   public async getFriendsEntites(userId: number): Promise<FriendEntity[]> {
-    const friends: FriendEntity[] = await this.friendRepository
-      .createQueryBuilder('f')
-      .leftJoinAndSelect('f.user', 'user')
-      .leftJoinAndSelect('f.friend', 'friend')
-      .where('(f.user_id = :userId OR f.friend_id = :userId)', {
-        userId,
-      })
-      .getMany();
+    const friends: FriendEntity[] = await this.friendRepository.find({
+      where: [{ user: { id: userId } }, { friend: { id: userId } }],
+      relations: ['user', 'friend'],
+    });
 
     return friends;
   }
