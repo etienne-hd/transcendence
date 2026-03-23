@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 
 export const apiClient: AxiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: "http://127.0.0.1:3000",
   headers: {},
 });
 
@@ -12,7 +12,6 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("Request Interceptor Error:", error);
     return Promise.reject(error);
   },
 );

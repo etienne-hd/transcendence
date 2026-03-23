@@ -7,6 +7,8 @@ import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
 import { MessageModule } from './module/message/message.module';
 import { WsModule } from './module/ws/ws.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -24,7 +26,7 @@ import { WsModule } from './module/ws/ws.module';
       useFactory: (config: ConfigService) => ({
         type: 'mariadb',
         host: config.get('MYSQL_HOST', '127.0.0.1'),
-        port: 3306,
+        port: 3307, //3306,
         username: 'root',
         password: config.get('MYSQL_ROOT_PASSWORD', 'admin'),
         database: config.get('DB_NAME', 'unicord'),
@@ -32,6 +34,22 @@ import { WsModule } from './module/ws/ws.module';
         synchronize: true,
       }),
     }),
+
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'default',
+          ttl: 1000,
+          limit: 20,
+        },
+      ],
+    }),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

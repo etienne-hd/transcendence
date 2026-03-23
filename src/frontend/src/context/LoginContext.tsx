@@ -35,16 +35,9 @@ function LoginContext(props: LoginContextProps) {
 
   useEffect(() => {
     const initLoggedStatus = async () => {
-      try {
-        await userService.me();
+      await userService.me().then(() => {
         setLoggedStatus(true);
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          if (error.response.data.statusCode != 401) {
-            console.error("Erreur API:", error.response.data);
-          }
-        }
-      }
+      });
     };
 
     if (localStorage.getItem("accessToken")) {

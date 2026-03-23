@@ -51,8 +51,6 @@ function RegisterForm() {
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         pushNotification(err.response.data.message, "error");
-      } else {
-        console.error("Authentication failed: " + err);
       }
     }
   };
@@ -172,7 +170,14 @@ function RegisterForm() {
                 type="checkbox"
               />
               <label className={errors.conditions && "text-error"}>
-                Terms and Conditions
+                Accept{" "}
+                <a href="/terms" className="underline">
+                  General Terms
+                </a>{" "}
+                and{" "}
+                <a href="/conditions" className="underline">
+                  Conditions
+                </a>
               </label>
             </div>
           )}
