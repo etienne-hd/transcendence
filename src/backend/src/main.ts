@@ -4,6 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as fs from 'node:fs';
 
 async function bootstrap() {
+  // PROD
   //const httpsOptions = {
   //  key: fs.readFileSync('./secrets/private-key.pem'),
   //  cert: fs.readFileSync('./secrets/public-certificate.pem'),
@@ -11,6 +12,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
+    // PROD
     //httpsOptions,
   });
 
@@ -21,6 +23,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '10mb' }));
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-  await app.listen(process.env.PORT ?? 3000);
+  // PROD
+  await app.listen(process.env.PORT ?? 3000); //443);
 }
 bootstrap();
