@@ -172,7 +172,11 @@ function RegisterForm() {
               <label className={errors.conditions && "text-error"}>
                 Accept{" "}
                 <a href="/terms" className="underline">
-                  General Terms and Conditions
+                  General Terms
+                </a>{" "}
+                and{" "}
+                <a href="/conditions" className="underline">
+                  Conditions
                 </a>
               </label>
             </div>
