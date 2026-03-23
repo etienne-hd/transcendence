@@ -170,7 +170,10 @@ function RegisterForm() {
                 type="checkbox"
               />
               <label className={errors.conditions && "text-error"}>
-                Terms and Conditions
+                Accept{" "}
+                <a href="/terms" className="underline">
+                  General Terms and Conditions
+                </a>
               </label>
             </div>
           )}

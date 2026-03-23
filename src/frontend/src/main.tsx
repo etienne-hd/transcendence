@@ -13,6 +13,8 @@ import UserContextProvider from "./context/UserContext.tsx";
 import FriendListContextProvider from "./context/FriendListContext.tsx";
 import MessageContextProvider from "./context/MessageContext.tsx";
 import WebSocketContextProvider from "./context/WebSocketContext.tsx";
+import TermsContent from "./components/Auth/Terms.tsx";
+import Terms from "./pages/Auth/Terms.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -31,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
 
                         {/*Auth Routes*/}
                         <Route path="/auth" element={<Register />}></Route>
+                        <Route path="/terms" element={<Terms />} />
 
                         <Route
                           path="/message/:id"
