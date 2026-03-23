@@ -6,6 +6,7 @@ import {
   NotFoundException,
   StreamableFile,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ILike, Not, IsNull, Repository, FindOptionsOrderValue } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,15 +18,23 @@ import { randomUUID } from 'node:crypto';
 import { extname, join } from 'node:path';
 import { lookup } from 'mime-types';
 import { WsGateway } from '../ws/ws.gateway';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
+import { UserEntity } from '../user/user.entity';
 
 @Injectable()
 export class MessageService {
   constructor(
     @InjectRepository(MessageEntity)
     private readonly messageRepository: Repository<MessageEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly userService: UserService,
     private readonly friendService: FriendService,
     private readonly wsService: WsGateway,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
   public async getMessagesEntites(
     userIdA: number,
@@ -117,6 +126,63 @@ export class MessageService {
     });
   }
 
+  public async checkContentModerationAI(content: string): Promise<boolean> {
+    const apiKey = this.configService.get('GEMINI_API_KEY');
+
+    if (apiKey == '' || apiKey == null) return false;
+
+    const response = await firstValueFrom(
+      this.httpService.post(
+        'https://generativelanguage.googleapis.com/v1beta/models/gemma-3n-e2b-it:generateContent',
+        {
+          contents: [
+            {
+              role: 'user',
+              parts: [
+                {
+                  text: 'You are a moderation AI. Analyze the given content and return a score between 0 and 100, where: 0 means the content is completely safe 100 means the content is extremely inappropriate or contains offensive/bad words Respond ONLY with the number (no explanation, no text)',
+                },
+              ],
+            },
+            {
+              role: 'model',
+              parts: [
+                {
+                  text: 'right! send me the text to moderate.',
+                },
+              ],
+            },
+            {
+              role: 'user',
+              parts: [
+                {
+                  text: content,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': apiKey,
+          },
+          validateStatus: (status) => true,
+        },
+      ),
+    );
+
+    if (response.status != 200) {
+      return false;
+    }
+
+    const result = response.data.candidates[0].content.parts[0].text;
+    const match = result.match(/\d+/);
+    const value = (match ? match[0] : 0) as number;
+
+    return value > 80;
+  }
+
   public async sendMessage(
     from_user_id: number,
     to_user_id: number,
@@ -136,6 +202,15 @@ export class MessageService {
     ) {
       throw new ForbiddenException(
         'You cannot send a message to this user, you are not friends with them!',
+      );
+    }
+
+    if (content && (await this.checkContentModerationAI(content))) {
+      from_user.warn += 1;
+      await this.userRepository.save(from_user);
+
+      throw new UnprocessableEntityException(
+        'Message rejected by AI moderation.',
       );
     }
 
