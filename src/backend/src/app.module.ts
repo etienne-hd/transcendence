@@ -7,6 +7,8 @@ import { UserModule } from './module/user/user.module';
 import { FriendModule } from './module/friend/friend.module';
 import { MessageModule } from './module/message/message.module';
 import { WsModule } from './module/ws/ws.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -32,6 +34,22 @@ import { WsModule } from './module/ws/ws.module';
         synchronize: true,
       }),
     }),
+
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          name: 'default',
+          ttl: 1000,
+          limit: 20,
+        },
+      ],
+    }),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
