@@ -61,6 +61,7 @@ export class UserController {
           );
         }
       },
+      limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
   @Put('/me')
