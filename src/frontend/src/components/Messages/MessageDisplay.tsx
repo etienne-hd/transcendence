@@ -66,17 +66,13 @@ const MessageDisplay = memo(function MessageDisplay(
     let objectUrl: string | null = null;
 
     const runLoad = async () => {
-      try {
-        if (props.message.id) {
-          const blob = await loadAttachment(props.message.id);
-
+      if (props.message.id) {
+        await loadAttachment(props.message.id).then((blob) => {
           if (blob) {
             objectUrl = URL.createObjectURL(blob);
             setAttachmentUrl(objectUrl);
           }
-        }
-      } catch (err) {
-        console.error("Avatar error", err);
+        });
       }
     };
 
