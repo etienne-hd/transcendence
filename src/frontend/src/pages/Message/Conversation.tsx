@@ -28,7 +28,6 @@ function Conversation() {
     socket.on("friend:update", (data: SocketCaller) => {
       if (data.id == friendFocused?.user.id) {
         const friend = friends.filter((friend) => friend.user.id == data.id);
-        console.log(friend);
         if (friend.length != 0) {
           navigate(`/message/${friend[0].user.id}`);
         } else {

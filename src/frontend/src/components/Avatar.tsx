@@ -22,17 +22,13 @@ const Avatar = memo((props: AvatarProps) => {
     let objectUrl: string | null = null;
 
     const runLoad = async () => {
-      try {
-        if (props.userId) {
-          const blob = await loadAvatar(props.userId);
-
+      if (props.userId) {
+        await loadAvatar(props.userId).then((blob) => {
           if (blob) {
             objectUrl = URL.createObjectURL(blob);
             setAvatarUrl(objectUrl);
           }
-        }
-      } catch (err) {
-        console.error("Avatar error", err);
+        });
       }
     };
 

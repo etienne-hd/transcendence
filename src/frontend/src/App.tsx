@@ -22,7 +22,6 @@ function App() {
         setUser(data);
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
-          console.error("Erreur API:", err.response.data);
           if (err.response.data.statusCode == 401) {
             logout();
           }

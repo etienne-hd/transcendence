@@ -37,10 +37,8 @@ function WebSocketContextProvider(props: WebSocketContextProviderProps) {
         reconnection: true,
       });
 
-      socketio.on("connect", () => console.log("Socket Connected"));
-      socketio.on("connect_error", (err) =>
-        console.log("Error with socket connection:", err),
-      );
+      socketio.on("connect", () => {});
+      socketio.on("connect_error", () => {});
 
       setSocket(socketio);
     }

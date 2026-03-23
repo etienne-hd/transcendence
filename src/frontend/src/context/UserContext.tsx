@@ -74,7 +74,10 @@ function UserContextProvider(props: UserContextProviderProps) {
         return true;
       } catch (e) {
         if (axios.isAxiosError(e) && e.response) {
-          if (e.response.data.statusCode == 401) {
+          if (
+            e.response.data.statusCode == 401 ||
+            e.response.data.statusCode == 404
+          ) {
             logout();
           } else {
             pushNotification(e.response.data.message, "error");

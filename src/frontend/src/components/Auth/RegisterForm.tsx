@@ -51,8 +51,6 @@ function RegisterForm() {
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         pushNotification(err.response.data.message, "error");
-      } else {
-        console.error("Authentication failed: " + err);
       }
     }
   };

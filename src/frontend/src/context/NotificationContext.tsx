@@ -36,7 +36,9 @@ function NotificationContextProvider(props: NotificationContextProps) {
   const pushNotification = useCallback(
     (message: string, type: "error" | "notif" | "valid") => {
       const id = Date.now();
-
+      if (message.trim() == "") {
+        return;
+      }
       setNotifications((prev) => [...prev, { id, type, message }]);
 
       setTimeout(() => {
