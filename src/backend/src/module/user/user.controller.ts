@@ -40,6 +40,7 @@ export class UserController {
       'last_seen_at',
       'email',
       'status',
+      'api_key',
     ]);
   }
 

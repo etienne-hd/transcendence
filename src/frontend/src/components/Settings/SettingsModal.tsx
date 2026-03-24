@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import UserInformation from "./UserInformation";
 import Modal from "../Modal";
 import { useLogin } from "../../context/LoginContext";
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Eye, EyeClosed, Trash2 } from "lucide-react";
 import Avatar from "../Avatar";
 
 interface SettingsModalProps {
@@ -17,6 +17,7 @@ function SettingsModal(props: SettingsModalProps) {
   const [password, setPassword] = useState<string | undefined>(undefined);
   const [biography, setBiography] = useState<string | undefined>(undefined);
   const [avatar, setAvatar] = useState<File | string | undefined>(undefined);
+  const [isApiKeyVisible, setIsApiKeyVisible] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -143,6 +144,30 @@ function SettingsModal(props: SettingsModalProps) {
             value={"********"}
             onChange={setPassword}
           />
+          <div className="w-full px-4 flex flex-row justify-between items-center">
+            <div className="flex flex-col justify-center items-start">
+              <h3 className="font-semibold">API Key</h3>
+              <p
+                className={`transition-all duration-300 ${isApiKeyVisible ? undefined : "blur-xs select-none"}`}
+              >
+                {user?.api_key}
+              </p>
+            </div>
+            <div className="flex flex-row gap-2 justify-center items-center">
+              <button
+                onClick={() => {
+                  setIsApiKeyVisible(!isApiKeyVisible);
+                }}
+                className="cursor-pointer"
+              >
+                {isApiKeyVisible ? (
+                  <Eye color="var(--color-font-secondary)" size={20} />
+                ) : (
+                  <EyeClosed color="var(--color-font-secondary)" size={20} />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div className="w-full flex flex-row justify-between items-center px-4 ">
