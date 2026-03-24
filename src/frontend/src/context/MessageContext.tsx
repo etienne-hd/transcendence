@@ -179,6 +179,7 @@ function MessageContextProvider(props: MessageContextProviderProps) {
         getMessage();
       } else {
         updateFriends();
+        pushNotification("New message received", "notif");
       }
     };
 
