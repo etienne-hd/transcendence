@@ -158,16 +158,18 @@ export class UserService {
       );
     }
 
-    return {
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      biography: user.biography,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      last_seen_at: user.last_seen_at,
-      email: user.email,
-    };
+    return this.formatUserData(user, [
+      'id',
+      'username',
+      'name',
+      'biography',
+      'avatar',
+      'created_at',
+      'last_seen_at',
+      'email',
+      'status',
+      'api_key',
+    ]);
   }
 
   public async updateUserStatus(userId: number, status: 'online' | 'offline') {
