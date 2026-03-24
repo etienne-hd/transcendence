@@ -4,13 +4,14 @@ import {
   NotFoundException,
   ConflictException,
   Injectable,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { uuid } from 'zod';
 import { randomUUID } from 'crypto';
 
 @Injectable()

@@ -6,11 +6,12 @@ import { UserEntity } from './user.entity';
 import { AuthModule } from '../auth/auth.module';
 import { WsModule } from '../ws/ws.module';
 import { FriendModule } from '../friend/friend.module';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    AuthModule,
+    forwardRef(() => AuthModule),
     WsModule,
     forwardRef(() => FriendModule),
   ],
