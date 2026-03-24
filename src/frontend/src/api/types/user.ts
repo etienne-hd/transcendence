@@ -8,6 +8,7 @@ export interface User {
   avatar: string;
   created_at: string;
   last_seen_at: string;
+  api_key: string;
 }
 
 export interface UserFront {
