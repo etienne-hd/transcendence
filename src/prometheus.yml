@@ -3,8 +3,8 @@ global:
 
 scrape_configs:
   - job_name: 'nest-backend'
-    scheme: https
+    scheme: http
     tls_config:
       insecure_skip_verify: true
     static_configs:
-      - targets: ['backend:443']
+      - targets: ['backend:3000']
