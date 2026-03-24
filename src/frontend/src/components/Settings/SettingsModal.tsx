@@ -147,11 +147,10 @@ function SettingsModal(props: SettingsModalProps) {
           <div className="w-full px-4 flex flex-row justify-between items-center">
             <div className="flex flex-col justify-center items-start">
               <h3 className="font-semibold">API Key</h3>
-              <p className="">
-                {isApiKeyVisible
-                  ? user?.api_key
-                  : user?.api_key.substring(0, 3) +
-                    "*****-****-****-****-************"}
+              <p
+                className={`transition-all duration-300 ${isApiKeyVisible ? undefined : "blur-xs select-none"}`}
+              >
+                {user?.api_key}
               </p>
             </div>
             <div className="flex flex-row gap-2 justify-center items-center">
