@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  Param,
   Post,
   Request,
 } from '@nestjs/common';
@@ -17,6 +16,7 @@ import {
   type DeleteFriendDto,
   DeleteFriendSchema,
 } from './dtos/delete-friend.dtos';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller()
 export class FriendController {
@@ -31,6 +31,7 @@ export class FriendController {
 
   @Auth()
   @HttpCode(HttpStatus.CREATED)
+  @Throttle({ default: { ttl: 1000, limit: 2 } })
   @Post('/friend')
   public async postFriend(
     @Request() req,

@@ -9,7 +9,6 @@ import {
   Post,
   Query,
   Request,
-  Res,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -31,6 +30,7 @@ import {
 } from './dtos/post-messages-mark-read.dtos';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller()
 export class MessageController {
@@ -38,6 +38,7 @@ export class MessageController {
 
   @Auth()
   @HttpCode(HttpStatus.OK)
+  @Throttle({ default: { ttl: 1000, limit: 30 } })
   @Post('/messages')
   public async getMessages(
     @Request() req,
@@ -57,6 +58,7 @@ export class MessageController {
 
   @Auth()
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Throttle({ default: { ttl: 1000, limit: 30 } })
   @Post('/messages/mark-read')
   public async PostMessagesMarkRead(
     @Request() req,
@@ -71,9 +73,11 @@ export class MessageController {
 
   @Auth()
   @HttpCode(HttpStatus.CREATED)
+  @Throttle({ default: { ttl: 1000, limit: 5 } })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: memoryStorage(),
+      limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
   @Post('/message')

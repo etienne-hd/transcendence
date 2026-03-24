@@ -20,6 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { extname } from 'path';
 import { USER_AVATAR_FILE_EXTENSION } from '../../common/constants/constants';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller()
 export class UserController {
@@ -60,9 +61,11 @@ export class UserController {
           );
         }
       },
+      limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
   @Put('/me')
+  @Throttle({ default: { ttl: 30000, limit: 2 } })
   public async putUser(
     @Request() req,
     @Body(new ZodValidationPipe(PutMeSchema)) body: PutMeDto,
@@ -74,6 +77,7 @@ export class UserController {
   @Auth()
   @Header('Content-Type', 'image/png')
   @Get('/me/avatar')
+  @Throttle({ default: { ttl: 1000, limit: 10 } })
   public async getUserAvatar(@Request() req) {
     return await this.userService.getUserAvatar(req.user.sub);
   }
@@ -97,6 +101,7 @@ export class UserController {
   @Auth()
   @HttpCode(HttpStatus.OK)
   @Get('/user/:id/avatar')
+  @Throttle({ default: { ttl: 1000, limit: 100 } })
   public async getUserAvatarById(@Param('id') id: number) {
     return await this.userService.getUserAvatar(id);
   }

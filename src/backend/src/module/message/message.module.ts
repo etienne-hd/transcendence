@@ -9,9 +9,11 @@ import { FriendModule } from '../friend/friend.module';
 import { UserModule } from '../user/user.module';
 import { WsModule } from '../ws/ws.module';
 import { AuthModule } from '../auth/auth.module';
+import { HttpModule, HttpService } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     TypeOrmModule.forFeature([UserEntity]),
     TypeOrmModule.forFeature([MessageEntity]),
     TypeOrmModule.forFeature([FriendEntity]),
