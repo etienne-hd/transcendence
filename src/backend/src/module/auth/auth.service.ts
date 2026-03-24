@@ -10,6 +10,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { uuid } from 'zod';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -51,12 +53,15 @@ export class AuthService {
       throw new ConflictException('Email already registered');
     }
 
+    const api_key = randomUUID();
+
     const hashedPassword = await this.hashPassword(password);
     var user = this.userRepository.create({
       username,
       password: hashedPassword,
       email,
       name,
+      api_key,
     });
     await this.userRepository.save(user);
 
