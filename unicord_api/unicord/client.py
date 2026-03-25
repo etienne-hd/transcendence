@@ -11,9 +11,10 @@ class Client(SessionMixin, UserMixin, FriendMixin, MessageMixin):
         api_key: str,
         base_url: str = "https://unicord.fr/api/",
         proxy: Proxy | None = None,
+        verify_ssl: bool = False,
     ):
         self._base_url = base_url
-        super().__init__(api_key=api_key, proxy=proxy)
+        super().__init__(api_key=api_key, proxy=proxy, verify_ssl=verify_ssl)
 
     def fetch(
         self,
