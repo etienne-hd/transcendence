@@ -1,5 +1,6 @@
 from .model import Proxy
 from .mixin import SessionMixin, UserMixin, FriendMixin, MessageMixin
+from .exceptions import *
 
 import os
 
@@ -27,6 +28,14 @@ class Client(SessionMixin, UserMixin, FriendMixin, MessageMixin):
             json=payload,
             params=params,
         )
+
+        if response.status_code == 404:
+            raise NotFoundException(response.json()["message"])
+        elif response.status_code == 403:
+            raise UnauthorizedException(response.json()["message"])
+        elif response.status_code == 409:
+            raise ConflictException(response.json()["message"])
+
         response.raise_for_status()
 
         try:
