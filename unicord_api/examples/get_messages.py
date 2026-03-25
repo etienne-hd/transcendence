@@ -8,7 +8,7 @@ load_dotenv()
 def main() -> None:
     api_key = os.getenv("API_KEY")
 
-    client = unicord.Client(api_key=api_key, base_url="http://127.0.0.1:3000")
+    client = unicord.Client(api_key=api_key)
     
     user_id = int(input("Enter user id: "))
     messages = client.get_messages(user_id=user_id)

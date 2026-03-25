@@ -15,7 +15,7 @@ def show_user(user: unicord.User) -> None:
 def main() -> None:
     api_key = os.getenv("API_KEY")
 
-    client = unicord.Client(api_key=api_key, base_url="http://127.0.0.1:3000")
+    client = unicord.Client(api_key=api_key)
     
     user = client.me()
     show_user(user=user)
