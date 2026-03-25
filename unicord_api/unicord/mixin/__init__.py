@@ -1,1 +1,2 @@
-from .session import Session
+from .session import SessionMixin
+from .user import UserMixin

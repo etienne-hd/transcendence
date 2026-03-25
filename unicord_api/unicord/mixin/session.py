@@ -2,7 +2,7 @@ from ..model import Proxy
 
 import requests
 
-class Session:
+class SessionMixin:
 	def __init__(self, api_key: str, proxy: Proxy | None = None):
 		self._proxy = proxy
 		self.session = self._init_session(api_key, proxy)
