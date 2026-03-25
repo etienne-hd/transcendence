@@ -10,3 +10,8 @@ class StatusFriend(Enum):
     FRIEND = "friend"
     SENT = "sent"
     PENDING = "pending"
+
+
+class SortMessage(Enum):
+    ASC = "asc"
+    DESC = "desc"

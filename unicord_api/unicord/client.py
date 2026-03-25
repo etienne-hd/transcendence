@@ -1,10 +1,10 @@
 from .model import Proxy
-from .mixin import SessionMixin, UserMixin, FriendMixin
+from .mixin import SessionMixin, UserMixin, FriendMixin, MessageMixin
 
 import os
 
 
-class Client(SessionMixin, UserMixin, FriendMixin):
+class Client(SessionMixin, UserMixin, FriendMixin, MessageMixin):
     def __init__(
         self,
         api_key: str,
@@ -14,10 +14,22 @@ class Client(SessionMixin, UserMixin, FriendMixin):
         self._base_url = base_url
         super().__init__(api_key=api_key, proxy=proxy)
 
-    def fetch(self, method: str, path: str, payload: dict | None = None) -> dict:
+    def fetch(
+        self,
+        method: str,
+        path: str,
+        payload: dict | None = None,
+        params: dict | None = {},
+    ) -> dict | str | None:
         response = self.session.request(
-            method=method, url=os.path.join(self._base_url + path), json=payload
+            method=method,
+            url=os.path.join(self._base_url + path),
+            json=payload,
+            params=params,
         )
         response.raise_for_status()
 
-        return response.json()
+        try:
+            return response.json()
+        except:
+            return response.text if response.text != "" else None
