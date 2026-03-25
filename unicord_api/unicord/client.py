@@ -35,6 +35,10 @@ class Client(SessionMixin, UserMixin, FriendMixin, MessageMixin):
             raise UnauthorizedException(response.json()["message"])
         elif response.status_code == 409:
             raise ConflictException(response.json()["message"])
+        elif response.status_code == 409:
+            raise RateLimitException("You're sending too many requests!")
+        elif response.status_code == 400:
+            raise BadRequestException(response.json()["message"])
 
         response.raise_for_status()
 

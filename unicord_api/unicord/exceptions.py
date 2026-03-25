@@ -12,3 +12,11 @@ class UnauthorizedException(UnicordException):
 
 class ConflictException(UnicordException):
     """Raise when conflict happen (e.g: user send (a message)/(friend request) to himself)"""
+
+
+class RateLimitException(UnicordException):
+    """Raise when you hit rate limit"""
+
+
+class BadRequestException(UnicordException):
+    """Raise when body validation failed"""
