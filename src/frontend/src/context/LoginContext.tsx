@@ -35,9 +35,12 @@ function LoginContext(props: LoginContextProps) {
 
   useEffect(() => {
     const initLoggedStatus = async () => {
-      await userService.me().then(() => {
-        setLoggedStatus(true);
-      });
+      await userService
+        .me()
+        .then(() => {
+          setLoggedStatus(true);
+        })
+        .catch(() => {});
     };
 
     if (localStorage.getItem("accessToken")) {

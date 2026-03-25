@@ -67,12 +67,14 @@ const MessageDisplay = memo(function MessageDisplay(
 
     const runLoad = async () => {
       if (props.message.id) {
-        await loadAttachment(props.message.id).then((blob) => {
-          if (blob) {
-            objectUrl = URL.createObjectURL(blob);
-            setAttachmentUrl(objectUrl);
-          }
-        });
+        await loadAttachment(props.message.id)
+          .then((blob) => {
+            if (blob) {
+              objectUrl = URL.createObjectURL(blob);
+              setAttachmentUrl(objectUrl);
+            }
+          })
+          .catch(() => {});
       }
     };
 

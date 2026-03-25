@@ -32,11 +32,13 @@ function SettingsModal(props: SettingsModalProps) {
       biography,
       avatar,
       props.toggleSettings,
-    ).then((res) => {
-      if (res) {
-        props.toggleSettings();
-      }
-    });
+    )
+      .then((res) => {
+        if (res) {
+          props.toggleSettings();
+        }
+      })
+      .catch(() => {});
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
