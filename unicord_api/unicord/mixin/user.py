@@ -32,3 +32,7 @@ class UserMixin:
 
         data = self.fetch("PUT", "/me", payload)
         return User.build(data)
+
+    def get_user(self, user_id: int) -> User:
+        data = self.fetch("GET", f"/user/{user_id}")
+        return User.build(data)

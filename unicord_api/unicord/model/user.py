@@ -1,3 +1,5 @@
+from .enum import StatusUser
+
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -11,7 +13,7 @@ class User:
     name: str
     email: str
     biography: str | None
-    status: str
+    status: StatusUser
     api_key: str
 
     @staticmethod
@@ -24,6 +26,6 @@ class User:
             name=raw.get("name"),
             email=raw.get("email"),
             biography=raw.get("biography"),
-            status=raw.get("status"),
+            status=StatusUser(raw.get("status")),
             api_key=raw.get("api_key"),
         )
