@@ -1,6 +1,7 @@
 src/backend/uploads
 .env
 data
+__pycache__/
 
 logs
 *.log
