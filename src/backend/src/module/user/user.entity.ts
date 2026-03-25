@@ -49,4 +49,7 @@ export class UserEntity {
 
   @Column({ default: 'offline' })
   public status: string;
+
+  @Column()
+  public api_key: string;
 }

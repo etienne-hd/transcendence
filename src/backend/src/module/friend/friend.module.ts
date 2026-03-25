@@ -13,7 +13,7 @@ import { AuthModule } from '../auth/auth.module';
   imports: [
     TypeOrmModule.forFeature([FriendEntity, UserEntity, MessageEntity]),
     forwardRef(() => UserModule),
-    AuthModule,
+    forwardRef(() => AuthModule),
     forwardRef(() => WsModule),
   ],
   controllers: [FriendController],
