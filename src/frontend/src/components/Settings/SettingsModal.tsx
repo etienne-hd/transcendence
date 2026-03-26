@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import UserInformation from "./UserInformation";
 import Modal from "../Modal";
 import { useLogin } from "../../context/LoginContext";
-import { Edit2, Eye, EyeClosed, Trash2 } from "lucide-react";
+import { Edit2, Eye, EyeClosed, LogOut, Trash2 } from "lucide-react";
 import Avatar from "../Avatar";
 
 interface SettingsModalProps {
@@ -170,28 +170,23 @@ function SettingsModal(props: SettingsModalProps) {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-row justify-between items-center px-4 ">
-        <div
-          onClick={() => {
-            logout();
-          }}
-          className="w-fit cursor-pointer"
+      <div className="w-full flex flex-row justify-between items-center px-4">
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-error/40 text-error text-sm font-medium hover:bg-error/10 transition-all duration-200 cursor-pointer"
         >
-          <p className="text-error underline">logout</p>
-        </div>
-        <div className="flex flex-row gap-6 items-center justify-center">
+          <LogOut size={15} />
+          Logout
+        </button>
+        <div className="flex flex-row gap-3 items-center justify-center">
           <button
-            onClick={() => {
-              props.toggleSettings();
-            }}
-            className="p-2 bg-error w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+            onClick={props.toggleSettings}
+            className="px-4 py-1.5 rounded-lg border border-error/40 text-error text-sm font-medium hover:bg-error/10 transition-all duration-200 cursor-pointer"
           >
-            <p>Cancel</p>
+            Cancel
           </button>
           <button
-            onClick={() => {
-              onSubmit();
-            }}
+            onClick={onSubmit}
             disabled={
               !(
                 (name != undefined && name != "") ||
@@ -202,9 +197,9 @@ function SettingsModal(props: SettingsModalProps) {
                 avatar != undefined
               )
             }
-            className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+            className="px-4 py-1.5 rounded-lg bg-accent-primary text-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30"
           >
-            <p>Save changes</p>
+            Save changes
           </button>
         </div>
       </div>

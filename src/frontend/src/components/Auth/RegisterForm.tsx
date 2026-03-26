@@ -183,12 +183,15 @@ function RegisterForm() {
       </div>
       <button
         type="submit"
-        className="hover:scale-102 hover:shadow-xl cursor-pointer rounded-main p-2 border-2 border-border-secondary text-md bg-bg-secondary hover:bg-bg-tertiary transition-all duration-200 "
+        className="cursor-pointer rounded-lg px-8 py-2 text-sm font-semibold bg-gradient-to-r from-accent-primary to-accent-secondary text-white hover:opacity-90 transition-all duration-200 shadow-lg"
         form="register"
       >
         {signX == "login" ? "Login" : "Register"}
       </button>
-      <button className="cursor-pointer" onClick={toggleSignX}>
+      <button
+        className="cursor-pointer text-sm text-font-secondary hover:text-accent-primary transition-colors duration-200"
+        onClick={toggleSignX}
+      >
         {signX == "register" ? "Already have an account ?" : "Need an account?"}
       </button>
     </div>
