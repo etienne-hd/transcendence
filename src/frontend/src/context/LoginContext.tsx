@@ -6,7 +6,6 @@ import {
   type ReactNode,
 } from "react";
 import { userService } from "../api/api.user";
-import axios from "axios";
 
 interface LoginContextProps {
   children: ReactNode;

@@ -15,7 +15,6 @@ import MessageContextProvider from "./context/MessageContext.tsx";
 import WebSocketContextProvider from "./context/WebSocketContext.tsx";
 import Terms from "./pages/Auth/Terms.tsx";
 import Conditions from "./pages/Auth/Conditions.tsx";
-import NotFound from "./components/Error/404.tsx";
 import NotFoundPage from "./pages/Error/404.tsx";
 
 createRoot(document.getElementById("root")!).render(
