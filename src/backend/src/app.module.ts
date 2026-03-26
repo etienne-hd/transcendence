@@ -26,8 +26,7 @@ import { APP_GUARD } from '@nestjs/core';
       useFactory: (config: ConfigService) => ({
         type: 'mariadb',
         host: config.get('MYSQL_HOST', '127.0.0.1'),
-        // PROD
-        port: 3307, //3306,
+        port: 3306,
         username: 'root',
         password: config.get('MYSQL_ROOT_PASSWORD', 'admin'),
         database: config.get('DB_NAME', 'unicord'),
