@@ -50,7 +50,7 @@ function Navbar() {
         }
       >
         <div className="w-full sm:w-90 p-4 flex flex-col gap-4 h-full">
-          <div className="pt-10 sm:pt-0">
+          <div className="pt-14">
             <FriendMenu />
           </div>
           <div className="w-full px-2 h-full border-t-2 border-border-secondary py-2 flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
