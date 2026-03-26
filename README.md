@@ -303,6 +303,8 @@ for friend in friends:
 ### `kzhen-cl`
 
 - Features:
+  - **Mandatory:** Has lead the art direction.
+  - **Mandatory:** Has generated the Terms of Service and Privacy Policy texts.
 - Modules:
   - **Major:** Use a framework for both the frontend and backend.
   - **Major:** Implement real-time features using WebSockets or similar technology.
