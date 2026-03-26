@@ -2,7 +2,7 @@ groups:
   - name: backend_alerts
     rules:
       - alert: BackendHighMemory
-        expr: process_resident_memory_bytes > 100000000 #100Mo
+        expr: process_resident_memory_bytes > 150000000 #150Mo
         for: 1m
         labels:
           severity: critical
