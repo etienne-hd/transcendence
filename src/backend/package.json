@@ -31,6 +31,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "@nestjs/websockets": "^11.1.17",
     "@willsoto/nestjs-prometheus": "^6.0.1",
+    "axios": "^1.13.6",
     "bcrypt": "^6.0.0",
     "mysql2": "^3.19.1",
     "node-gyp": "^12.2.0",
