@@ -74,8 +74,6 @@ function RegisterForm() {
     }
   };
 
-  // TODO: OAuth connexio
-  // TODO: link to general terms
   return (
     <div className="flex flex-col justify-center items-center gap-6">
       <div className="flex flex-col gap-4 md:flex-row bg-bg-secondary border-border-secondary border-2 p-padding-main rounded-main justify-center items-center shadow-xl ">

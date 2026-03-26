@@ -53,7 +53,6 @@ function Conversation() {
     }
   }, [friends]);
 
-  // TODO: Scroll to bottom on message send
   return (
     <>
       <PageWrapper

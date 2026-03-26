@@ -28,7 +28,6 @@ const formatMessageDate = (isoDate: string) => {
   return date.fromNow();
 };
 
-// TODO: text to speech
 const MessageDisplay = memo(function MessageDisplay(
   props: MessageDisplayProps,
 ) {
