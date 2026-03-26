@@ -110,7 +110,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "rate(process_virtual_memory_bytes[1m])",
+          "expr": "rate(process_resident_memory_bytes[1m])",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
