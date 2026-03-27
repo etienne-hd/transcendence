@@ -72,8 +72,8 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
-    ports:
-      - "9090:9090"
+    expose:
+      - "9000"
 
   grafana:
     image: grafana/grafana:latest
@@ -82,11 +82,7 @@ services:
       - unicord
     expose:
       - "3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
-      - GF_USERS_ALLOW_SIGN_UP=false
+    env_file: .env
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
