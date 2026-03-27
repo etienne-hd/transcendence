@@ -35,12 +35,16 @@ export class WsGateway implements OnGatewayInit {
     client.join(`user:${userId}`);
 
     // Notify all of his friends on online
-    if (this.getRoomSize(`user:${userId}`) == 1) {
-      const user = await this.userService.updateUserStatus(userId, 'online');
-      const friends = await this.friendService.getFriends(userId);
-      for (const friend of friends) {
-        this.sendMessage(friend.user.id, 'friend:online', user);
+    try {
+      if (this.getRoomSize(`user:${userId}`) == 1) {
+        const user = await this.userService.updateUserStatus(userId, 'online');
+        const friends = await this.friendService.getFriends(userId);
+        for (const friend of friends) {
+          this.sendMessage(friend.user.id, 'friend:online', user);
+        }
       }
+    } catch (e) {
+      throw new Error(e);
     }
   }
 
@@ -48,12 +52,16 @@ export class WsGateway implements OnGatewayInit {
     const userId = client.data.user.sub;
 
     // Notify all of his friends on offline
-    if (this.getRoomSize(`user:${userId}`) == 0) {
-      const user = await this.userService.updateUserStatus(userId, 'offline');
-      const friends = await this.friendService.getFriends(userId);
-      for (const friend of friends) {
-        this.sendMessage(friend.user.id, 'friend:offline', user);
+    try {
+      if (this.getRoomSize(`user:${userId}`) == 0) {
+        const user = await this.userService.updateUserStatus(userId, 'offline');
+        const friends = await this.friendService.getFriends(userId);
+        for (const friend of friends) {
+          this.sendMessage(friend.user.id, 'friend:offline', user);
+        }
       }
+    } catch (e) {
+      throw new Error(e);
     }
   }
 
