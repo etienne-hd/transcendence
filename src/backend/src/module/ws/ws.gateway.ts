@@ -44,7 +44,7 @@ export class WsGateway implements OnGatewayInit {
         }
       }
     } catch (e) {
-      throw new Error(e);
+      client.disconnect();
     }
   }
 
@@ -61,7 +61,7 @@ export class WsGateway implements OnGatewayInit {
         }
       }
     } catch (e) {
-      throw new Error(e);
+      client.disconnect();
     }
   }
 

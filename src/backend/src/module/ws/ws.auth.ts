@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
 
@@ -10,13 +10,13 @@ export class WsAuthMiddleware {
     try {
       const token =
         socket.handshake.auth?.token || this.extractTokenFromHeader(socket);
-      if (!token) throw new Error('Unauthorized');
+      if (!token) throw new UnauthorizedException();
 
       const payload = this.jwtService.verify(token);
       socket.data.user = payload;
       next();
     } catch (err) {
-      next(new Error('Unauthorized'));
+      next(new UnauthorizedException());
     }
   }
 
