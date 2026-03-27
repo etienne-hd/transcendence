@@ -8,7 +8,7 @@ up:
 	docker compose -f ./src/docker-compose.yml up -d
 
 down:
-	docker compose -f ./src/docker-compose.yml down -v
+	docker compose -f ./src/docker-compose.yml down
 
 clean: down
 	rm -rf ./src/data
