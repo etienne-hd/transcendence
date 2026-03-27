@@ -28,6 +28,7 @@ services:
     depends_on:
       - frontend
       - backend
+      - grafana
     build:
       context: ./nginx
       args:
