@@ -11,10 +11,10 @@ function ConditionsContent() {
       </p>
       <h2 className="text-xl m-2">1. Information We Collect</h2>
       <p className="my-2">
-        When using Unicord, the following information may be collected: *
-        Account information (such as username and email address) * Encrypted or
-        hashed passwords * Messages exchanged between users * Files and
-        attachments shared through the platform * Profile information such as
+        When using Unicord, the following information may be collected:<br />&nbsp;&nbsp;*
+        Account information (such as username and email address)<br />&nbsp;&nbsp;* Encrypted or
+        hashed passwords<br />&nbsp;&nbsp;* Messages exchanged between users<br />&nbsp;&nbsp;* Files and
+        attachments shared through the platform<br />&nbsp;&nbsp;* Profile information such as
         avatars
       </p>
       <h2 className="text-xl m-2">2. Password Security</h2>
@@ -25,10 +25,10 @@ function ConditionsContent() {
       </p>
       <h2 className="text-xl m-2">3. How We Use Information</h2>
       <p className="my-2">
-        Collected information is used only to: * Create and manage user accounts
-        * Allow users to communicate with each other * Store messages,
-        attachments, and avatars * Maintain and improve the functionality of the
-        platform * Detect misuse or violations of the Terms of Service
+        Collected information is used only to:<br />&nbsp;&nbsp;* Create and manage user accounts<br />
+        &nbsp;&nbsp;* Allow users to communicate with each other<br />&nbsp;&nbsp;* Store messages,
+        attachments, and avatars<br />&nbsp;&nbsp;* Maintain and improve the functionality of the
+        platform<br />&nbsp;&nbsp;* Detect misuse or violations of the Terms of Service
       </p>
       <h2 className="text-xl m-2">4. Data Sharing</h2>
       <p className="my-2">
@@ -56,6 +56,23 @@ function ConditionsContent() {
       <p className="my-2">
         User data is stored on the servers running the Unicord project.
         Reasonable security measures are taken to protect stored data.
+      </p>
+      <h2 className="text-xl m-2">9. Data Retention</h2>
+      <p className="my-2">
+        User data may be stored as long as the account exists or as needed to maintain the functionality of the service.
+      </p>
+      <h2 className="text-xl m-2">10. Children's Privacy</h2>
+      <p className="my-2">
+        Unicord is not intended for users under the age of 13.
+        If it is discovered that a user under 13 has created an account, the account may be removed.
+      </p>
+      <h2 className="text-xl m-2">11. Changes to this Policy</h2>
+      <p className="my-2">
+        This Privacy Policy may be updated from time to time to reflect changes in the project or its features.
+      </p>
+      <h2 className="text-xl m-2">12. Contact</h2>
+      <p className="my-2">
+        If you have questions regarding this Privacy Policy, you may contact the project maintainers.
       </p>
     </div>
   );

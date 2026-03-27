@@ -33,10 +33,10 @@ function TermsContent() {
       </p>
       <h2 className="text-xl m-2">4. Acceptable Use</h2>
       <p className="my-2">
-        By using Unicord, you agree not to: * Use the service for illegal
-        activities * Harass, threaten, or harm other users * Share abusive,
-        harmful, or unlawful content * Attempt to access accounts, systems, or
-        data that do not belong to you * Upload malicious software or attempt to
+        By using Unicord, you agree not to:<br />&nbsp;&nbsp;* Use the service for illegal
+        activities<br />&nbsp;&nbsp;* Harass, threaten, or harm other users<br />&nbsp;&nbsp;* Share abusive,
+        harmful, or unlawful content<br />&nbsp;&nbsp;* Attempt to access accounts, systems, or
+        data that do not belong to you<br />&nbsp;&nbsp;* Upload malicious software or attempt to
         disrupt the service Unicord may implement automated moderation tools or
         bots to detect and prevent misuse of the platform.
       </p>
@@ -60,6 +60,22 @@ function TermsContent() {
         always be available, secure, or error-free.
       </p>
       <h2 className="text-xl m-2">8. Limitation of Liability</h2>
+      <p className="my-2">
+        Unicord is provided for educational purposes only. The creators of Unicord are not responsible for any damages, data loss, or issues resulting from the use of the service.
+      </p>
+      <h2 className="text-xl m-2">9. Termination</h2>
+      <p className="my-2">
+        Accounts may be suspended or removed if users violate these Terms of Service or misuse the platform.
+        The creators of Unicord also reserve the right to discontinue the service at any time.
+      </p>
+      <h2 className="text-xl m-2">10. Changes to the Terms</h2>
+      <p className="my-2">
+        These Terms of Service may be updated or modified at any time. Continued use of Unicord after changes means you accept the updated terms.
+      </p>
+      <h2 className="text-xl m-2">11. Contact</h2>
+      <p className="my-2">
+        If you have questions about these Terms of Service, you may contact the project maintainers through the platform or the project repository.
+      </p>
     </div>
   );
 }
