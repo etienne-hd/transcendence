@@ -55,23 +55,19 @@ function AddFriendModal(props: AddFriendModalProps) {
           }}
         />
       </div>
-      <div className="flex flex-row gap-4 justify-end items-center">
+      <div className="flex flex-row gap-3 justify-end items-center">
         <button
-          onClick={() => {
-            props.toggleFriend();
-          }}
-          className="p-2 bg-error w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+          onClick={props.toggleFriend}
+          className="px-4 py-1.5 rounded-lg border border-error/40 text-error text-sm font-medium hover:bg-error/10 transition-all duration-200 cursor-pointer"
         >
-          <p>Cancel</p>
+          Cancel
         </button>
         <button
-          onClick={() => {
-            onSubmit();
-          }}
+          onClick={onSubmit}
           disabled={friend == undefined || friend == ""}
-          className="p-2 bg-accent-primary disabled:cursor-auto disabled:hover:scale-100 disabled:hover:shadow-none disabled:bg-white/5 w-fit rounded-md hover:scale-102 hover:shadow-xl duration-200 cursor-pointer"
+          className="px-4 py-1.5 rounded-lg bg-accent-primary text-sm font-medium hover:opacity-90 transition-all duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-30"
         >
-          <p>Save changes</p>
+          Add friend
         </button>
       </div>
     </Modal>
