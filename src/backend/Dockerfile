@@ -18,4 +18,4 @@ EXPOSE 443
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
-CMD ["/wait-for-it.sh", "database:3306", "--", "node", "dist/main.js"]
+CMD ["/wait-for-it.sh", "-t", "60", "database:3306", "--", "node", "dist/main.js"]
