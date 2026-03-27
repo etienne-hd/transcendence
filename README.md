@@ -2,6 +2,8 @@ _This project has been created as part of the 42 curriculum by ehode, ncorrear, 
 
 # ft_transcendence
 
+![illustration](/images/illustration.png)
+
 ## Description
 
 **ft_transcendence** is a full-stack web application focused on real-time interactions between users.
@@ -38,18 +40,24 @@ Create a `.env` file in the appropriate directory:
 TZ=Europe/Paris
 
 # Database
-MYSQL_HOST=database
 MYSQL_ROOT_PASSWORD=admin
 MYSQL_DATABASE=unicord
+MYSQL_HOST=database
 
 # JWT
 JWT_SECRET=123
-JWT_EXPIRATION=1h
+JWT_EXPIRATION=6h
 
 # NGINX
 FRONTEND_DOMAIN=unicord.fr
 BACKEND_DOMAIN=api.unicord.fr
 EMAIL_ADMIN=admin@unicord.fr
+
+# Grafana
+GF_SECURITY_ADMIN_PASSWORD=admin
+GF_AUTH_ANONYMOUS_ENABLED=true
+GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+GF_USERS_ALLOW_SIGN_UP=false
 
 # Content Moderation AI
 GEMINI_API_KEY=
@@ -71,6 +79,12 @@ This will:
 
 ```bash
 make down
+```
+
+### Start the project (after stopping)
+
+```bash
+make up
 ```
 
 ### Clean environment
@@ -115,7 +129,7 @@ make clean
 
 ### Tools
 
-- GitHub Issues
+- GitHub Issues/Pull request
 
 ### Communication
 
@@ -155,35 +169,30 @@ Explain:
 
 ### Overview
 
-Describe the structure:
+| table    | description               |
+| -------- | ------------------------- |
+| users    | contains user information |
+| friends  | contains users relation   |
+| messages | contains users message    |
 
-- Users
-- Friends
-- Messages
-- Notifications
-- Files
+![database schema](/images/database_schema.jpg)
 
 ### Relationships
 
-- User ↔ Friends (many-to-many)
+- User ↔ Friends (one-to-many)
 - User ↔ Messages (one-to-many)
-- Messages ↔ Attachments
-
-### Example Fields
-
-- `User`: id, username, email, avatar, status
-- `Message`: id, content, sender_id, receiver_id, created_at
 
 ## Features List
 
-| Feature              | Description                | Contributor(s)                    |
-| -------------------- | -------------------------- | --------------------------------- |
-| Authentication       | User login/register system | `ehode` / `ncorrear` / `kzhen-cl` |
-| Chat                 | Real-time messaging        | `ehode` / `ncorrear` / `kzhen-cl` |
-| Friends              | Add/remove users           | `ehode` / `ncorrear`              |
-| API                  | Public REST API            | `ehode`                           |
-| Upload               | File management system     | `ehode` / `ncorrear`              |
-| Grafana & Prometheus | Monitoring / Metrics       | `drabarza`                        |
+| Feature              | Description                             | Contributor(s)                    |
+| -------------------- | --------------------------------------- | --------------------------------- |
+| Authentication       | User login/register system              | `ehode` / `ncorrear` / `kzhen-cl` |
+| Chat                 | Real-time messaging                     | `ehode` / `ncorrear` / `kzhen-cl` |
+| Friends              | Add/remove users                        | `ehode` / `ncorrear`              |
+| API                  | Public REST API                         | `ehode`                           |
+| Upload               | File management system                  | `ehode` / `ncorrear`              |
+| Grafana & Prometheus | Monitoring / Metrics                    | `drabarza`                        |
+| Responsive           | Make the site working on smaller device | `pboucher`                        |
 
 ## Modules
 
@@ -282,6 +291,8 @@ for friend in friends:
   - **Minor:** Use an ORM for the database.
   - **Minor:** Implement advanced search functionality with filters, sorting, and pagination.
   - **Minor:** File upload and management system.
+  - **Major:** Monitoring system with Prometheus and Grafana.
+
 - Challenges:
 
 ### `ncorrear`
