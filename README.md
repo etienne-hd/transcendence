@@ -274,7 +274,7 @@ client = unicord.Client(api_key="your_api_key")
 
 friends = client.get_friends()
 for friend in friends:
-    client.send_message(friend.id_, "Hello, World!")
+    client.send_message(friend.user.id_, "Hello, World!")
 ```
 
 ## Individual Contributions
@@ -347,7 +347,9 @@ for friend in friends:
 
 ### Tutorials / Articles
 
-- // TODO
+- https://docs.nestjs.com/
+- https://react.dev/reference/react
+- https://tailwindcss.com/docs
 
 ### AI Usage
 
@@ -357,4 +359,4 @@ AI tools were used for:
 
 ## ⚠️ Known Limitations
 
-// TODO
+- Content Moderator AI: Rate limit of Gemini API
