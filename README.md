@@ -281,6 +281,7 @@ Explain:
 - File upload and management system.
 - Support for additional browsers.
 - Voice/speech integration for accessibility or interaction.
+- Content moderation AI (auto moderation, auto deletion, auto warning, etc.)
 
 ## Module of Choice
 
@@ -338,6 +339,7 @@ for friend in friends:
   - **Minor:** Implement advanced search functionality with filters, sorting, and pagination.
   - **Minor:** File upload and management system.
   - **Major:** Monitoring system with Prometheus and Grafana.
+  - **Minor:** Content moderation AI (auto moderation, auto deletion, auto warning, etc.)
 
 - Challenges:
   - Developing in **TypeScript**...
