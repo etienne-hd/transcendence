@@ -198,42 +198,57 @@ Explain:
 
 ### Major Modules (2 pts each)
 
-#### Frameworks (Frontend + Backend)
+#### Use a framework for both the frontend and backend.
 
-- React + Backend framework
-- Justification: modern, scalable architecture
+- Use a frontend framework (React, Vue, Angular, Svelte, etc.).
+- Use a backend framework (Express, NestJS, Django, Flask, Ruby on Rails,
+  etc.).
+- Full-stack frameworks (Next.js, Nuxt.js, SvelteKit) count as both if you use
+  both their frontend and backend capabilities.
 
-#### Real-time Features
+#### Implement real-time features using WebSockets or similar technology.
 
-- WebSockets implementation
-- Handles live updates and connections
+- Real-time updates across clients.
+- Handle connection/disconnection gracefully.
+- Efficient message broadcasting.
 
-#### User Interaction System
+#### Allow users to interact with other users.
 
-- Chat, profiles, friends
+- A basic chat system (send/receive messages between users).
+- A profile system (view user information).
+- A friends system (add/remove friends, see friends list).
 
-#### Public API
+#### A public API to interact with the database with a secured API key, rate limiting, documentation, and at least 5 endpoints.
 
-- Secured with API key
-- Includes CRUD endpoints
+- GET /api/{something}
+- POST /api/{something}
+- PUT /api/{something}
+- DELETE /api/{something}
 
-#### Authentication System
+#### Major: Standard user management and authentication.
 
-- Profile management, avatars, friends
+- Users can update their profile information.
+- Users can upload an avatar (with a default avatar if none provided).
+- Users can add other users as friends and see their online status.
+- Users have a profile page displaying their information.
 
-#### Monitoring System
+#### Monitoring system with Prometheus and Grafana.
 
-- Prometheus + Grafana dashboards
+- Set up Prometheus to collect metrics.
+- Configure exporters and integrations.
+- Create custom Grafana dashboards.
+- Set up alerting rules.
+- Secure access to Grafana.
 
 ### Minor Modules (1 pt each)
 
-- ORM integration
-- Notification system
-- Design system (10+ reusable components)
-- Advanced search
-- File upload system
-- Multi-browser support
-- Voice integration
+- Use an ORM for the database.
+- A complete notification system for all creation, update, and deletion actions.
+- Custom-made design system with reusable components, including a proper color palette, typography, and icons (minimum: 10 reusable components).
+- Implement advanced search functionality with filters, sorting, and pagination.
+- File upload and management system.
+- Support for additional browsers.
+- Voice/speech integration for accessibility or interaction.
 
 ## Module of Choice
 
