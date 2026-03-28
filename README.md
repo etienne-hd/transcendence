@@ -1,12 +1,12 @@
 _This project has been created as part of the 42 curriculum by ehode, ncorrear, kzhen-cl, drabarza, pboucher._
 
-# ft_transcendence
+# Unicord
 
 ![illustration](/images/illustration.png)
 
 ## Description
 
-**ft_transcendence** is a full-stack web application focused on real-time interactions between users.
+**Unicord** is a full-stack web application focused on real-time interactions between users.
 The goal of the project is to build a modern, scalable platform combining social features, real-time communication, and a secure API.
 
 ### Key Features
