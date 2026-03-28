@@ -99,26 +99,44 @@ make clean
 
 - **Roles:** Tech Lead, Backend Developer
 - **Responsibilities:**
+  - Design and maintain backend architecture (APIs, services, databases)
+  - Define coding standards and review backend pull requests
+  - Ensure performance, scalability, and security of backend services
+  - Manage backend releases and coordinate with DevOps
+  - Mentor and support backend developers
 
 ### `ncorrear`
 
 - **Roles:** Tech Lead, Frontend Developer
 - **Responsibilities:**
+  - Design frontend architecture (state management, project structure)
+  - Establish best practices (linting, testing, performance)
+  - Review frontend pull requests and ensure code quality
+  - Optimize user experience and client-side performance
+  - Coordinate with backend team on API contracts
 
 ### `kzhen-cl`
 
 - **Role(s):** Backend Developer
 - **Responsibilities:**
+  - Develop and maintain API endpoints
+  - Debug and resolve backend issues
+  - Collaborate with frontend developers for feature integration
 
 ### `drabarza`
 
 - **Role(s):** DevOps
 - **Responsibilities:**
+  - Set up and manage infrastructure (Docker, Grafana, Prometheus)
 
 ### `pboucher`
 
 - **Role(s):** Frontend Developer
 - **Responsibilities:**
+  - Develop user interfaces (React, UI components)
+  - Ensure responsive design and accessibility
+  - Fix bugs and improve user experience
+  - Contribute to frontend testing
 
 ## Project Management
 
@@ -169,11 +187,11 @@ Explain:
 
 ### Overview
 
-| table    | description               |
-| -------- | ------------------------- |
-| users    | contains user information |
-| friends  | contains users relation   |
-| messages | contains users message    |
+| table    | description                             |
+| -------- | --------------------------------------- |
+| users    | Stores user account information         |
+| friends  | Stores relationships between users      |
+| messages | Stores messages exchanged between users |
 
 ![database schema](/images/database_schema.jpg)
 
@@ -206,17 +224,25 @@ Explain:
 - Full-stack frameworks (Next.js, Nuxt.js, SvelteKit) count as both if you use
   both their frontend and backend capabilities.
 
+> **Frontend:** `React`, `Tailwind CSS`
+
+> **Backend:** `NestJS`
+
 #### Implement real-time features using WebSockets or similar technology.
 
 - Real-time updates across clients.
 - Handle connection/disconnection gracefully.
 - Efficient message broadcasting.
 
+> We use `Socket.IO` to enable reliable real-time communication.
+
 #### Allow users to interact with other users.
 
 - A basic chat system (send/receive messages between users).
 - A profile system (view user information).
 - A friends system (add/remove friends, see friends list).
+
+> That's literally the aim of the project.
 
 #### A public API to interact with the database with a secured API key, rate limiting, documentation, and at least 5 endpoints.
 
@@ -225,12 +251,16 @@ Explain:
 - PUT /api/{something}
 - DELETE /api/{something}
 
+> To enable users to develop bots, self bots, automation solutions...
+
 #### Major: Standard user management and authentication.
 
 - Users can update their profile information.
 - Users can upload an avatar (with a default avatar if none provided).
 - Users can add other users as friends and see their online status.
 - Users have a profile page displaying their information.
+
+> For a better experience with friends
 
 #### Monitoring system with Prometheus and Grafana.
 
@@ -239,6 +269,8 @@ Explain:
 - Create custom Grafana dashboards.
 - Set up alerting rules.
 - Secure access to Grafana.
+
+> We need to collect key metrics to ensure the infrastructure runs smoothly
 
 ### Minor Modules (1 pt each)
 
@@ -296,7 +328,6 @@ for friend in friends:
 
 ### `ehode`
 
-- Features:
 - Modules:
   - **Major:** Use a framework for both the frontend and backend.
   - **Major:** Implement real-time features using WebSockets or similar technology.
@@ -309,10 +340,10 @@ for friend in friends:
   - **Major:** Monitoring system with Prometheus and Grafana.
 
 - Challenges:
+  - Developing in **TypeScript**...
 
 ### `ncorrear`
 
-- Features:
 - Modules:
   - **Major:** Use a framework for both the frontend and backend.
   - **Major:** Implement real-time features using WebSockets or similar technology.
@@ -324,7 +355,6 @@ for friend in friends:
   - **Minor:** File upload and management system.
   - **Minor:** Support for additional browsers.
   - **Minor:** Voice/speech integration for accessibility or interaction.
-- Challenges:
 
 ### `kzhen-cl`
 
@@ -336,21 +366,19 @@ for friend in friends:
   - **Major:** Implement real-time features using WebSockets or similar technology.
   - **Major:** A public API to interact with the database with a secured API key, rate limiting, documentation, and at least 5 endpoints.
   - **Major:** Standard user management and authentication.
-- Challenges:
 
 ### `drabarza`
 
 - Features:
+  - **Mandatory:** Docker configuration
+  - Nginx configuration
 - Modules:
   - **Major:** Monitoring system with Prometheus and Grafana.
-- Challenges:
 
 ### `pboucher`
 
-- Features:
 - Modules:
   - **Major:** Use a framework for both the frontend and backend.
-- Challenges:
 
 ## Resources
 
