@@ -185,6 +185,24 @@ export class MessageService {
     return value > 80;
   }
 
+  public formatDuration(ms: number): string {
+    if (ms <= 0) return '0s';
+
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / (1000 * 60)) % 60;
+    const hours = Math.floor(ms / (1000 * 60 * 60)) % 24;
+    const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+
+    const parts: string[] = [];
+
+    if (days) parts.push(`${days}d`);
+    if (hours) parts.push(`${hours}h`);
+    if (minutes) parts.push(`${minutes}m`);
+    if (seconds && parts.length === 0) parts.push(`${seconds}s`);
+
+    return parts.slice(0, 2).join(' ');
+  }
+
   public async sendMessage(
     from_user_id: number,
     to_user_id: number,
@@ -201,7 +219,7 @@ export class MessageService {
 
     if (from_user.mute_end_at && from_user.mute_end_at > new Date()) {
       throw new ForbiddenException(
-        `you are currently muted until ${from_user.mute_end_at}.`,
+        `You're currently muted for ${this.formatDuration(from_user.mute_end_at.getTime() - new Date().getTime())}.`,
       );
     }
 
@@ -210,7 +228,7 @@ export class MessageService {
       (await this.friendService.areFriends(from_user.id, to_user.id)) == false
     ) {
       throw new ForbiddenException(
-        'You cannot send a message to this user, you are not friends with them!',
+        "You cannot send a message to this user, you're not friends with them!",
       );
     }
 
@@ -224,7 +242,7 @@ export class MessageService {
         await this.userRepository.save(from_user);
 
         throw new UnprocessableEntityException(
-          `Message rejected by AI moderation, you are currently muted until ${from_user.mute_end_at}.`,
+          `Message rejected by AI moderation, you're currently muted for ${this.formatDuration(from_user.mute_end_at.getTime() - new Date().getTime())}.`,
         );
       } else {
         await this.userRepository.save(from_user);
