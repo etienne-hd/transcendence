@@ -38,7 +38,6 @@ function SettingsModal(props: SettingsModalProps) {
     });
     const errors = Object.entries(validation);
 
-    console.log(errors);
     if (errors.length != 0) {
       errors.forEach((field) => {
         pushNotification(field[1], "error");
