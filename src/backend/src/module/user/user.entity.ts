@@ -41,8 +41,8 @@ export class UserEntity {
   @Column({ type: 'varchar', nullable: true })
   public avatar: string | null;
 
-  @Column()
-  public is_banned: boolean = false;
+  @Column({ type: 'timestamp', nullable: true })
+  public mute_end_at: Date;
 
   @Column()
   public warn: number = 0;

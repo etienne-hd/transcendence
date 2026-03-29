@@ -198,6 +198,13 @@ export class MessageService {
     const from_user = await this.userService.getUserEntity({
       id: from_user_id,
     });
+
+    if (from_user.mute_end_at && from_user.mute_end_at > new Date()) {
+      throw new ForbiddenException(
+        `you are currently muted until ${from_user.mute_end_at}.`,
+      );
+    }
+
     const to_user = await this.userService.getUserEntity({ id: to_user_id });
     if (
       (await this.friendService.areFriends(from_user.id, to_user.id)) == false
@@ -209,7 +216,19 @@ export class MessageService {
 
     if (content && (await this.checkContentModerationAI(content))) {
       from_user.warn += 1;
-      await this.userRepository.save(from_user);
+
+      if (from_user.warn > 3) {
+        from_user.mute_end_at = new Date(
+          new Date().getTime() + 60 * 1000 * (from_user.warn - 3),
+        );
+        await this.userRepository.save(from_user);
+
+        throw new UnprocessableEntityException(
+          `Message rejected by AI moderation, you are currently muted until ${from_user.mute_end_at}.`,
+        );
+      } else {
+        await this.userRepository.save(from_user);
+      }
 
       throw new UnprocessableEntityException(
         'Message rejected by AI moderation.',
