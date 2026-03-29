@@ -114,6 +114,12 @@ function UserContextProvider(props: UserContextProviderProps) {
         if (
           axios.isAxiosError(err) &&
           err.response &&
+          err.response.status == 404
+        ) {
+          logout();
+        } else if (
+          axios.isAxiosError(err) &&
+          err.response &&
           err.response.status != 401
         ) {
           pushNotification(err.response.data.message, "error");
