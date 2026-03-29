@@ -2,13 +2,16 @@ import { Paperclip, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useMessage } from "../../context/MessageContext";
 import LoadingSpinner from "../LoadingSpinner";
+import { useNotification } from "../../context/NotificationContext";
 
 function MessageInput() {
   const [content, setContent] = useState<string>("");
   const [file, setFile] = useState<File | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
   const { pushMessage } = useMessage();
+  const { pushNotification } = useNotification();
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,20 +29,29 @@ function MessageInput() {
   };
 
   const onSubmit = () => {
-    if (content.trim() != "" || file != undefined) {
-      setLoading(true);
-      pushMessage(content, file)
-        .then((sent) => {
-          if (sent) {
-            setContent("");
-            setFile(undefined);
-          }
-          setLoading(false);
-        })
-        .catch(() => {
-          setLoading(false);
-        });
+    if (content.trim() == "" && file == undefined) {
+      pushNotification("Cannot send empty message !", "error");
+      setError(true);
+      return;
     }
+    if (content.length > 3000) {
+      pushNotification("Cannot send message with +3000 characters", "error");
+      setError(true);
+      return;
+    }
+    setError(false);
+    setLoading(true);
+    pushMessage(content, file)
+      .then((sent) => {
+        if (sent) {
+          setContent("");
+          setFile(undefined);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +88,8 @@ function MessageInput() {
         <div className="flex flex-row w-full p-4 gap-4 justify-center items-end">
           <textarea
             className={
-              "pt-2 max-h-[30vh] resize-none border-2 p-1 rounded-main w-full bg-bg-tertiary border-border-tertiary  focus:border-accent-primary outline-hidden invalid:border-error "
+              "pt-2 max-h-[30vh] resize-none border-2 p-1 rounded-main w-full bg-bg-tertiary border-border-tertiary  focus:border-accent-primary outline-hidden invalid:border-error " +
+              (error && "border-error")
             }
             ref={textAreaRef}
             onChange={onChange}

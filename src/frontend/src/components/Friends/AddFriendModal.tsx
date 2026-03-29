@@ -13,11 +13,13 @@ function AddFriendModal(props: AddFriendModalProps) {
 
   const onSubmit = () => {
     if (friend != undefined) {
-      addFriend(friend).then((success) => {
-        if (success) {
-          props.toggleFriend();
-        }
-      });
+      addFriend(friend)
+        .then((success) => {
+          if (success) {
+            props.toggleFriend();
+          }
+        })
+        .catch(() => {});
     }
   };
 

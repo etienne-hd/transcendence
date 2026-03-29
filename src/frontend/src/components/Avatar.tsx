@@ -23,12 +23,14 @@ const Avatar = memo((props: AvatarProps) => {
 
     const runLoad = async () => {
       if (props.userId) {
-        await loadAvatar(props.userId).then((blob) => {
-          if (blob) {
-            objectUrl = URL.createObjectURL(blob);
-            setAvatarUrl(objectUrl);
-          }
-        });
+        await loadAvatar(props.userId)
+          .then((blob) => {
+            if (blob) {
+              objectUrl = URL.createObjectURL(blob);
+              setAvatarUrl(objectUrl);
+            }
+          })
+          .catch(() => {});
       }
     };
 

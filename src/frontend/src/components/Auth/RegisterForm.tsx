@@ -150,6 +150,12 @@ function RegisterForm() {
                 value: 128,
                 message: "Password too long! (128 max)",
               },
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>\/?]).+$/,
+                message:
+                  "Password must contain at least 1 uppercase, 1 lowercase, 1 number and 1 special character.",
+              },
             })}
             label="Password *"
             type="password"

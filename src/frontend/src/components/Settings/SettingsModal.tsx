@@ -5,6 +5,8 @@ import Modal from "../Modal";
 import { useLogin } from "../../context/LoginContext";
 import { Edit2, Eye, EyeClosed, LogOut, Trash2 } from "lucide-react";
 import Avatar from "../Avatar";
+import { validateEdit } from "./validation";
+import { useNotification } from "../../context/NotificationContext";
 
 interface SettingsModalProps {
   toggleSettings: () => void;
@@ -23,21 +25,41 @@ function SettingsModal(props: SettingsModalProps) {
 
   const { user, saveChange } = useUser();
   const { logout } = useLogin();
+  const { pushNotification } = useNotification();
 
   const onSubmit = () => {
-    saveChange(
-      name,
-      username,
-      email,
-      password,
-      biography,
-      avatar,
-      props.toggleSettings,
-    ).then((res) => {
-      if (res) {
-        props.toggleSettings();
-      }
+    const validation = validateEdit({
+      name: name,
+      email: email,
+      password: password,
+      biography: biography,
+      avatar: avatar,
+      username: username,
     });
+    const errors = Object.entries(validation);
+
+    console.log(errors);
+    if (errors.length != 0) {
+      errors.forEach((field) => {
+        pushNotification(field[1], "error");
+      });
+    } else {
+      saveChange(
+        name,
+        username,
+        email,
+        password,
+        biography,
+        avatar,
+        props.toggleSettings,
+      )
+        .then((res) => {
+          if (res) {
+            props.toggleSettings();
+          }
+        })
+        .catch(() => {});
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

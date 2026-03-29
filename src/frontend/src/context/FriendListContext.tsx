@@ -95,10 +95,12 @@ function FriendListContextProvider(props: FriendListContextProviderProps) {
   useEffect(() => {
     socket?.on("friend:new", () => {
       updateFriends();
+      pushNotification("Friend request received", "notif");
     });
 
     socket?.on("friend:delete", () => {
       updateFriends();
+      pushNotification("1 Friend leave you", "notif");
     });
 
     socket?.on("friend:update", async (data: SocketCaller) => {
